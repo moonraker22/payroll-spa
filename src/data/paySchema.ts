@@ -24,3 +24,20 @@ export const WeeklyPaysheet = z.object({
 })
 
 export type WeeklyPaysheetType = z.infer<typeof WeeklyPaysheet>
+
+// Auth Register Schema
+export const Register = z.object({
+  email: z.string().email({ message: 'Invalid email address' }),
+  password: z.string().min(6),
+  passwordConfirmation: z.string().min(6),
+})
+
+export type RegisterType = z.infer<typeof Register>
+
+// Auth Login Schema
+export const Login = z.object({
+  email: z.string().email({ message: 'Invalid email address' }),
+  password: z.string().min(6),
+})
+
+export type LoginType = z.infer<typeof Login>

@@ -1,19 +1,24 @@
 import create from 'zustand'
 import { immer } from 'zustand/middleware/immer'
+import { auth } from '../firebase'
+import {
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  sendPasswordResetEmail,
+} from 'firebase/auth'
+import { useEffect } from 'react'
 
 const useStore = create(
   immer<State & Actions>((set, get) => ({
-    pay: [
-      // {
-      //   id: '2021-01-01',
-      //   date: '2021-01-01',
-      //   startingMiles: 100,
-      //   endingMiles: 200,
-      //   totalMiles: 100,
-      //   payMiles: 100,
-      //   backhaul: 0,
-      // },
-    ],
+    pay: [],
+    week: [],
+    errorCode: '',
+    errorMessage: '',
+    signedIn: false,
+    userID: '',
+    userEmail: '',
     addPay: (pay: Pay) => {
       const currentStore = get()
       if (currentStore.pay.find((item) => item.id === pay.id)) {
@@ -29,7 +34,6 @@ const useStore = create(
         state.pay.push(pay)
       })
     },
-    week: [],
     addWeek: (week: Week) => {
       const currentStore = get()
       if (currentStore.week.find((item) => item.id === week.id)) {
@@ -45,8 +49,104 @@ const useStore = create(
         state.week.push(week)
       })
     },
+    registerUser: (email: string, password: string) => {
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user
+          set((state) => {
+            state.signedIn = true
+            state.userID = user?.uid
+            state.userEmail = user?.email
+            state.errorCode = ''
+            state.errorMessage = ''
+          })
+        })
+        .catch((error) => {
+          const errorCode = error.code
+          const errorMessage = error.message
+          set((state) => {
+            state.errorCode = errorCode
+            state.errorMessage = errorMessage
+          })
+        })
+    },
+    loginUser: (email: string, password: string) => {
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user
+          set((state) => {
+            state.signedIn = true
+            state.userID = user?.uid
+            state.userEmail = user?.email
+            state.errorCode = ''
+            state.errorMessage = ''
+          })
+        })
+        .catch((error) => {
+          const errorCode = error.code
+          const errorMessage = error.message
+          set((state) => {
+            state.errorCode = errorCode
+            state.errorMessage = errorMessage
+          })
+        })
+    },
+    logout: () => {
+      signOut(auth)
+        .then(() => {
+          set((state) => {
+            state.signedIn = false
+            state.userID = ''
+            state.userEmail = ''
+            state.errorCode = ''
+            state.errorMessage = ''
+          })
+        })
+        .catch((error) => {
+          const errorCode = error.code
+          const errorMessage = error.message
+          set((state) => {
+            state.errorCode = errorCode
+            state.errorMessage = errorMessage
+          })
+        })
+    },
+    resetPassword: (email: string) => {
+      sendPasswordResetEmail(auth, email)
+    },
+    updateEmail: (email: string) => {
+      auth.currentUser?.updateEmail(email)
+    },
+    updatePassword: (password: string) => {
+      auth.currentUser?.updatePassword(password)
+    },
+    onAuthStateChanged: (callback: (user: any) => void) => {
+      return onAuthStateChanged(auth, callback)
+    },
+    user: () => auth.currentUser,
   }))
 )
+
+export const useAuth = () => {
+  const store = useStore()
+  useEffect(() => {
+    const unsubscribe = store.onAuthStateChanged((user) => {
+      if (user) {
+        store.signedIn = true
+        store.userID = user.uid
+        store.userEmail = user.email
+      } else {
+        store.signedIn = false
+        store.userID = ''
+        store.userEmail = ''
+      }
+    })
+    return () => unsubscribe()
+  }, [store])
+  return store
+}
 
 export default useStore
 
@@ -63,11 +163,24 @@ export interface Pay {
 type Actions = {
   addPay: (pay: Pay) => void
   addWeek: (week: Week) => void
+  registerUser: (email: string, password: string) => void
+  loginUser: (email: string, password: string) => void
+  logout: () => void
+  resetPassword: (email: string) => void
+  updateEmail: (email: string) => void
+  updatePassword: (password: string) => void
+  onAuthStateChanged: (callback: (user: any) => void) => () => void
+  user: () => any
 }
 
 type State = {
   pay: Pay[]
   week: Week[]
+  errorCode: string
+  errorMessage: string
+  signedIn: boolean
+  userID: string
+  userEmail: string
 }
 
 export interface Week {

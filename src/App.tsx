@@ -5,15 +5,16 @@ import {
   createRoutesFromElements,
   useRouteError,
 } from 'react-router-dom'
-import { initialState, reducer, payTypes } from './stores/payReducer'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import Layout from './layout/Layout'
 import './App.css'
 
 //Pages
-import Home from './pages/Home'
-import DailyPage from './pages/DailyPage'
-import WeeklyPage from './pages/WeeklyPage'
+import Home from './pages/Home/Home'
+import DailyPage from './pages/DailyPage/DailyPage'
+import WeeklyPage from './pages/WeeklyPage/WeeklyPage'
+import Registration from './pages/Registration/Registration'
+import Login from './pages/Login/Login'
 
 const colors = {
   brand: {
@@ -31,6 +32,8 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="daily" element={<DailyPage />} />
       <Route path="weekly" element={<WeeklyPage />} />
+      <Route path="registration" element={<Registration />} />
+      <Route path="login" element={<Login />} />
     </Route>
   )
 )

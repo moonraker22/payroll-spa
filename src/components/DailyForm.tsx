@@ -21,6 +21,7 @@ import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Paysheet, PaysheetType } from '../data/paySchema'
 import useStore from '../stores/payStore'
+import { useAuth } from '../stores/payStore'
 
 type PaysheetInputs = {
   id: string
@@ -37,9 +38,15 @@ const defaultValues = {
 }
 
 const DailyForm = () => {
-  const zstore = useStore((state) => state.pay)
   const addPayroll = useStore((state) => state.addPay)
+  // const state = useStore((state) => {
+  //   console.log('🚀 ~ file: DailyForm.tsx:42 ~ DailyForm ~ state', state)
+  //   return state
+  // })
+  const { user } = useStore()
 
+  console.log('🚀 ~ file: DailyForm.tsx:44 ~ DailyForm ~ user', user())
+  // console.log(useAuth())
   const {
     register,
     handleSubmit,
@@ -55,8 +62,12 @@ const DailyForm = () => {
     resolver: zodResolver(Paysheet),
   })
   const onSubmit: SubmitHandler<PaysheetInputs> = (data) => {
-    addPayroll(data)
-    reset()
+    try {
+      addPayroll(data)
+      reset()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const totalMilesFunc = () => {
@@ -77,11 +88,12 @@ const DailyForm = () => {
 
   const setId = () => {
     const date = getValues('date')
-    console.log(date)
-
     setValue('id', date)
   }
   const bg = useColorModeValue('white', ' gray.800')
+
+  const canSubmit =
+    isDirty && isValid && !isSubmitting && !Object.keys(errors).length
   return (
     <Container maxW="container.xl" centerContent mt={10}>
       <Box
@@ -223,12 +235,17 @@ const DailyForm = () => {
                   colorScheme="teal"
                   isLoading={isSubmitting}
                   type="submit"
-                  // onClick={() => addPayroll(testData)}
+                  disabled={!canSubmit}
                 >
                   Submit
                 </Button>
                 <Spacer />
-                <Button mt={4} colorScheme="red" onClick={() => reset()}>
+                <Button
+                  mt={4}
+                  colorScheme="red"
+                  onClick={() => reset()}
+                  disabled={isSubmitting}
+                >
                   Reset
                 </Button>
               </ButtonGroup>

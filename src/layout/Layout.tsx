@@ -1,23 +1,5 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { ColorModeSwitcher } from '../ColorModeSwitcher'
-
-// export default function RootLayout() {
-//   return (
-//     <div className="root-layout">
-//       <header>
-//         <nav>
-//           <h1>Jobarouter</h1>
-//           <NavLink to="/">Home</NavLink>
-//           <NavLink to="daily">Daily</NavLink>
-//         </nav>
-//       </header>
-//       <main>
-//         <Outlet />
-//       </main>
-//     </div>
-//   )
-// }
-
 import {
   Box,
   Button,
@@ -35,7 +17,7 @@ import React from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { FaMoon, FaSun } from 'react-icons/fa'
 import { useColorMode, useDisclosure } from '@chakra-ui/react'
-import DailyForm from '../components/DailyForm'
+import useStore from '../stores/payStore'
 
 export default function Layout() {
   const bg = useColorModeValue('white', ' gray.700')
@@ -44,7 +26,7 @@ export default function Layout() {
   let activeStyle = {
     textDecoration: 'underline',
   }
-
+  const { logout } = useStore()
   const navigate = useNavigate()
   return (
     <React.Fragment>
@@ -114,14 +96,26 @@ export default function Layout() {
                   Weekly
                 </NavLink>
               </Button>
-              <Button variant="ghost" onClick={() => navigate('/weekly')}>
+              <Button variant="ghost" onClick={() => navigate('/registration')}>
                 <NavLink
-                  to="/weekly"
+                  to="/registration"
                   style={({ isActive }) => (isActive ? activeStyle : undefined)}
                 >
-                  Weekly
+                  Register
                 </NavLink>
               </Button>
+              <Button variant="ghost" onClick={() => navigate('/login')}>
+                <NavLink
+                  to="/login"
+                  style={({ isActive }) => (isActive ? activeStyle : undefined)}
+                >
+                  Login
+                </NavLink>
+              </Button>
+              <Button variant="ghost" onClick={() => logout()}>
+                Logout
+              </Button>
+
               <ColorModeSwitcher />
             </HStack>
             {/* <Button colorScheme="brand.800" size="sm">
