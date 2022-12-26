@@ -86,7 +86,9 @@ export default function Registration() {
         mt={10}
         mb={10}
         // bgGradient="linear(to-l, #111621, #1A202C)"
-        w="60vw"
+        w="50vw"
+        maxW="500px"
+        minW="300px"
       >
         <Center>
           <Text

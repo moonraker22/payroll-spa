@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { Form } from 'react-router-dom'
 import {
@@ -38,15 +38,18 @@ const defaultValues = {
 }
 
 const DailyForm = () => {
-  const addPayroll = useStore((state) => state.addPay)
+  const addPayroll = useStore(useCallback((state) => state.addPay, []))
+
   // const state = useStore((state) => {
   //   console.log('🚀 ~ file: DailyForm.tsx:42 ~ DailyForm ~ state', state)
   //   return state
   // })
-  const { user } = useStore()
+  // const { user } = useStore()
 
-  console.log('🚀 ~ file: DailyForm.tsx:44 ~ DailyForm ~ user', user())
+  // console.log('🚀 ~ file: DailyForm.tsx:44 ~ DailyForm ~ user', user())
   // console.log(useAuth())
+  console.log(import.meta.env.DEV)
+
   const {
     register,
     handleSubmit,
@@ -107,6 +110,8 @@ const DailyForm = () => {
         mb={10}
         // bgGradient="linear(to-l, #111621, #1A202C)"
         w="60vw"
+        maxW="600px"
+        minW="300px"
       >
         <Center>
           <Text

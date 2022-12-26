@@ -40,9 +40,9 @@ export default function Login() {
   const password = watch('password')
   const email = watch('email')
   const canSubmit = isDirty && isValid && password && email
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const { loginUser } = useStore()
-  console.log(useAuth())
+  // console.log(useAuth())
 
   const onSubmit: SubmitHandler<RegistrationInputs> = async (data) => {
     try {
@@ -68,7 +68,9 @@ export default function Login() {
         rounded="md"
         mt={10}
         mb={10}
-        w="60vw"
+        w="50vw"
+        maxW="500px"
+        minW="300px"
       >
         <Center>
           <Text
