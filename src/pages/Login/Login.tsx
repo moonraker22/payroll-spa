@@ -13,12 +13,20 @@ import {
   Divider,
   useColorModeValue,
   Link,
+  InputGroup,
+  InputRightElement,
+  IconButton,
+  useDisclosure,
+  HStack,
+  Heading,
+  useBreakpointValue,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Login as LoginResolver } from '../../data/paySchema'
-import { useEffect } from 'react'
-import useStore from '../../stores/payStore'
-import { useAuth } from '../../stores/payStore'
+import { useEffect, useRef } from 'react'
+// import useStore from '@/stores/payStore'
+import { useLogin } from '../../hooks/useAuth'
+import { HiEye, HiEyeOff } from 'react-icons/hi'
 
 type RegistrationInputs = {
   email: string
@@ -40,15 +48,12 @@ export default function Login() {
   const password = watch('password')
   const email = watch('email')
   const canSubmit = isDirty && isValid && password && email
-  // const navigate = useNavigate()
-  const { loginUser } = useStore()
-  // console.log(useAuth())
+  // const { loginUser } = useStore()
+  const { login, isLoading, error } = useLogin()
 
   const onSubmit: SubmitHandler<RegistrationInputs> = async (data) => {
     try {
-      const res = loginUser(data.email, data.password)
-      console.log(res)
-      // navigate('/')
+      login({ email: data.email, password: data.password })
     } catch (error) {
       console.log(error)
     }
@@ -56,7 +61,15 @@ export default function Login() {
   useEffect(() => {
     setFocus('email')
   }, [])
+  const { isOpen, onToggle } = useDisclosure()
+  const inputRef = useRef<HTMLInputElement>(null)
 
+  const onClickReveal = () => {
+    onToggle()
+    if (inputRef.current) {
+      inputRef.current.focus({ preventScroll: true })
+    }
+  }
   return (
     <Container maxW="container.xl" centerContent mt={10}>
       <Box
@@ -64,7 +77,7 @@ export default function Login() {
         border="2px"
         borderColor="gray.700"
         boxShadow="dark-lg"
-        p="4"
+        p="6"
         rounded="md"
         mt={10}
         mb={10}
@@ -87,53 +100,71 @@ export default function Login() {
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Box mb={2}>
               <FormControl isInvalid={errors.email ? true : false} isRequired>
-                <FormLabel htmlFor="email">Email:</FormLabel>
+                <FormLabel htmlFor="email">Email</FormLabel>
                 <Input
                   {...register('email')}
                   id="email"
                   type="email"
                   placeholder="Email"
+                  autoComplete="email"
                 />
                 <FormErrorMessage>
                   {errors.email && errors.email.message}
                 </FormErrorMessage>
               </FormControl>
             </Box>
-            <Box mb={2}>
+            <Box my={2}>
               <FormControl
                 isInvalid={errors.password ? true : false}
                 isRequired
               >
-                <FormLabel htmlFor="password">Password:</FormLabel>
-                <Input
-                  {...register('password')}
-                  id="password"
-                  type="password"
-                  placeholder="Password"
-                />
+                <FormLabel htmlFor="password">Password</FormLabel>
+
+                <InputGroup>
+                  <InputRightElement>
+                    <IconButton
+                      variant="link"
+                      aria-label={isOpen ? 'Mask password' : 'Reveal password'}
+                      icon={isOpen ? <HiEyeOff /> : <HiEye />}
+                      onClick={onClickReveal}
+                    />
+                  </InputRightElement>
+                  <Input
+                    {...register('password')}
+                    id="password"
+                    name="password"
+                    type={isOpen ? 'text' : 'password'}
+                    autoComplete="current-password"
+                    required
+                    placeholder="Password"
+                  />
+                </InputGroup>
                 <FormErrorMessage>
                   {errors.password && errors.password.message}
                 </FormErrorMessage>
               </FormControl>
             </Box>
 
-            <Center mb={2}>
+            <Center my={2}>
               <Button
-                mt={4}
+                my={4}
+                w="full"
                 colorScheme="teal"
                 isLoading={isSubmitting}
                 type="submit"
                 size="lg"
                 disabled={!canSubmit}
+                loadingText="Logging In"
               >
                 Submit
               </Button>
             </Center>
-            <Center mb={2}>
-              <Link as={RouterLink} to="/login">
-                Need an account Sign Up
-              </Link>
-            </Center>
+            <HStack spacing="1" justify="center">
+              <Text color="muted">Don't have an account?</Text>
+              <Button variant="link" colorScheme="teal">
+                Sign up
+              </Button>
+            </HStack>
           </Form>
         </Box>
       </Box>

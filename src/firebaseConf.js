@@ -13,6 +13,7 @@ const config = {
 
 const app = initializeApp(config)
 
-export const auth = getAuth(app)
-export const db = getFirestore(app)
-export default app
+const auth = getAuth(app)
+const db = getFirestore(app)
+
+export { auth, db, app }

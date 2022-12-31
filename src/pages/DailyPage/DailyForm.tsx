@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { useForm, SubmitHandler, Controller } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { Form } from 'react-router-dom'
 import {
   FormErrorMessage,
@@ -8,7 +8,6 @@ import {
   Input,
   Button,
   Box,
-  Container,
   Text,
   Center,
   Divider,
@@ -19,12 +18,13 @@ import {
 } from '@chakra-ui/react'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Paysheet, PaysheetType } from '../data/paySchema'
-import useStore from '../stores/payStore'
-import { useAuth } from '../stores/payStore'
+import { Paysheet } from '../../data/paySchema'
+import useStore from '../../stores/payStore'
+import { useAddPay } from '../../hooks/usePay'
+import { useAuth } from '../../hooks/useAuth'
 
 type PaysheetInputs = {
-  id: string
+  // uid: string
   date: string
   startingMiles: number
   endingMiles: number
@@ -38,17 +38,14 @@ const defaultValues = {
 }
 
 const DailyForm = () => {
-  const addPayroll = useStore(useCallback((state) => state.addPay, []))
-
+  // const addPayroll = useStore(useCallback((state) => state.addPay, []))
+  const { addPay, isPayLoading, payError } = useAddPay()
+  // const { user, isLoading: isAuthLoading, error: authError } = useAuth()
   // const state = useStore((state) => {
   //   console.log('🚀 ~ file: DailyForm.tsx:42 ~ DailyForm ~ state', state)
   //   return state
   // })
   // const { user } = useStore()
-
-  // console.log('🚀 ~ file: DailyForm.tsx:44 ~ DailyForm ~ user', user())
-  // console.log(useAuth())
-  console.log(import.meta.env.DEV)
 
   const {
     register,
@@ -66,7 +63,8 @@ const DailyForm = () => {
   })
   const onSubmit: SubmitHandler<PaysheetInputs> = (data) => {
     try {
-      addPayroll(data)
+      // addPayroll(data)
+      addPay({ ...data })
       reset()
     } catch (error) {
       console.log(error)
@@ -89,16 +87,16 @@ const DailyForm = () => {
     setFocus('startingMiles')
   }, [])
 
-  const setId = () => {
-    const date = getValues('date')
-    setValue('id', date)
-  }
+  // const setId = () => {
+  //   const date = getValues('date')
+  //   setValue('id', date)
+  // }
   const bg = useColorModeValue('white', ' gray.800')
 
   const canSubmit =
     isDirty && isValid && !isSubmitting && !Object.keys(errors).length
   return (
-    <Container maxW="container.xl" centerContent mt={10}>
+    <>
       <Box
         bg={bg}
         border="2px"
@@ -135,7 +133,7 @@ const DailyForm = () => {
                 id="date"
                 type="date"
                 placeholder="date"
-                onBlur={setId}
+                // onBlur={setId}
               />
               <FormErrorMessage>
                 {errors.date && errors.date.message}
@@ -147,11 +145,11 @@ const DailyForm = () => {
                 isInvalid={errors.startingMiles ? true : false}
                 isRequired
               >
-                <input
-                  {...register('id')}
+                {/* <input
+                  {...register('uid')}
                   type="hidden"
-                  value={new Date().toISOString().slice(0, 10)}
-                />
+                  value={user?.uid}
+                /> */}
 
                 <FormLabel htmlFor="startingMiles">Starting Miles:</FormLabel>
                 <Input
@@ -259,7 +257,7 @@ const DailyForm = () => {
         </Box>
       </Box>
       <DevTool control={control} />
-    </Container>
+    </>
   )
 }
 

@@ -15,9 +15,11 @@ import {
   Link,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Register } from '../../data/paySchema'
-import useStore from '../../stores/payStore'
+import { Register } from '@/data/paySchema'
+// import useStore from '@/stores/payStore'
+// import useAuthStore from '@/stores/authStore'
 import { useEffect } from 'react'
+import { useRegister } from '../../hooks/useAuth'
 
 type RegistrationInputs = {
   email: string
@@ -39,12 +41,12 @@ export default function Registration() {
   })
   const navigate = useNavigate()
 
-  const { registerUser } = useStore()
+  const { register: registerUser, isLoading } = useRegister()
 
   const onSubmit: SubmitHandler<RegistrationInputs> = async (data) => {
     try {
-      registerUser(data.email, data.password)
-      navigate('/')
+      registerUser({ email: data.email, password: data.password })
+      // navigate('/')
     } catch (error) {
       console.log(error)
     }
@@ -102,10 +104,10 @@ export default function Registration() {
             Register
           </Text>
         </Center>
-        <Divider mt={5} mb={5} />
+        <Divider my={5} />
         <Box>
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <Box mb={2}>
+            <Box my={2}>
               <FormControl isInvalid={errors.email ? true : false} isRequired>
                 <FormLabel htmlFor="email">Email:</FormLabel>
                 <Input
@@ -113,13 +115,14 @@ export default function Registration() {
                   id="email"
                   type="email"
                   placeholder="Email"
+                  autoComplete="email"
                 />
                 <FormErrorMessage>
                   {errors.email && errors.email.message}
                 </FormErrorMessage>
               </FormControl>
             </Box>
-            <Box mb={2}>
+            <Box my={2}>
               <FormControl
                 isInvalid={errors.password ? true : false}
                 isRequired
@@ -130,6 +133,7 @@ export default function Registration() {
                   id="password"
                   type="password"
                   placeholder="Password"
+                  autoComplete="new-password"
                 />
                 <FormErrorMessage>
                   {errors.password && errors.password.message}
@@ -149,6 +153,7 @@ export default function Registration() {
                   id="passwordConfirmation"
                   type="password"
                   placeholder="Password Confirmation"
+                  autoComplete="new-password"
                 />
                 <FormErrorMessage>
                   {errors.passwordConfirmation &&
@@ -157,9 +162,10 @@ export default function Registration() {
               </FormControl>
             </Box>
 
-            <Center mb={2}>
+            <Center my={2}>
               <Button
-                mt={4}
+                my={4}
+                w="full"
                 colorScheme="teal"
                 isLoading={isSubmitting}
                 type="submit"
@@ -169,8 +175,13 @@ export default function Registration() {
                 Submit
               </Button>
             </Center>
-            <Center mb={2}>
-              <Link as={RouterLink} to="/login">
+            <Center my={2}>
+              <Link
+                as={RouterLink}
+                to="/login"
+                fontWeight="medium"
+                textDecor="underline"
+              >
                 Already have an account log In
               </Link>
             </Center>

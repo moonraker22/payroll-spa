@@ -4,9 +4,12 @@ import {
   RouterProvider,
   createRoutesFromElements,
   useRouteError,
+  Routes,
 } from 'react-router-dom'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import Layout from './layout/Layout'
+import { routes } from './lib/routes'
+import ProtectedRoutes from './components/protected/Protected'
 import './App.css'
 
 //Pages
@@ -15,6 +18,7 @@ import DailyPage from './pages/DailyPage/DailyPage'
 import WeeklyPage from './pages/WeeklyPage/WeeklyPage'
 import Registration from './pages/Registration/Registration'
 import Login from './pages/Login/Login'
+import Dashboard from './pages/Dashboard/Dashboard'
 
 const colors = {
   brand: {
@@ -28,13 +32,25 @@ const theme = extendTheme({ colors })
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Layout />} errorElement={<ErrorBoundary />}>
-      <Route index element={<Home />} />
-      <Route path="daily" element={<DailyPage />} />
-      <Route path="weekly" element={<WeeklyPage />} />
-      <Route path="registration" element={<Registration />} />
-      <Route path="login" element={<Login />} />
-    </Route>
+    <>
+      <Route
+        path={routes.HOME}
+        element={<Layout />}
+        errorElement={<ErrorBoundary />}
+      >
+        <Route index element={<Home />} />
+
+        <Route path={routes.REGISTER} element={<Registration />} />
+        <Route path={routes.LOGIN} element={<Login />} />
+
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoutes />}>
+          <Route index path={routes.DASHBOARD} element={<Dashboard />} />
+          <Route path={routes.DAILY} element={<DailyPage />} />
+          <Route path={routes.WEEKLY} element={<WeeklyPage />} />
+        </Route>
+      </Route>
+    </>
   )
 )
 function App() {

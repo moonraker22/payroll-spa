@@ -1,9 +1,12 @@
-import DailyForm from '../../components/DailyForm'
+import { Container } from '@chakra-ui/react'
+import DailyForm from './DailyForm'
 
 export default function DailyPage() {
   return (
     <section>
-      <DailyForm />
+      <Container maxW="container.xl" centerContent mt={10}>
+        <DailyForm />
+      </Container>
     </section>
   )
 }

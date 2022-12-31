@@ -13,11 +13,12 @@ import {
   VStack,
   Text,
 } from '@chakra-ui/react'
-import React from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
-import { FaMoon, FaSun } from 'react-icons/fa'
-import { useColorMode, useDisclosure } from '@chakra-ui/react'
-import useStore from '../stores/payStore'
+import { useDisclosure } from '@chakra-ui/react'
+import { useAuth, useLogout } from '../hooks/useAuth'
+import { routes } from '../lib/routes'
+import { useIdToken } from 'react-firebase-hooks/auth'
+import { auth } from '../firebaseConf'
 
 export default function Layout() {
   const bg = useColorModeValue('white', ' gray.700')
@@ -26,10 +27,18 @@ export default function Layout() {
   let activeStyle = {
     textDecoration: 'underline',
   }
-  const { logout } = useStore()
+  // const { logout } = useStore()
+  const [user, loading, error] = useIdToken(auth)
+
+  const { logout, isLoading: logoutLoading } = useLogout()
   const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate(routes.LOGIN)
+  }
   return (
-    <React.Fragment>
+    <>
       <chakra.header
         bg={bg}
         w="full"
@@ -72,49 +81,83 @@ export default function Layout() {
                 md: 'inline-flex',
               }}
             >
-              <Button variant="ghost" onClick={() => navigate('/')}>
-                <NavLink
-                  to="/"
-                  style={({ isActive }) => (isActive ? activeStyle : undefined)}
-                >
-                  Home
-                </NavLink>
-              </Button>
-              <Button variant="ghost" onClick={() => navigate('/daily')}>
-                <NavLink
-                  to="/daily"
-                  style={({ isActive }) => (isActive ? activeStyle : undefined)}
-                >
-                  DailyForm
-                </NavLink>
-              </Button>
-              <Button variant="ghost" onClick={() => navigate('/weekly')}>
-                <NavLink
-                  to="/weekly"
-                  style={({ isActive }) => (isActive ? activeStyle : undefined)}
-                >
-                  Weekly
-                </NavLink>
-              </Button>
-              <Button variant="ghost" onClick={() => navigate('/registration')}>
-                <NavLink
-                  to="/registration"
-                  style={({ isActive }) => (isActive ? activeStyle : undefined)}
-                >
-                  Register
-                </NavLink>
-              </Button>
-              <Button variant="ghost" onClick={() => navigate('/login')}>
-                <NavLink
-                  to="/login"
-                  style={({ isActive }) => (isActive ? activeStyle : undefined)}
-                >
-                  Login
-                </NavLink>
-              </Button>
-              <Button variant="ghost" onClick={() => logout()}>
-                Logout
-              </Button>
+              {!loading && !error && user ? (
+                <>
+                  {' '}
+                  <Button variant="ghost" onClick={() => navigate(routes.HOME)}>
+                    <NavLink
+                      to="/"
+                      style={({ isActive }) =>
+                        isActive ? activeStyle : undefined
+                      }
+                    >
+                      Home
+                    </NavLink>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => navigate(routes.DAILY)}
+                  >
+                    <NavLink
+                      to="/daily"
+                      style={({ isActive }) =>
+                        isActive ? activeStyle : undefined
+                      }
+                    >
+                      DailyForm
+                    </NavLink>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => navigate(routes.WEEKLY)}
+                  >
+                    <NavLink
+                      to="/weekly"
+                      style={({ isActive }) =>
+                        isActive ? activeStyle : undefined
+                      }
+                    >
+                      Weekly
+                    </NavLink>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={handleLogout}
+                    disabled={logoutLoading}
+                  >
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="ghost"
+                    onClick={() => navigate(routes.REGISTER)}
+                  >
+                    <NavLink
+                      to="/registration"
+                      style={({ isActive }) =>
+                        isActive ? activeStyle : undefined
+                      }
+                    >
+                      Register
+                    </NavLink>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => navigate(routes.LOGIN)}
+                  >
+                    <NavLink
+                      to="/login"
+                      style={({ isActive }) =>
+                        isActive ? activeStyle : undefined
+                      }
+                    >
+                      Login
+                    </NavLink>
+                  </Button>
+                </>
+              )}
 
               <ColorModeSwitcher />
             </HStack>
@@ -163,7 +206,7 @@ export default function Layout() {
                   onClick={mobileNav.onClose}
                 />
 
-                <Button variant="ghost" onClick={() => navigate('/')}>
+                <Button variant="ghost" onClick={() => navigate(routes.HOME)}>
                   <NavLink
                     to="/"
                     style={({ isActive }) =>
@@ -173,7 +216,7 @@ export default function Layout() {
                     Home
                   </NavLink>
                 </Button>
-                <Button variant="ghost" onClick={() => navigate('/daily')}>
+                <Button variant="ghost" onClick={() => navigate(routes.DAILY)}>
                   <NavLink
                     to="/daily"
                     style={({ isActive }) =>
@@ -183,7 +226,7 @@ export default function Layout() {
                     DailyForm
                   </NavLink>
                 </Button>
-                <Button variant="ghost" onClick={() => navigate('/weekly')}>
+                <Button variant="ghost" onClick={() => navigate(routes.WEEKLY)}>
                   <NavLink
                     to="/weekly"
                     style={({ isActive }) =>
@@ -193,7 +236,7 @@ export default function Layout() {
                     Weekly
                   </NavLink>
                 </Button>
-                <Button variant="ghost" onClick={() => navigate('/weekly')}>
+                <Button variant="ghost" onClick={() => navigate(routes.WEEKLY)}>
                   <NavLink
                     to="/weekly"
                     style={({ isActive }) =>
@@ -211,6 +254,6 @@ export default function Layout() {
       <Box as="main" role="main">
         <Outlet />
       </Box>
-    </React.Fragment>
+    </>
   )
 }
