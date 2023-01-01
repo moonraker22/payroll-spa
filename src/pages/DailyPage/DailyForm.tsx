@@ -15,11 +15,11 @@ import {
   Flex,
   Spacer,
   ButtonGroup,
+  Heading,
 } from '@chakra-ui/react'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Paysheet } from '../../data/paySchema'
-import useStore from '../../stores/payStore'
 import { useAddPay } from '../../hooks/usePay'
 import { useAuth } from '../../hooks/useAuth'
 
@@ -97,6 +97,19 @@ const DailyForm = () => {
     isDirty && isValid && !isSubmitting && !Object.keys(errors).length
   return (
     <>
+      <Center>
+        <Heading
+          as="h1"
+          // bgGradient="linear(to-l, #7928CA, #FF0080)"
+          bgGradient="linear(to-b, green.200, pink.500)"
+          // bgGradient="linear(to-r, teal, red.500)"
+          bgClip="text"
+          fontSize={['4xl', '4xl', '5xl']}
+          fontWeight="extrabold"
+        >
+          Daily Form
+        </Heading>
+      </Center>
       <Box
         bg={bg}
         border="2px"
@@ -111,20 +124,7 @@ const DailyForm = () => {
         maxW="600px"
         minW="300px"
       >
-        <Center>
-          <Text
-            // bgGradient="linear(to-l, #7928CA, #FF0080)"
-            bgGradient="linear(to-b, green.200, pink.500)"
-            // bgGradient="linear(to-r, teal, red.500)"
-            bgClip="text"
-            fontSize={['3xl', '4xl', '5xl']}
-            fontWeight="extrabold"
-          >
-            Daily Form
-          </Text>
-        </Center>
-        <Divider mt={5} mb={5} />
-        <Box>
+        <Box p="4">
           <Form onSubmit={handleSubmit(onSubmit)}>
             <FormControl isInvalid={errors.date ? true : false} isRequired>
               <FormLabel htmlFor="date">Date</FormLabel>
@@ -140,17 +140,11 @@ const DailyForm = () => {
               </FormErrorMessage>
             </FormControl>
 
-            <Box>
+            <Box my="3">
               <FormControl
                 isInvalid={errors.startingMiles ? true : false}
                 isRequired
               >
-                {/* <input
-                  {...register('uid')}
-                  type="hidden"
-                  value={user?.uid}
-                /> */}
-
                 <FormLabel htmlFor="startingMiles">Starting Miles:</FormLabel>
                 <Input
                   {...register('startingMiles')}
@@ -163,7 +157,7 @@ const DailyForm = () => {
                 </FormErrorMessage>
               </FormControl>
             </Box>
-            <Box>
+            <Box my="3">
               <FormControl
                 isInvalid={errors.endingMiles ? true : false}
                 isRequired
@@ -180,7 +174,7 @@ const DailyForm = () => {
                 </FormErrorMessage>
               </FormControl>
             </Box>
-            <Box>
+            <Box my="3">
               <FormControl
                 isInvalid={errors.totalMiles ? true : false}
                 isRequired
@@ -198,7 +192,7 @@ const DailyForm = () => {
                 </FormErrorMessage>
               </FormControl>
             </Box>
-            <Box>
+            <Box my="3">
               <FormControl
                 isInvalid={errors.payMiles ? true : false}
                 isRequired
@@ -215,7 +209,7 @@ const DailyForm = () => {
                 </FormErrorMessage>
               </FormControl>
             </Box>
-            <Box>
+            <Box my="3">
               <FormControl
                 isInvalid={errors.backhaul ? true : false}
                 isRequired
@@ -232,26 +226,25 @@ const DailyForm = () => {
               </FormControl>
             </Box>
             <Flex>
-              <ButtonGroup gap="2">
-                <Button
-                  mt={4}
-                  colorScheme="teal"
-                  isLoading={isSubmitting}
-                  type="submit"
-                  disabled={!canSubmit}
-                >
-                  Submit
-                </Button>
-                <Spacer />
-                <Button
-                  mt={4}
-                  colorScheme="red"
-                  onClick={() => reset()}
-                  disabled={isSubmitting}
-                >
-                  Reset
-                </Button>
-              </ButtonGroup>
+              <Button
+                mt={4}
+                px={10}
+                colorScheme="teal"
+                isLoading={isSubmitting}
+                type="submit"
+                disabled={!canSubmit}
+              >
+                Submit
+              </Button>
+              <Spacer />
+              <Button
+                mt={4}
+                colorScheme="red"
+                onClick={() => reset()}
+                disabled={isSubmitting}
+              >
+                Reset
+              </Button>
             </Flex>
           </Form>
         </Box>

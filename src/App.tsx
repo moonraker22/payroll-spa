@@ -10,6 +10,9 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import Layout from './layout/Layout'
 import { routes } from './lib/routes'
 import ProtectedRoutes from './components/protected/Protected'
+import theme from './theme'
+import '@fontsource/roboto/400.css'
+import '@fontsource/ubuntu/400.css'
 import './App.css'
 
 //Pages
@@ -20,15 +23,21 @@ import Registration from './pages/Registration/Registration'
 import Login from './pages/Login/Login'
 import Dashboard from './pages/Dashboard/Dashboard'
 
-const colors = {
-  brand: {
-    primary: 'red',
-    800: '#153e75',
-    700: '#2a69ac',
-  },
-}
+// const colors = {
+//   brand: {
+//     primary: 'red',
+//     800: '#153e75',
+//     700: '#2a69ac',
+//   },
+//   fonts: {
+//     heading: `'Montserrat', sans-serif`,
+//     body: `'Roboto', sans-serif`,
+//   },
+// }
+//  { font-family: "Montserrat", sans-serif; }
+// { font-family: "Roboto", sans-serif; }
 
-const theme = extendTheme({ colors })
+// const extendedTheme = extendTheme({ ...colors, ...theme })
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -67,5 +76,9 @@ function ErrorBoundary() {
   let error = useRouteError()
   console.error(error)
   // Uncaught ReferenceError: path is not defined
-  return <div>Dang!</div>
+  return <ErrorPage />
+}
+
+function ErrorPage() {
+  return <div>Something went wrong</div>
 }

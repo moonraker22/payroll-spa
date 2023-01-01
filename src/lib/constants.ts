@@ -8,3 +8,8 @@ export const COLLECTIONS = {
 export function returnPaysheetString(id: string) {
   return `users/${id}/paysheet`
 }
+
+export const background = {
+  light: 'gray.50',
+  dark: 'gray.800',
+}

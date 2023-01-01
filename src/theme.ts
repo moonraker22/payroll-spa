@@ -9,7 +9,19 @@ const config: ThemeConfig = {
   useSystemColorMode: false,
 }
 
+const extendedTheme = {
+  brand: {
+    primary: 'red',
+    800: '#153e75',
+    700: '#2a69ac',
+  },
+  fonts: {
+    heading: `'Montserrat', sans-serif`,
+    body: `'Roboto', sans-serif`,
+  },
+}
+
 // 3. extend the theme
-const theme = extendTheme({ config })
+const theme = extendTheme({ ...config, ...extendedTheme })
 
 export default theme

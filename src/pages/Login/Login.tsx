@@ -72,6 +72,18 @@ export default function Login() {
   }
   return (
     <Container maxW="container.xl" centerContent mt={10}>
+      <Center mt={10}>
+        <Heading
+          mt="10"
+          as="h1"
+          bgGradient="linear(to-b, green.200, pink.500)"
+          bgClip="text"
+          fontSize={['4xl', '4xl', '5xl']}
+          fontWeight="extrabold"
+        >
+          Login
+        </Heading>
+      </Center>
       <Box
         bg={bg}
         border="2px"
@@ -85,18 +97,7 @@ export default function Login() {
         maxW="500px"
         minW="300px"
       >
-        <Center>
-          <Text
-            bgGradient="linear(to-b, green.200, pink.500)"
-            bgClip="text"
-            fontSize={['3xl', '4xl', '5xl']}
-            fontWeight="extrabold"
-          >
-            Login
-          </Text>
-        </Center>
-        <Divider mt={5} mb={5} />
-        <Box>
+        <Box p="3">
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Box mb={2}>
               <FormControl isInvalid={errors.email ? true : false} isRequired>

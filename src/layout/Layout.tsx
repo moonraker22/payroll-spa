@@ -15,14 +15,16 @@ import {
 } from '@chakra-ui/react'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { useDisclosure } from '@chakra-ui/react'
-import { useAuth, useLogout } from '../hooks/useAuth'
+import { useLogout } from '../hooks/useAuth'
 import { routes } from '../lib/routes'
 import { useIdToken } from 'react-firebase-hooks/auth'
 import { auth } from '../firebaseConf'
+import { useRef } from 'react'
 
 export default function Layout() {
   const bg = useColorModeValue('white', ' gray.700')
   const mobileNav = useDisclosure()
+  const clickOutsideRef = useRef(null)
 
   let activeStyle = {
     textDecoration: 'underline',
@@ -37,6 +39,7 @@ export default function Layout() {
     logout()
     navigate(routes.LOGIN)
   }
+
   return (
     <>
       <chakra.header
@@ -251,7 +254,7 @@ export default function Layout() {
           </HStack>
         </Flex>
       </chakra.header>
-      <Box as="main" role="main">
+      <Box as="main" role="main" ref={clickOutsideRef}>
         <Outlet />
       </Box>
     </>

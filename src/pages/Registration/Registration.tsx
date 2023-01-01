@@ -13,6 +13,8 @@ import {
   Divider,
   useColorModeValue,
   Link,
+  HStack,
+  Heading,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Register } from '@/data/paySchema'
@@ -78,6 +80,20 @@ export default function Registration() {
 
   return (
     <Container maxW="container.xl" centerContent mt={10}>
+      <Center>
+        <Heading
+          mt="10"
+          as="h1"
+          // bgGradient="linear(to-l, #7928CA, #FF0080)"
+          bgGradient="linear(to-b, green.200, pink.500)"
+          // bgGradient="linear(to-r, teal, red.500)"
+          bgClip="text"
+          fontSize={['4xl', '4xl', '5xl']}
+          fontWeight="extrabold"
+        >
+          Register
+        </Heading>
+      </Center>
       <Box
         bg={bg}
         border="2px"
@@ -92,20 +108,7 @@ export default function Registration() {
         maxW="500px"
         minW="300px"
       >
-        <Center>
-          <Text
-            // bgGradient="linear(to-l, #7928CA, #FF0080)"
-            bgGradient="linear(to-b, green.200, pink.500)"
-            // bgGradient="linear(to-r, teal, red.500)"
-            bgClip="text"
-            fontSize={['3xl', '4xl', '5xl']}
-            fontWeight="extrabold"
-          >
-            Register
-          </Text>
-        </Center>
-        <Divider my={5} />
-        <Box>
+        <Box p="3">
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Box my={2}>
               <FormControl isInvalid={errors.email ? true : false} isRequired>
@@ -140,7 +143,7 @@ export default function Registration() {
                 </FormErrorMessage>
               </FormControl>
             </Box>
-            <Box mb={2}>
+            <Box my={2}>
               <FormControl
                 isInvalid={errors.passwordConfirmation ? true : false}
                 isRequired
@@ -175,16 +178,12 @@ export default function Registration() {
                 Submit
               </Button>
             </Center>
-            <Center my={2}>
-              <Link
-                as={RouterLink}
-                to="/login"
-                fontWeight="medium"
-                textDecor="underline"
-              >
-                Already have an account log In
-              </Link>
-            </Center>
+            <HStack spacing="1" justify="center">
+              <Text color="muted">Already have an account?</Text>
+              <Button variant="link" colorScheme="teal">
+                Log in
+              </Button>
+            </HStack>
           </Form>
         </Box>
       </Box>
