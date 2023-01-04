@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Route,
   createBrowserRouter,
@@ -7,7 +8,7 @@ import {
   Routes,
 } from 'react-router-dom'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
-import Layout from './layout/Layout'
+import Layout from '@/layout/Layout'
 import { routes } from './lib/routes'
 import ProtectedRoutes from './components/protected/Protected'
 import theme from './theme'
@@ -43,6 +44,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route
+        // loader={loader}
         path={routes.HOME}
         element={<Layout />}
         errorElement={<ErrorBoundary />}

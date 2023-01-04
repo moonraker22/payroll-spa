@@ -1,4 +1,11 @@
-import { Outlet, NavLink, useNavigate } from 'react-router-dom'
+import {
+  Outlet,
+  NavLink,
+  useNavigate,
+  useLoaderData,
+  defer,
+  Await,
+} from 'react-router-dom'
 import { ColorModeSwitcher } from '../ColorModeSwitcher'
 import {
   Box,
@@ -17,9 +24,13 @@ import { AiOutlineMenu } from 'react-icons/ai'
 import { useDisclosure } from '@chakra-ui/react'
 import { useLogout } from '../hooks/useAuth'
 import { routes } from '../lib/routes'
-import { useIdToken } from 'react-firebase-hooks/auth'
-import { auth } from '../firebaseConf'
-import { useRef } from 'react'
+import { useAuthState, useIdToken } from 'react-firebase-hooks/auth'
+import { useEffect, useRef, useState, Suspense } from 'react'
+import useAuthStore from '../stores/authStore'
+import { auth } from '@/firebaseConf'
+import { onAuthStateChanged } from 'firebase/auth'
+import { snapshot, useSnapshot } from 'valtio'
+import { store } from '@/stores/store'
 
 export default function Layout() {
   const bg = useColorModeValue('white', ' gray.700')
@@ -30,7 +41,7 @@ export default function Layout() {
     textDecoration: 'underline',
   }
   // const { logout } = useStore()
-  const [user, loading, error] = useIdToken(auth)
+  // const [user, loading, error] = useIdToken(auth)
 
   const { logout, isLoading: logoutLoading } = useLogout()
   const navigate = useNavigate()
@@ -39,6 +50,18 @@ export default function Layout() {
     logout()
     navigate(routes.LOGIN)
   }
+
+  // const [authUser] = useAuthState(auth)
+  // console.log(authUser)
+  // console.log('hi')
+  const [loadingUser, setloadingUser] = useState(null)
+  const [userId, setUserId] = useState(null)
+  // const snap = useLoaderData()
+
+  // console.log(userL, 'userL')
+  const user = useSnapshot(store)
+  console.log(user, 'user1')
+  // console.log(store, 'store')
 
   return (
     <>
@@ -84,12 +107,12 @@ export default function Layout() {
                 md: 'inline-flex',
               }}
             >
-              {!loading && !error && user ? (
+              {user.isSignedIn ? (
                 <>
                   {' '}
                   <Button variant="ghost" onClick={() => navigate(routes.HOME)}>
                     <NavLink
-                      to="/"
+                      to={routes.HOME}
                       style={({ isActive }) =>
                         isActive ? activeStyle : undefined
                       }
@@ -102,7 +125,7 @@ export default function Layout() {
                     onClick={() => navigate(routes.DAILY)}
                   >
                     <NavLink
-                      to="/daily"
+                      to={routes.DAILY}
                       style={({ isActive }) =>
                         isActive ? activeStyle : undefined
                       }
@@ -112,15 +135,15 @@ export default function Layout() {
                   </Button>
                   <Button
                     variant="ghost"
-                    onClick={() => navigate(routes.WEEKLY)}
+                    onClick={() => navigate(routes.DASHBOARD)}
                   >
                     <NavLink
-                      to="/weekly"
+                      to={routes.DASHBOARD}
                       style={({ isActive }) =>
                         isActive ? activeStyle : undefined
                       }
                     >
-                      Weekly
+                      Dashboard
                     </NavLink>
                   </Button>
                   <Button
@@ -229,24 +252,31 @@ export default function Layout() {
                     DailyForm
                   </NavLink>
                 </Button>
-                <Button variant="ghost" onClick={() => navigate(routes.WEEKLY)}>
+                <Button
+                  variant="ghost"
+                  onClick={() => navigate(routes.DASHBOARD)}
+                >
                   <NavLink
                     to="/weekly"
                     style={({ isActive }) =>
                       isActive ? activeStyle : undefined
                     }
                   >
-                    Weekly
+                    Dashboard
                   </NavLink>
                 </Button>
-                <Button variant="ghost" onClick={() => navigate(routes.WEEKLY)}>
+                <Button
+                  variant="ghost"
+                  onClick={handleLogout}
+                  disabled={logoutLoading}
+                >
                   <NavLink
                     to="/weekly"
                     style={({ isActive }) =>
                       isActive ? activeStyle : undefined
                     }
                   >
-                    Weekly
+                    Logout
                   </NavLink>
                 </Button>
               </VStack>
@@ -260,3 +290,11 @@ export default function Layout() {
     </>
   )
 }
+
+// export async function loader({ request, params }) {
+//   // async function getInitialAuthState() {
+//   let user = store.userId
+//   if (user) {
+//     return { user }
+//   }
+// }

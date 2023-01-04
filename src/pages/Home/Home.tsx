@@ -13,6 +13,7 @@ import { useCollection } from 'react-firebase-hooks/firestore'
 import { useIdToken } from 'react-firebase-hooks/auth'
 import useAuthStore from '@/stores/authStore'
 import { useAuth } from '../../hooks/useAuth'
+import { useOutletContext } from 'react-router-dom'
 
 export default function Home() {
   // const [collectionData, setCollectionData] = useState([])
@@ -56,12 +57,15 @@ export default function Home() {
   //   const docRef = addData()
   //   console.log(docRef)
   // }, [])
-  const { user, isLoading, error } = useAuth()
+  // const { user, isLoading, error } = useAuth()
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error: {error.message}</div>
-  if (!user) return <div>Not logged in</div>
-  // console.log(user, 'user')
+  // if (isLoading) return <div>Loading...</div>
+  // if (error) return <div>Error: {error.message}</div>
+  // if (!user) return <div>Not logged in</div>
+  // // console.log(user, 'user')
+
+  const authUser = useOutletContext()
+  // console.log(authUser, 'authUser')
 
   return (
     <Box bg="brand.primary">

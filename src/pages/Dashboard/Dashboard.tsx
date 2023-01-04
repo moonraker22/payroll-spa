@@ -25,13 +25,26 @@ import { useAuth } from '@/hooks/useAuth'
 import { useIdToken } from 'react-firebase-hooks/auth'
 import { auth } from '@/firebaseConf'
 import { routes } from '../../lib/routes'
-import { background } from '@/lib/constants'
+import { background, returnPaysheetString } from '@/lib/constants'
+import { useCollection } from 'react-firebase-hooks/firestore'
+import { collection, query, where } from 'firebase/firestore'
+import { db } from '@/firebaseConf'
+import { useEffect } from 'react'
 
 export default function Dashboard() {
   const { user } = useAuth()
   const [idToken, loading, error] = useIdToken(auth)
-  // console.log(idToken.email)
+  // console.log(user)
 
+  // useEffect(() => {
+  //   if (user?.id) {
+  //     console.log(user.id)
+  //     const q = query(collection(db, `users`, `${user.id}`, 'paysheets'))
+
+  //     const [paysheets, loadingPaysheets, errorPaysheets] = useCollection(q)
+  //     console.log(paysheets)
+  //   }
+  // }, [user.id])
   // console.log(user)
 
   const bg = useColorModeValue(background.light, background.dark)
@@ -45,7 +58,7 @@ export default function Dashboard() {
             fontWeight="extrabold"
             mt="50px"
             ml="20px"
-            mb="30px"
+            mb="40px"
             textAlign={'center'}
             // sx={{
             //   '@media screen and (max-width: 600px)': {

@@ -121,7 +121,7 @@ const DailyForm = () => {
         mb={10}
         // bgGradient="linear(to-l, #111621, #1A202C)"
         w="60vw"
-        maxW="600px"
+        maxW="500px"
         minW="300px"
       >
         <Box p="4">
