@@ -24,24 +24,15 @@ import { AiOutlineMenu } from 'react-icons/ai'
 import { useDisclosure } from '@chakra-ui/react'
 import { useLogout } from '../hooks/useAuth'
 import { routes } from '../lib/routes'
-import { useAuthState, useIdToken } from 'react-firebase-hooks/auth'
-import { useEffect, useRef, useState, Suspense } from 'react'
-import useAuthStore from '../stores/authStore'
-import { auth } from '@/firebaseConf'
-import { onAuthStateChanged } from 'firebase/auth'
-import { snapshot, useSnapshot } from 'valtio'
-import { store } from '@/stores/store'
+import { store, useSnapshot, snapshot } from '@/stores/store'
 
 export default function Layout() {
   const bg = useColorModeValue('white', ' gray.700')
   const mobileNav = useDisclosure()
-  const clickOutsideRef = useRef(null)
 
   let activeStyle = {
     textDecoration: 'underline',
   }
-  // const { logout } = useStore()
-  // const [user, loading, error] = useIdToken(auth)
 
   const { logout, isLoading: logoutLoading } = useLogout()
   const navigate = useNavigate()
@@ -51,17 +42,7 @@ export default function Layout() {
     navigate(routes.LOGIN)
   }
 
-  // const [authUser] = useAuthState(auth)
-  // console.log(authUser)
-  // console.log('hi')
-  const [loadingUser, setloadingUser] = useState(null)
-  const [userId, setUserId] = useState(null)
-  // const snap = useLoaderData()
-
-  // console.log(userL, 'userL')
   const user = useSnapshot(store)
-  console.log(user, 'user1')
-  // console.log(store, 'store')
 
   return (
     <>
@@ -284,7 +265,7 @@ export default function Layout() {
           </HStack>
         </Flex>
       </chakra.header>
-      <Box as="main" role="main" ref={clickOutsideRef}>
+      <Box as="main" role="main">
         <Outlet />
       </Box>
     </>
