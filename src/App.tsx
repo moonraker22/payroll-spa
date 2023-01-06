@@ -2,6 +2,7 @@ import { RouterProvider, useRouteError } from 'react-router-dom'
 import { ChakraProvider } from '@chakra-ui/react'
 import router from '@/lib/routes'
 import theme from './theme'
+import { AnimatePresence } from 'framer-motion'
 import '@fontsource/roboto/400.css'
 import '@fontsource/ubuntu/400.css'
 import './App.css'
@@ -25,7 +26,9 @@ import './App.css'
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <RouterProvider router={router} />
+      <AnimatePresence>
+        <RouterProvider router={router} />
+      </AnimatePresence>
     </ChakraProvider>
   )
 }

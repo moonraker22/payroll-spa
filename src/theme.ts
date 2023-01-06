@@ -11,7 +11,8 @@ const config: ThemeConfig = {
 
 const extendedTheme = {
   brand: {
-    primary: 'red',
+    primary: ' #07f49e',
+    secondary: '#42047e',
     800: '#153e75',
     700: '#2a69ac',
   },

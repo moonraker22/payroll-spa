@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { Form } from 'react-router-dom'
+import { Form, useLocation } from 'react-router-dom'
 import {
   FormErrorMessage,
   FormLabel,
@@ -8,44 +8,54 @@ import {
   Input,
   Button,
   Box,
-  Text,
   Center,
-  Divider,
   useColorModeValue,
   Flex,
   Spacer,
-  ButtonGroup,
   Heading,
 } from '@chakra-ui/react'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Paysheet } from '../../data/paySchema'
-import { useAddPay } from '../../hooks/usePay'
-import { useAuth } from '../../hooks/useAuth'
+import { Paysheet } from '@/data/paySchema'
+import { useAddPay } from '@/hooks/usePay'
+import { format } from 'date-fns'
+import { motion as m } from 'framer-motion'
 
 type PaysheetInputs = {
-  // uid: string
   date: string
-  startingMiles: number
-  endingMiles: number
+  startingMiles: string
+  endingMiles: string
   totalMiles: number
-  payMiles: number
-  backhaul: number
-}
-
-const defaultValues = {
-  date: new Date().toISOString().slice(0, 10),
+  payMiles: string
+  backhaul: string
 }
 
 const DailyForm = () => {
-  // const addPayroll = useStore(useCallback((state) => state.addPay, []))
+  const location = useLocation()
+  const day = location?.state?.day
+
+  const date = new Date().toISOString().slice(0, 10)
+
+  const defaultValuesFunc = (day) => {
+    if (day) {
+      return {
+        date: format(day.date, 'yyyy-MM-dd'),
+        startingMiles: `${day.startingMiles}`,
+        endingMiles: `${day.endingMiles}`,
+        totalMiles: day.totalMiles,
+        payMiles: `${day.payMiles}`,
+        backhaul: `${day.backhaul}`,
+      }
+    } else {
+      return {
+        date: date,
+      }
+    }
+  }
+
+  const defaultValues = defaultValuesFunc(day)
+
   const { addPay, isPayLoading, payError } = useAddPay()
-  // const { user, isLoading: isAuthLoading, error: authError } = useAuth()
-  // const state = useStore((state) => {
-  //   console.log('🚀 ~ file: DailyForm.tsx:42 ~ DailyForm ~ state', state)
-  //   return state
-  // })
-  // const { user } = useStore()
 
   const {
     register,
@@ -63,7 +73,6 @@ const DailyForm = () => {
   })
   const onSubmit: SubmitHandler<PaysheetInputs> = (data) => {
     try {
-      // addPayroll(data)
       addPay({ ...data })
       reset()
     } catch (error) {
@@ -87,33 +96,32 @@ const DailyForm = () => {
     setFocus('startingMiles')
   }, [])
 
-  // const setId = () => {
-  //   const date = getValues('date')
-  //   setValue('id', date)
-  // }
   const bg = useColorModeValue('white', ' gray.800')
 
-  const canSubmit =
-    isDirty && isValid && !isSubmitting && !Object.keys(errors).length
+  const canSubmitFunc = useCallback(
+    function () {
+      if (day) {
+        return true
+      } else {
+        return (
+          isDirty && isValid && !isSubmitting && !Object.keys(errors).length
+        )
+      }
+    },
+    [isDirty, isValid, isSubmitting, errors, day]
+  )
+  const canSubmit = canSubmitFunc()
+
   return (
-    <>
-      <Center>
-        <Heading
-          as="h1"
-          // bgGradient="linear(to-l, #7928CA, #FF0080)"
-          bgGradient="linear(to-b, green.200, pink.500)"
-          // bgGradient="linear(to-r, teal, red.500)"
-          bgClip="text"
-          fontSize={['4xl', '4xl', '5xl']}
-          fontWeight="extrabold"
-        >
-          Daily Form
-        </Heading>
-      </Center>
+    <m.div
+      initial={{ opacity: 0, y: 80 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+    >
       <Box
         bg={bg}
         border="2px"
-        borderColor="gray.700"
+        borderColor="cyan.700"
         boxShadow="dark-lg"
         p="4"
         rounded="md"
@@ -133,7 +141,6 @@ const DailyForm = () => {
                 id="date"
                 type="date"
                 placeholder="date"
-                // onBlur={setId}
               />
               <FormErrorMessage>
                 {errors.date && errors.date.message}
@@ -233,6 +240,7 @@ const DailyForm = () => {
                 isLoading={isSubmitting}
                 type="submit"
                 disabled={!canSubmit}
+                loadingText={day ? 'Updating' : 'Submitting'}
               >
                 Submit
               </Button>
@@ -249,8 +257,8 @@ const DailyForm = () => {
           </Form>
         </Box>
       </Box>
-      <DevTool control={control} />
-    </>
+      {/* <DevTool control={control} /> */}
+    </m.div>
   )
 }
 

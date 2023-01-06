@@ -27,7 +27,7 @@ import { routes } from '../lib/routes'
 import { store, useSnapshot, snapshot } from '@/stores/store'
 
 export default function Layout() {
-  const bg = useColorModeValue('white', ' gray.700')
+  const bg = useColorModeValue('white', ' gray.800')
   const mobileNav = useDisclosure()
 
   let activeStyle = {
@@ -68,7 +68,7 @@ export default function Layout() {
               <VisuallyHidden>Payroll</VisuallyHidden>
             </chakra.a>
             <Text
-              bgGradient="linear(to-b, green.200, pink.500)"
+              bgGradient="linear(to-b, #42047e, #07f49e)"
               bgClip="text"
               fontSize="2xl"
               fontWeight="extrabold"
@@ -207,59 +207,92 @@ export default function Layout() {
                 spacing={3}
                 rounded="sm"
                 shadow="sm"
+                zIndex={1}
+                opacity={0.8}
               >
                 <CloseButton
                   aria-label="Close menu"
                   onClick={mobileNav.onClose}
                 />
-
-                <Button variant="ghost" onClick={() => navigate(routes.HOME)}>
-                  <NavLink
-                    to="/"
-                    style={({ isActive }) =>
-                      isActive ? activeStyle : undefined
-                    }
-                  >
-                    Home
-                  </NavLink>
-                </Button>
-                <Button variant="ghost" onClick={() => navigate(routes.DAILY)}>
-                  <NavLink
-                    to="/daily"
-                    style={({ isActive }) =>
-                      isActive ? activeStyle : undefined
-                    }
-                  >
-                    DailyForm
-                  </NavLink>
-                </Button>
-                <Button
-                  variant="ghost"
-                  onClick={() => navigate(routes.DASHBOARD)}
-                >
-                  <NavLink
-                    to="/weekly"
-                    style={({ isActive }) =>
-                      isActive ? activeStyle : undefined
-                    }
-                  >
-                    Dashboard
-                  </NavLink>
-                </Button>
-                <Button
-                  variant="ghost"
-                  onClick={handleLogout}
-                  disabled={logoutLoading}
-                >
-                  <NavLink
-                    to="/weekly"
-                    style={({ isActive }) =>
-                      isActive ? activeStyle : undefined
-                    }
-                  >
-                    Logout
-                  </NavLink>
-                </Button>
+                {user.isSignedIn ? (
+                  <>
+                    <Button
+                      variant="ghost"
+                      onClick={() => navigate(routes.HOME)}
+                    >
+                      <NavLink
+                        to={routes.HOME}
+                        style={({ isActive }) =>
+                          isActive ? activeStyle : undefined
+                        }
+                      >
+                        Home
+                      </NavLink>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      onClick={() => navigate(routes.DAILY)}
+                    >
+                      <NavLink
+                        to="/daily"
+                        style={({ isActive }) =>
+                          isActive ? activeStyle : undefined
+                        }
+                      >
+                        DailyForm
+                      </NavLink>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      onClick={() => navigate(routes.DASHBOARD)}
+                    >
+                      <NavLink
+                        to={routes.DASHBOARD}
+                        style={({ isActive }) =>
+                          isActive ? activeStyle : undefined
+                        }
+                      >
+                        Dashboard
+                      </NavLink>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      onClick={handleLogout}
+                      disabled={logoutLoading}
+                    >
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      variant="ghost"
+                      onClick={() => navigate(routes.REGISTER)}
+                    >
+                      <NavLink
+                        to="/registration"
+                        style={({ isActive }) =>
+                          isActive ? activeStyle : undefined
+                        }
+                      >
+                        Register
+                      </NavLink>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      onClick={() => navigate(routes.LOGIN)}
+                    >
+                      <NavLink
+                        to="/login"
+                        style={({ isActive }) =>
+                          isActive ? activeStyle : undefined
+                        }
+                      >
+                        Login
+                      </NavLink>
+                    </Button>
+                  </>
+                )}
               </VStack>
             </Box>
           </HStack>

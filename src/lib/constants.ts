@@ -10,6 +10,6 @@ export function returnPaysheetString(id: string) {
 }
 
 export const background = {
-  light: 'gray.50',
+  light: 'white',
   dark: 'gray.800',
 }
