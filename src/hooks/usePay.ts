@@ -16,13 +16,16 @@ import {
   updateDoc,
 } from 'firebase/firestore'
 import { useAuth } from './useAuth'
+import { store } from '@/stores/store'
+import { useSnapshot } from 'valtio'
 
 export function useAddPay() {
   const [isPayLoading, setLoading] = useState(false)
   const [payError, setPayError] = useState(null)
   const toast = useToast()
   const navigate = useNavigate()
-  const { user, isLoading } = useAuth()
+  // const { user, isLoading } = useAuth()
+  const snap = useSnapshot(store)
 
   async function addPay({
     date,
@@ -34,7 +37,7 @@ export function useAddPay() {
   }) {
     setLoading(true)
 
-    if (!isLoading && !user) {
+    if (!snap.userId) {
       toast({
         title: 'You must be logged in to add pay',
         status: 'error',
@@ -47,19 +50,19 @@ export function useAddPay() {
       return false
     }
     const q = query(
-      collection(db, `users`, `${user.id}`, 'paysheets'),
+      collection(db, `users`, `${snap.userId}`, 'paysheets'),
       where('date', '==', date)
     )
     const querySnapshot = await getDocs(q)
 
     if (querySnapshot.size > 0) {
       const docId = querySnapshot.docs[0].id
-      const docRef = doc(db, `users`, `${user.id}`, 'paysheets', docId)
+      const docRef = doc(db, `users`, `${snap.userId}`, 'paysheets', docId)
 
       try {
         await updateDoc(docRef, {
           date,
-          uid: user.id,
+          uid: snap.userId,
           startingMiles,
           endingMiles,
           totalMiles,
@@ -92,9 +95,9 @@ export function useAddPay() {
       return true
     } else {
       try {
-        await addDoc(collection(db, `users`, `${user.id}`, 'paysheets'), {
+        await addDoc(collection(db, `users`, `${snap.userId}`, 'paysheets'), {
           date,
-          uid: user.id,
+          uid: snap.userId,
           startingMiles,
           endingMiles,
           totalMiles,

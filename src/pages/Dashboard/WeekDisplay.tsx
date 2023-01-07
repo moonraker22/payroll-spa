@@ -29,7 +29,7 @@ export function WeekDisplay({
   weekEndDate,
   // isLoading,
 }) {
-  const bg = useColorModeValue('gray.400', 'gray.800')
+  const bg = useColorModeValue('gray.200', 'gray.800')
 
   //Date formatting
   const startDate = new Date(Number(weekStartDate))
@@ -50,15 +50,6 @@ export function WeekDisplay({
         <Heading size="md" mt={5} mx={'auto'}>
           Week {weekStartFormat} - {weekEndFormat}
         </Heading>
-        {/* <DayModal
-        onOpen={onOpen}
-        isOpen={isOpen}
-        onClose={onClose}
-        weekStartFormat={weekStartFormat}
-        weekEndFormat={weekEndFormat}
-        startDate={startDate}
-        endDate={endDate}
-      /> */}
 
         <CardBody>
           <Stack

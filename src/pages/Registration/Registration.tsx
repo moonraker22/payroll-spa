@@ -10,18 +10,20 @@ import {
   Container,
   Text,
   Center,
-  Divider,
   useColorModeValue,
-  Link,
-  HStack,
   Heading,
+  Flex,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Register } from '@/data/paySchema'
-// import useStore from '@/stores/payStore'
-// import useAuthStore from '@/stores/authStore'
+import { motion as m } from 'framer-motion'
 import { useEffect } from 'react'
-import { useRegister } from '../../hooks/useAuth'
+import { useRegister } from '@/hooks/useAuth'
+import { routes } from '@/lib/routes'
+import { GoogleIcon } from '../Login/GoogleIcon'
+import { useGoogleAuth } from '@/hooks/useGoogleAuth'
+import { useSnapshot } from 'valtio'
+import { store } from '../../stores/store'
 
 type RegistrationInputs = {
   email: string
@@ -30,6 +32,16 @@ type RegistrationInputs = {
 }
 
 export default function Registration() {
+  const snap = useSnapshot(store)
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (snap.userId) {
+      navigate(routes.DASHBOARD)
+    }
+  }, [snap.userId])
+
   const {
     register,
     handleSubmit,
@@ -41,7 +53,6 @@ export default function Registration() {
   } = useForm<RegistrationInputs>({
     resolver: zodResolver(Register),
   })
-  const navigate = useNavigate()
 
   const { register: registerUser, isLoading } = useRegister()
 
@@ -78,115 +89,170 @@ export default function Registration() {
 
   const canSubmit = isDirty && isValid && password === passwordConfirmation
 
-  return (
-    <Container maxW="container.xl" centerContent mt={10}>
-      <Center>
-        <Heading
-          mt="10"
-          as="h1"
-          // bgGradient="linear(to-l, #7928CA, #FF0080)"
-          bgGradient="linear(to-b, green.200, pink.500)"
-          // bgGradient="linear(to-r, teal, red.500)"
-          bgClip="text"
-          fontSize={['4xl', '4xl', '5xl']}
-          fontWeight="extrabold"
-        >
-          Register
-        </Heading>
-      </Center>
-      <Box
-        bg={bg}
-        border="2px"
-        borderColor="gray.700"
-        boxShadow="dark-lg"
-        p="5"
-        rounded="md"
-        mt={10}
-        mb={10}
-        // bgGradient="linear(to-l, #111621, #1A202C)"
-        w="50vw"
-        maxW="500px"
-        minW="300px"
-      >
-        <Box p="3">
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <Box my={2}>
-              <FormControl isInvalid={errors.email ? true : false} isRequired>
-                <FormLabel htmlFor="email">Email:</FormLabel>
-                <Input
-                  {...register('email')}
-                  id="email"
-                  type="email"
-                  placeholder="Email"
-                  autoComplete="email"
-                />
-                <FormErrorMessage>
-                  {errors.email && errors.email.message}
-                </FormErrorMessage>
-              </FormControl>
-            </Box>
-            <Box my={2}>
-              <FormControl
-                isInvalid={errors.password ? true : false}
-                isRequired
-              >
-                <FormLabel htmlFor="password">Password:</FormLabel>
-                <Input
-                  {...register('password')}
-                  id="password"
-                  type="password"
-                  placeholder="Password"
-                  autoComplete="new-password"
-                />
-                <FormErrorMessage>
-                  {errors.password && errors.password.message}
-                </FormErrorMessage>
-              </FormControl>
-            </Box>
-            <Box my={2}>
-              <FormControl
-                isInvalid={errors.passwordConfirmation ? true : false}
-                isRequired
-              >
-                <FormLabel htmlFor="passwordConfirmation">
-                  Password Confirmation:
-                </FormLabel>
-                <Input
-                  {...register('passwordConfirmation')}
-                  id="passwordConfirmation"
-                  type="password"
-                  placeholder="Password Confirmation"
-                  autoComplete="new-password"
-                />
-                <FormErrorMessage>
-                  {errors.passwordConfirmation &&
-                    errors.passwordConfirmation.message}
-                </FormErrorMessage>
-              </FormControl>
-            </Box>
+  const {
+    googleLogin,
+    isLoading: googleLoading,
+    error: googleError,
+  } = useGoogleAuth()
 
-            <Center my={2}>
-              <Button
-                my={4}
-                w="full"
-                colorScheme="teal"
-                isLoading={isSubmitting}
-                type="submit"
-                size="lg"
-                disabled={!canSubmit}
-              >
-                Submit
-              </Button>
-            </Center>
-            <HStack spacing="1" justify="center">
-              <Text color="muted">Already have an account?</Text>
-              <Button variant="link" colorScheme="teal">
-                Log in
-              </Button>
-            </HStack>
-          </Form>
+  const googleSubmit = async () => {
+    try {
+      googleLogin()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  return (
+    <Container maxW="container.xl" centerContent mt={5}>
+      <m.div
+        initial={{ opacity: 0, y: 80 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+      >
+        <Center>
+          <Heading
+            mt="10"
+            fontSize={['4xl', '4xl', '5xl']}
+            as={m.h1}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            bgGradient="linear(to-b, #42047e, #07f49e)"
+            bgClip="text"
+            fontWeight="extrabold"
+          >
+            Register
+          </Heading>
+        </Center>
+        <Box
+          bg={bg}
+          border="2px"
+          borderColor="gray.700"
+          boxShadow="dark-lg"
+          p="5"
+          rounded="md"
+          mt={10}
+          mb={10}
+          // bgGradient="linear(to-l, #111621, #1A202C)"
+          w="50vw"
+          maxW="500px"
+          minW="300px"
+        >
+          <Box p="3">
+            <Form onSubmit={handleSubmit(onSubmit)}>
+              <Box my={2}>
+                <FormControl isInvalid={errors.email ? true : false} isRequired>
+                  <FormLabel htmlFor="email" color="gray.300">
+                    Email:
+                  </FormLabel>
+                  <Input
+                    {...register('email')}
+                    id="email"
+                    type="email"
+                    placeholder="Email"
+                    autoComplete="email"
+                  />
+                  <FormErrorMessage>
+                    {errors.email && errors.email.message}
+                  </FormErrorMessage>
+                </FormControl>
+              </Box>
+              <Box my={2}>
+                <FormControl
+                  isInvalid={errors.password ? true : false}
+                  isRequired
+                >
+                  <FormLabel htmlFor="password" color="gray.300">
+                    Password:
+                  </FormLabel>
+                  <Input
+                    {...register('password')}
+                    id="password"
+                    type="password"
+                    placeholder="Password"
+                    autoComplete="new-password"
+                  />
+                  <FormErrorMessage>
+                    {errors.password && errors.password.message}
+                  </FormErrorMessage>
+                </FormControl>
+              </Box>
+              <Box my={2}>
+                <FormControl
+                  isInvalid={errors.passwordConfirmation ? true : false}
+                  isRequired
+                >
+                  <FormLabel htmlFor="passwordConfirmation" color="gray.300">
+                    Password Confirmation:
+                  </FormLabel>
+                  <Input
+                    {...register('passwordConfirmation')}
+                    id="passwordConfirmation"
+                    type="password"
+                    placeholder="Password Confirmation"
+                    autoComplete="new-password"
+                  />
+                  <FormErrorMessage>
+                    {errors.passwordConfirmation &&
+                      errors.passwordConfirmation.message}
+                  </FormErrorMessage>
+                </FormControl>
+              </Box>
+
+              <Center my={2}>
+                <Button
+                  mt={4}
+                  w="full"
+                  colorScheme="cyan"
+                  isLoading={isSubmitting}
+                  type="submit"
+                  size="lg"
+                  disabled={!canSubmit}
+                  loadingText="Logging In"
+                  variant={'outline'}
+                >
+                  Submit
+                </Button>
+              </Center>
+              <Center mb="8px">
+                <Text color="gray.300">Or register in with Google</Text>
+              </Center>
+              <Flex justify="center" flexDir={'column'}>
+                <Box>
+                  <Button
+                    width="full"
+                    onClick={googleSubmit}
+                    disabled={googleLoading}
+                    loadingText="Logging In"
+                    variant="outline"
+                    colorScheme="cyan"
+                    size="lg"
+                  >
+                    <GoogleIcon boxSize="5" />
+                  </Button>
+                </Box>
+                <Box>
+                  <Center my="6px">
+                    <Text mt="3px" mr="5px" color="gray.300">
+                      Already have an account?
+                    </Text>
+                    <Button
+                      as={RouterLink}
+                      variant="link"
+                      colorScheme="cyan"
+                      to={routes.LOGIN}
+                    >
+                      {' '}
+                      Log In
+                    </Button>
+                  </Center>
+                </Box>
+              </Flex>
+            </Form>
+          </Box>
         </Box>
-      </Box>
+      </m.div>
     </Container>
   )
 }

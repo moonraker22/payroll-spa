@@ -9,16 +9,19 @@ import { routes } from '@/lib/routes'
 import { useToast } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import { setDoc, doc, getDoc } from 'firebase/firestore'
+import { store } from '@/stores/store'
+import { useSnapshot } from 'valtio'
 
 export function useAuth() {
   const [authUser, authLoading, error] = useAuthState(auth)
   const [isLoading, setLoading] = useState(true)
   const [user, setUser] = useState(null)
+  const snap = useSnapshot(store)
 
   useEffect(() => {
     async function fetchData() {
       setLoading(true)
-      const ref = doc(db, 'users', authUser.uid)
+      const ref = doc(db, 'users', snap.userId)
       const docSnap = await getDoc(ref)
       setUser(docSnap.data())
       setLoading(false)
@@ -39,7 +42,7 @@ export function useLogin() {
   const toast = useToast()
   const navigate = useNavigate()
 
-  async function login({ email, password, redirectTo = routes.HOME }) {
+  async function login({ email, password, redirectTo = routes.DASHBOARD }) {
     setLoading(true)
 
     try {
@@ -50,7 +53,7 @@ export function useLogin() {
         isClosable: true,
         position: 'top',
         duration: 5000,
-        colorScheme: 'teal',
+        colorScheme: 'cyan',
         variant: 'solid',
       })
       navigate(redirectTo)
@@ -101,6 +104,7 @@ export function useRegister() {
         position: 'top',
         duration: 5000,
         variant: 'solid',
+        colorScheme: 'cyan',
       })
 
       navigate(redirectTo)
@@ -136,7 +140,7 @@ export function useLogout() {
         isClosable: true,
         position: 'top',
         duration: 5000,
-        colorScheme: 'teal',
+        colorScheme: 'cyan',
         variant: 'solid',
       })
       navigate(routes.LOGIN)

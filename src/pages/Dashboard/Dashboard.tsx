@@ -1,42 +1,23 @@
 import { Link as RouterLink } from 'react-router-dom'
 import {
   Box,
-  Flex,
-  AbsoluteCenter,
   Avatar,
   Center,
   Stack,
-  Grid,
   GridItem,
   SimpleGrid,
   useColorModeValue,
   Heading,
   Divider,
-  Card,
-  CardHeader,
-  CardBody,
-  StackDivider,
   Button,
-  Show,
-  Hide,
   AvatarBadge,
 } from '@chakra-ui/react'
 import { WeekDisplay } from './WeekDisplay'
-import { useAuth } from '@/hooks/useAuth'
-import { useIdToken } from 'react-firebase-hooks/auth'
-import { auth } from '@/firebaseConf'
-import { routes } from '../../lib/routes'
-import { background, returnPaysheetString } from '@/lib/constants'
-import {
-  useCollection,
-  useCollectionOnce,
-} from 'react-firebase-hooks/firestore'
-import { collection, query, where } from 'firebase/firestore'
-import { db } from '@/firebaseConf'
-import { Suspense, useEffect, useRef, useState } from 'react'
-import { store, useSnapshot, snapshot } from '@/stores/store'
+import { routes } from '@/lib/routes'
+import { Suspense } from 'react'
+import { store, useSnapshot } from '@/stores/store'
 import { useGetWeeklyTotals } from '@/hooks/useGetWeeklyTotals'
-import SpinnerComp from '../../components/SpinnerComp'
+import SpinnerComp from '@/components/SpinnerComp'
 import { motion as m } from 'framer-motion'
 
 export default function Dashboard() {
@@ -86,7 +67,12 @@ export default function Dashboard() {
                   key={index}
                   initial={{ x: -800, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
-                  transition={{ type: 'spring', stiffness: 90, delay: 0.2 }}
+                  transition={{
+                    type: 'spring',
+                    stiffness: 90,
+                    delay: 0.2,
+                    damping: 15,
+                  }}
                   exit={{ x: 800, opacity: 0 }}
                   whileHover={{
                     scale: 1.04,

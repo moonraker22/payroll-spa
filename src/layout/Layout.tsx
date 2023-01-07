@@ -19,19 +19,38 @@ import {
   VisuallyHidden,
   VStack,
   Text,
+  ButtonGroup,
+  Container,
+  Stack,
+  Center,
+  useOutsideClick,
 } from '@chakra-ui/react'
-import { AiOutlineMenu } from 'react-icons/ai'
+import { AiOutlineMail, AiOutlineMenu } from 'react-icons/ai'
 import { useDisclosure } from '@chakra-ui/react'
 import { useLogout } from '../hooks/useAuth'
 import { routes } from '../lib/routes'
 import { store, useSnapshot, snapshot } from '@/stores/store'
+import { FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa'
+import { useRef } from 'react'
 
 export default function Layout() {
   const bg = useColorModeValue('white', ' gray.800')
   const mobileNav = useDisclosure()
+  const ref = useRef()
+  useOutsideClick({
+    ref: ref,
+    handler: () => mobileNav.onClose(),
+  })
 
   let activeStyle = {
     textDecoration: 'underline',
+    textDecorationColor: '#017991',
+    textDecorationThickness: '2px',
+    color: '#017991',
+  }
+
+  let color = {
+    color: '#06adce',
   }
 
   const { logout, isLoading: logoutLoading } = useLogout()
@@ -75,7 +94,7 @@ export default function Layout() {
               ml={2}
               textTransform="uppercase"
             >
-              Payroll
+              tracker
             </Text>
           </Flex>
           <HStack display="flex" alignItems="center" spacing={1}>
@@ -94,9 +113,7 @@ export default function Layout() {
                   <Button variant="ghost" onClick={() => navigate(routes.HOME)}>
                     <NavLink
                       to={routes.HOME}
-                      style={({ isActive }) =>
-                        isActive ? activeStyle : undefined
-                      }
+                      style={({ isActive }) => (isActive ? activeStyle : color)}
                     >
                       Home
                     </NavLink>
@@ -107,9 +124,7 @@ export default function Layout() {
                   >
                     <NavLink
                       to={routes.DAILY}
-                      style={({ isActive }) =>
-                        isActive ? activeStyle : undefined
-                      }
+                      style={({ isActive }) => (isActive ? activeStyle : color)}
                     >
                       DailyForm
                     </NavLink>
@@ -120,9 +135,7 @@ export default function Layout() {
                   >
                     <NavLink
                       to={routes.DASHBOARD}
-                      style={({ isActive }) =>
-                        isActive ? activeStyle : undefined
-                      }
+                      style={({ isActive }) => (isActive ? activeStyle : color)}
                     >
                       Dashboard
                     </NavLink>
@@ -131,6 +144,7 @@ export default function Layout() {
                     variant="ghost"
                     onClick={handleLogout}
                     disabled={logoutLoading}
+                    style={color}
                   >
                     Logout
                   </Button>
@@ -143,9 +157,7 @@ export default function Layout() {
                   >
                     <NavLink
                       to="/registration"
-                      style={({ isActive }) =>
-                        isActive ? activeStyle : undefined
-                      }
+                      style={({ isActive }) => (isActive ? activeStyle : color)}
                     >
                       Register
                     </NavLink>
@@ -156,9 +168,7 @@ export default function Layout() {
                   >
                     <NavLink
                       to="/login"
-                      style={({ isActive }) =>
-                        isActive ? activeStyle : undefined
-                      }
+                      style={({ isActive }) => (isActive ? activeStyle : color)}
                     >
                       Login
                     </NavLink>
@@ -270,7 +280,7 @@ export default function Layout() {
                       onClick={() => navigate(routes.REGISTER)}
                     >
                       <NavLink
-                        to="/registration"
+                        to={routes.REGISTER}
                         style={({ isActive }) =>
                           isActive ? activeStyle : undefined
                         }
@@ -283,7 +293,7 @@ export default function Layout() {
                       onClick={() => navigate(routes.LOGIN)}
                     >
                       <NavLink
-                        to="/login"
+                        to={routes.LOGIN}
                         style={({ isActive }) =>
                           isActive ? activeStyle : undefined
                         }
@@ -300,6 +310,39 @@ export default function Layout() {
       </chakra.header>
       <Box as="main" role="main">
         <Outlet />
+        <Container as="footer" role="contentinfo" py={{ base: '12', md: '16' }}>
+          <Center>
+            <Stack spacing={{ base: '4', md: '5' }}>
+              <Stack justify="space-between" direction="row" align="center">
+                {/* <Logo /> */}
+                <ButtonGroup variant="ghost">
+                  <IconButton
+                    as="a"
+                    href="#"
+                    aria-label="LinkedIn"
+                    icon={<AiOutlineMail fontSize="1.25rem" />}
+                  />
+                  <IconButton
+                    as="a"
+                    href="#"
+                    aria-label="GitHub"
+                    icon={<FaGithub fontSize="1.25rem" />}
+                  />
+                  <IconButton
+                    as="a"
+                    href="#"
+                    aria-label="Twitter"
+                    icon={<FaTwitter fontSize="1.25rem" />}
+                  />
+                </ButtonGroup>
+              </Stack>
+              <Text fontSize="sm" color="subtle">
+                &copy; {new Date().getFullYear()} KnZ KustomZ LLC. All rights
+                reserved.
+              </Text>
+            </Stack>
+          </Center>
+        </Container>
       </Box>
     </>
   )

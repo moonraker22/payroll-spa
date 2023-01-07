@@ -41,3 +41,21 @@ export const Login = z.object({
 })
 
 export type LoginType = z.infer<typeof Login>
+
+// User Schema
+export const UserSchema = z.object({
+  id: z.string(),
+  email: z.string().email({ message: 'Invalid email address' }),
+  avatar: z.string(),
+  date: z.string().transform((value) => Date.parse(value)),
+})
+
+export type UserType = z.infer<typeof UserSchema>
+
+// Password Reset Schema
+export const PasswordResetSchema = z.object({
+  password: z.string().min(6),
+  passwordConfirmation: z.string().min(6),
+})
+
+export type PasswordResetType = z.infer<typeof PasswordResetSchema>

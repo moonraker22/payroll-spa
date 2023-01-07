@@ -8,13 +8,11 @@ import {
   Input,
   Button,
   Box,
-  Center,
   useColorModeValue,
   Flex,
   Spacer,
-  Heading,
 } from '@chakra-ui/react'
-import { DevTool } from '@hookform/devtools'
+// import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Paysheet } from '@/data/paySchema'
 import { useAddPay } from '@/hooks/usePay'
@@ -236,11 +234,12 @@ const DailyForm = () => {
               <Button
                 mt={4}
                 px={10}
-                colorScheme="teal"
+                colorScheme="cyan"
                 isLoading={isSubmitting}
                 type="submit"
                 disabled={!canSubmit}
                 loadingText={day ? 'Updating' : 'Submitting'}
+                variant="outline"
               >
                 Submit
               </Button>
@@ -250,6 +249,7 @@ const DailyForm = () => {
                 colorScheme="red"
                 onClick={() => reset()}
                 disabled={isSubmitting}
+                variant="outline"
               >
                 Reset
               </Button>

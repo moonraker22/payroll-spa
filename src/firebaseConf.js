@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth } from 'firebase/auth'
+import { getAuth, GoogleAuthProvider } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
 const config = {
@@ -11,9 +11,12 @@ const config = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 }
 
+const googleProvider = new GoogleAuthProvider()
+googleProvider.setCustomParameters({ prompt: 'select_account' })
+
 const app = initializeApp(config)
 
 const auth = getAuth(app)
 const db = getFirestore(app)
 
-export { auth, db, app }
+export { auth, db, app, googleProvider }
