@@ -2,7 +2,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from 'firebase/auth'
-import { useAuthState, useSignOut, useIdToken } from 'react-firebase-hooks/auth'
+import { useSignOut } from 'react-firebase-hooks/auth'
 import { auth, db } from '@/firebaseConf'
 import { useEffect, useState } from 'react'
 import { routes } from '@/lib/routes'
@@ -12,26 +12,30 @@ import { setDoc, doc, getDoc } from 'firebase/firestore'
 import { store } from '@/stores/store'
 import { useSnapshot } from 'valtio'
 
-export function useAuth() {
-  const [authUser, authLoading, error] = useAuthState(auth)
+export function useUserData() {
   const [isLoading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [user, setUser] = useState(null)
   const snap = useSnapshot(store)
 
   useEffect(() => {
     async function fetchData() {
       setLoading(true)
-      const ref = doc(db, 'users', snap.userId)
-      const docSnap = await getDoc(ref)
-      setUser(docSnap.data())
-      setLoading(false)
+      try {
+        const ref = doc(db, 'users', snap.userId)
+        const docSnap = await getDoc(ref)
+        setUser(docSnap.data())
+        setLoading(false)
+      } catch (error) {
+        setError(error)
+        setLoading(false)
+      }
     }
 
-    if (!authLoading) {
-      if (authUser) fetchData()
-      else setLoading(false) // Not signed in
-    }
-  }, [authLoading])
+    if (snap) {
+      fetchData()
+    } else setLoading(false) // Not signed in
+  }, [snap])
 
   return { user, isLoading, error }
 }
@@ -83,7 +87,7 @@ export function useRegister() {
   const toast = useToast()
   const navigate = useNavigate()
 
-  async function register({ email, password, redirectTo = routes.DASHBOARD }) {
+  async function register({ email, password, redirectTo = routes.HOME }) {
     setLoading(true)
 
     try {

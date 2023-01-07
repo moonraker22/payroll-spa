@@ -7,6 +7,7 @@ const store = proxy({
   userId: '',
   userEmail: '',
   isSignedIn: false,
+  avatar: '',
   paysheets: [],
   weeks: [],
   paysheet: {},
@@ -62,13 +63,15 @@ let unsubscribe: () => void
 async function init() {
   unsubscribe = onAuthStateChanged(auth, (user) => {
     if (user) {
-      store.userId = user.uid
-      store.userEmail = user.email
+      store.userId = user?.uid
+      store.userEmail = user?.email
       store.isSignedIn = true
+      store.avatar = user?.photoURL
     } else {
       store.userId = ''
       store.userEmail = ''
       store.isSignedIn = false
+      store.avatar = ''
     }
   })
 }

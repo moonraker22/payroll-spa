@@ -59,3 +59,9 @@ export const PasswordResetSchema = z.object({
 })
 
 export type PasswordResetType = z.infer<typeof PasswordResetSchema>
+
+export const AvatarSchema = z.object({
+  avatar: z.string().url(),
+})
+
+export type AvatarType = z.infer<typeof AvatarSchema>

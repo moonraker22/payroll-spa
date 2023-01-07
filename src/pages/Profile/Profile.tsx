@@ -13,17 +13,23 @@ import {
   AvatarBadge,
   Divider,
   Stack,
+  Input,
+  HStack,
+  FormLabel,
+  Image,
+  VisuallyHidden,
+  FormControl,
+  FormErrorMessage,
 } from '@chakra-ui/react'
 import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Paysheet } from '@/data/paySchema'
-import { useAddPay } from '@/hooks/usePay'
+import { AvatarSchema, AvatarType } from '@/data/paySchema'
+import { useSetAvatar } from '@/hooks/useSetAvatar'
 import { routes } from '@/lib/routes'
 import { store, useSnapshot } from '@/stores/store'
 import { motion as m } from 'framer-motion'
 
 export default function Profile() {
-  const onSubmit = () => {}
   const defaultValues = {}
 
   const user = useSnapshot(store)
@@ -38,15 +44,22 @@ export default function Profile() {
     getValues,
     setValue,
     setFocus,
-  } = useForm<ProfileInputs>({
+  } = useForm<AvatarType>({
     defaultValues,
-    resolver: zodResolver(Paysheet),
+    resolver: zodResolver(AvatarSchema),
   })
+  const { setAvatar, isLoading, error } = useSetAvatar()
+  const onSubmit: SubmitHandler<AvatarType> = (data) => {
+    console.log(data)
+
+    setAvatar({ avatarUrl: data.avatar })
+    console.log(error, isLoading)
+  }
 
   const bg = useColorModeValue('white', ' gray.800')
 
   return (
-    <Container p="10px">
+    <Container p="10px" color="gray.300">
       <Center>
         <Heading
           as={m.h1}
@@ -70,10 +83,10 @@ export default function Profile() {
         border="2px"
         borderColor="cyan.700"
         boxShadow="dark-lg"
-        p="4"
+        p="5"
         rounded="md"
         mt="50px"
-        mb={10}
+        mb="100px"
         // bgGradient="linear(to-l, #111621, #1A202C)"
         maxW="500px"
         minW="200px"
@@ -90,9 +103,17 @@ export default function Profile() {
         >
           <Stack spacing="10px">
             <Center mt="50px">
-              <Avatar size="2xl" my="auto" mx="200px" name={user.userEmail}>
+              <Avatar
+                size="xl"
+                name={user.userEmail}
+                src={user.avatar}
+                referrerPolicy="no-referrer"
+              >
                 <AvatarBadge boxSize="1.25em" bg="cyan.700" />
               </Avatar>
+              <VisuallyHidden>
+                <Image src={user.avatar} referrerPolicy="no-referrer" />
+              </VisuallyHidden>
             </Center>
             <Divider orientation="horizontal" />
             <Center mt="20px">
@@ -104,6 +125,40 @@ export default function Profile() {
               >
                 {user.userEmail}
               </Heading>
+            </Center>
+            <Center mt="20px">
+              <Form onSubmit={handleSubmit(onSubmit)}>
+                <FormControl isInvalid={errors.avatar?.message ? true : false}>
+                  <HStack spacing="10px">
+                    <FormLabel htmlFor="avatar" placeholder="Avatar URL">
+                      Avatar URL
+                    </FormLabel>
+                    <Box>
+                      <Input {...register('avatar')} placeholder="Avatar" />
+                    </Box>
+
+                    <Box>
+                      <Button
+                        type="submit"
+                        colorScheme="cyan"
+                        variant="outline"
+                        _hover={{
+                          bg: 'cyan.600',
+                          color: 'white',
+                          scale: 1.1,
+                        }}
+                      >
+                        Update
+                      </Button>
+                    </Box>
+                  </HStack>
+                  <Center my="10px">
+                    <FormErrorMessage>
+                      {errors.avatar && errors.avatar?.message}
+                    </FormErrorMessage>
+                  </Center>
+                </FormControl>
+              </Form>
             </Center>
             <Center mt="20px">
               <Button
@@ -126,11 +181,4 @@ export default function Profile() {
       {/* <DevTool control={control} /> */}
     </Container>
   )
-}
-
-type ProfileInputs = {
-  name: string
-  email: string
-  password: string
-  passwordConfirmation: string
 }
