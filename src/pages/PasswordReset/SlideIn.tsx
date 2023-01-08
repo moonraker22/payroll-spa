@@ -14,7 +14,7 @@ export default function SlideEx({ isGoogle }) {
   const { isOpen, onToggle } = useDisclosure()
 
   useEffect(() => {
-    if (isGoogle()) {
+    if (isGoogle) {
       onToggle()
     }
   }, [isGoogle])
