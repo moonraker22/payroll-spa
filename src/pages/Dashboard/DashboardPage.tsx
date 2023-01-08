@@ -20,7 +20,7 @@ import { Suspense, useEffect } from 'react'
 import { store, useSnapshot } from '@/stores/store'
 import { useGetWeeklyTotals } from '@/hooks/useGetWeeklyTotals'
 import SpinnerComp from '@/components/SpinnerComp'
-import { motion as m } from 'framer-motion'
+import { animate, motion as m } from 'framer-motion'
 import { auth } from '@/firebaseConf'
 
 export default function Dashboard() {
@@ -39,10 +39,11 @@ export default function Dashboard() {
   const bg = useColorModeValue('white', ' gray.800')
 
   const container = {
-    hidden: { x: -800, opacity: 0 },
+    hidden: { x: 0, opacity: 0, scale: 0.8 },
     visible: {
       x: 0,
       opacity: 1,
+      scale: [0.8, 1, 1.2, 1.4, 1.2, 1],
       transition: {
         type: 'spring',
         stiffness: 90,
@@ -102,11 +103,12 @@ export default function Dashboard() {
             <Box w="100%" h="100%" bg={bg} rounded={'lg'}>
               {user.weeks.map((week, index) => (
                 <m.div
+                  // as={m.div}
                   key={index}
                   initial={{ x: -0, opacity: 0, scale: 0.8 }}
                   animate={{
                     x: 0,
-                    opacity: 1,
+                    opacity: 0.9,
                     scale: [0.8, 1, 1.2, 1.4, 1.2, 1],
                   }}
                   transition={{
@@ -118,12 +120,13 @@ export default function Dashboard() {
                   // variants={container}
                   // initial="hidden"
                   // animate="visible"
-                  exit={{ x: 800, opacity: 0 }}
-                  whileHover={{
-                    scale: 1.04,
-                    transition: { duration: 0.2 },
-                    cursor: 'pointer',
-                  }}
+                  // exit={{ x: 800, opacity: 0 }}
+                  // whileHover={{
+                  //   scale: 1.02,
+                  //   transition: { duration: 0.2 },
+                  //   cursor: 'pointer',
+                  // }}
+                  whileHover={{ cursor: 'pointer', opacity: 1 }}
                   whileTap={{ scale: 0.9 }}
                 >
                   <WeekDisplay

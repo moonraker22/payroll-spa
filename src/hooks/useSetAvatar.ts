@@ -1,5 +1,5 @@
-import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
-import { useState, useEffect } from 'react'
+import { doc, updateDoc } from 'firebase/firestore'
+import { useState } from 'react'
 import { store } from '@/stores/store'
 import { db } from '@/firebaseConf'
 import { useToast } from '@chakra-ui/react'

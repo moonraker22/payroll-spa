@@ -17,8 +17,10 @@ import {
   Stack,
   Center,
   useOutsideClick,
+  Icon,
 } from '@chakra-ui/react'
 import { AiOutlineMail, AiOutlineMenu } from 'react-icons/ai'
+import { ImCoinDollar } from 'react-icons/im'
 import { useDisclosure } from '@chakra-ui/react'
 import { useLogout } from '../hooks/useAuth'
 import { routes } from '../lib/routes'
@@ -30,10 +32,10 @@ export default function Layout() {
   const bg = useColorModeValue('white', ' gray.800')
   const mobileNav = useDisclosure()
   const ref = useRef()
-  useOutsideClick({
-    ref: ref,
-    handler: () => mobileNav.onClose(),
-  })
+  // useOutsideClick({
+  //   ref: ref,
+  //   handler: () => mobileNav.onClose(),
+  // })
 
   let activeStyle = {
     textDecoration: 'underline',
@@ -76,19 +78,31 @@ export default function Layout() {
               display="flex"
               alignItems="center"
             >
-              {/* <Logo /> */}
               <VisuallyHidden>Payroll</VisuallyHidden>
             </chakra.a>
-            <Text
-              bgGradient="linear(to-b, #42047e, #07f49e)"
-              bgClip="text"
-              fontSize="2xl"
-              fontWeight="extrabold"
-              ml={2}
-              textTransform="uppercase"
+            <Button
+              leftIcon={
+                <Icon color="cyan.600" as={ImCoinDollar} w={6} h={6} mt="1px" />
+              }
+              variant="ghost"
+              onClick={() => navigate(routes.HOME)}
             >
-              tracker
-            </Text>
+              <NavLink
+                to={routes.HOME}
+                // style={({ isActive }) => (isActive ? activeStyle : color)}
+              >
+                <Text
+                  bgGradient="linear(to-b, #42047e, #07f49e)"
+                  bgClip="text"
+                  fontSize="xl"
+                  fontWeight="extrabold"
+                  // ml={2}
+                  textTransform="uppercase"
+                >
+                  tracker
+                </Text>
+              </NavLink>
+            </Button>
           </Flex>
           <HStack display="flex" alignItems="center" spacing={1}>
             <HStack
@@ -210,7 +224,7 @@ export default function Layout() {
                 spacing={3}
                 rounded="sm"
                 shadow="sm"
-                zIndex={1}
+                zIndex={2}
                 opacity={0.8}
               >
                 <CloseButton
@@ -237,7 +251,7 @@ export default function Layout() {
                       onClick={() => navigate(routes.DAILY)}
                     >
                       <NavLink
-                        to="/daily"
+                        to={routes.DAILY}
                         style={({ isActive }) =>
                           isActive ? activeStyle : undefined
                         }

@@ -1,13 +1,12 @@
-import { useCallback, useEffect } from 'react'
+// import { useCallback, useEffect } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { Form, useLocation, Link as RouterLink } from 'react-router-dom'
+import { Form, Link as RouterLink } from 'react-router-dom'
 import {
   Button,
   Box,
   Center,
   useColorModeValue,
   Heading,
-  Card,
   Container,
   Avatar,
   AvatarBadge,
@@ -21,7 +20,7 @@ import {
   FormControl,
   FormErrorMessage,
 } from '@chakra-ui/react'
-import { DevTool } from '@hookform/devtools'
+// import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { AvatarSchema, AvatarType } from '@/data/paySchema'
 import { useSetAvatar } from '@/hooks/useSetAvatar'
@@ -37,23 +36,14 @@ export default function Profile() {
   const {
     register,
     handleSubmit,
-    watch,
-    formState: { errors, isDirty, isSubmitting, isValid, touchedFields },
-    control,
-    reset,
-    getValues,
-    setValue,
-    setFocus,
+    formState: { errors },
   } = useForm<AvatarType>({
     defaultValues,
     resolver: zodResolver(AvatarSchema),
   })
   const { setAvatar, isLoading, error } = useSetAvatar()
   const onSubmit: SubmitHandler<AvatarType> = (data) => {
-    console.log(data)
-
     setAvatar({ avatarUrl: data.avatar })
-    console.log(error, isLoading)
   }
 
   const bg = useColorModeValue('white', ' gray.800')
@@ -67,9 +57,7 @@ export default function Profile() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           mt={10}
-          // bgGradient="linear(to-l, #7928CA, #FF0080)"
           bgGradient="linear(to-b, #42047e, #07f49e)"
-          // bgGradient="linear(to-r, teal, red.500)"
           bgClip="text"
           fontSize={['4xl', '4xl', '5xl']}
           fontWeight="extrabold"
@@ -87,7 +75,6 @@ export default function Profile() {
         rounded="md"
         mt="50px"
         mb="100px"
-        // bgGradient="linear(to-l, #111621, #1A202C)"
         maxW="500px"
         minW="200px"
         minH="300px"
@@ -165,7 +152,7 @@ export default function Profile() {
                 colorScheme="cyan"
                 variant="outline"
                 as={RouterLink}
-                to={routes.PROFILE}
+                to={routes.PASSWORD_RESET}
                 _hover={{
                   bg: 'cyan.600',
                   color: 'white',

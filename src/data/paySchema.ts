@@ -56,6 +56,7 @@ export type UserType = z.infer<typeof UserSchema>
 export const PasswordResetSchema = z.object({
   password: z.string().min(6),
   passwordConfirmation: z.string().min(6),
+  currentPassword: z.string().min(6),
 })
 
 export type PasswordResetType = z.infer<typeof PasswordResetSchema>
@@ -65,3 +66,9 @@ export const AvatarSchema = z.object({
 })
 
 export type AvatarType = z.infer<typeof AvatarSchema>
+
+export const PasswordPromptSchema = z.object({
+  currentPassword: z.string().min(6),
+})
+
+export type PasswordPromptType = z.infer<typeof PasswordPromptSchema>

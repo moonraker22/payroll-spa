@@ -136,7 +136,7 @@ export default function Registration() {
           mb={10}
           // bgGradient="linear(to-l, #111621, #1A202C)"
           w="50vw"
-          maxW="500px"
+          maxW="450px"
           minW="300px"
         >
           <Box p="3">

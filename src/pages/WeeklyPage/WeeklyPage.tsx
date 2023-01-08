@@ -1,32 +1,21 @@
 import {
-  Card,
-  CardBody,
-  Center,
   Container,
-  Heading,
-  Stack,
-  StackDivider,
   Table,
   TableCaption,
   TableContainer,
   Tbody,
-  Td,
   Tfoot,
   Th,
   Thead,
   Tr,
   useColorModeValue,
-  VStack,
 } from '@chakra-ui/react'
 import { useLocation } from 'react-router-dom'
 import { useGetWeekData, DayType } from '@/hooks/useGetWeekData'
 import Week from './Week'
-import { useState, useEffect } from 'react'
 import { motion as m } from 'framer-motion'
 
 export default function WeeklyPage(props) {
-  // const [widthState, setWidthState] = useState(window.innerWidth)
-
   const location = useLocation()
   const { state } = location
 

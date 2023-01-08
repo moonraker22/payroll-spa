@@ -15,19 +15,23 @@ import {
   Link,
   HStack,
   Heading,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PasswordResetSchema, PasswordResetType } from '@/data/paySchema'
 import { motion as m } from 'framer-motion'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRegister } from '../../hooks/useAuth'
+import { store } from '@/stores/store'
+import { useSnapshot } from 'valtio'
+import { auth } from '@/firebaseConf'
 
-// type PasswordResetType = {
-//   password: string
-//   passwordConfirmation: string
-// }
+import SlideIn from '@/pages/PasswordReset/SlideIn'
+import { usePasswordReset } from '@/hooks/usePasswordReset'
+// import PasswordPrompt from './PasswordPrompt'
 
 export default function PasswordReset() {
+  const user = useSnapshot(store)
   const {
     register,
     handleSubmit,
@@ -41,14 +45,14 @@ export default function PasswordReset() {
   })
   const navigate = useNavigate()
 
-  const { register: registerUser, isLoading } = useRegister()
+  const { passwordResetEmail, confirmPassReset, updatePass, loading, error } =
+    usePasswordReset()
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const onSubmit: SubmitHandler<PasswordResetType> = async (data) => {
     try {
-      console.log(data)
-
-      //   registerUser({ email: data.email, password: data.password })
-      // navigate('/')
+      await updatePass(data.password, data.currentPassword)
     } catch (error) {
       console.log(error)
     }
@@ -76,7 +80,21 @@ export default function PasswordReset() {
     passwordMatch(passwordConfirmation)
   }, [password, passwordConfirmation])
 
-  const canSubmit = isDirty && isValid && password === passwordConfirmation
+  const isAuthenticatedWithGoogle = () => {
+    const user = auth?.currentUser
+    if (user !== null) {
+      if (user?.providerData[0]?.providerId === 'google.com') {
+        return true
+      }
+    }
+    return false
+  }
+
+  const canSubmit =
+    !isAuthenticatedWithGoogle() &&
+    isDirty &&
+    isValid &&
+    password === passwordConfirmation
 
   return (
     <Container maxW="container.xl" centerContent mt={10}>
@@ -92,7 +110,7 @@ export default function PasswordReset() {
           fontSize={['3xl', '3xl', '4xl']}
           fontWeight="extrabold"
         >
-          Password Reset
+          Update Password
         </Heading>
       </Center>
       <Box
@@ -112,6 +130,12 @@ export default function PasswordReset() {
         <Box p="3">
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Box my={2}>
+              <input
+                type="hidden"
+                name="email"
+                value={user.userEmail}
+                autoComplete="username"
+              />
               <FormControl
                 isInvalid={errors.password ? true : false}
                 isRequired
@@ -150,6 +174,26 @@ export default function PasswordReset() {
                 </FormErrorMessage>
               </FormControl>
             </Box>
+            <Box my={2}>
+              <FormControl
+                isInvalid={errors.currentPassword ? true : false}
+                isRequired
+              >
+                <FormLabel htmlFor="currentPassword">
+                  Current Password:
+                </FormLabel>
+                <Input
+                  {...register('currentPassword')}
+                  id="currentPassword"
+                  type="password"
+                  placeholder="Password Confirmation"
+                  autoComplete="new-password"
+                />
+                <FormErrorMessage>
+                  {errors.currentPassword && errors.currentPassword.message}
+                </FormErrorMessage>
+              </FormControl>
+            </Box>
 
             <Center my={2}>
               <Button
@@ -161,6 +205,7 @@ export default function PasswordReset() {
                 size="lg"
                 disabled={!canSubmit}
                 variant="outline"
+                // onClick={onOpen}
               >
                 Submit
               </Button>
@@ -171,9 +216,16 @@ export default function PasswordReset() {
                 Log in
               </Button>
             </HStack>
+            {/* <PasswordPrompt
+              setPass={setPassRevalidate}
+              isOpen={isOpen}
+              onOpen={onOpen}
+              onClose={onClose}
+            /> */}
           </Form>
         </Box>
       </Box>
+      <SlideIn isGoogle={isAuthenticatedWithGoogle} />
     </Container>
   )
 }
