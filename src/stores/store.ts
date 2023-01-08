@@ -66,12 +66,14 @@ async function init() {
       store.userId = user?.uid
       store.userEmail = user?.email
       store.isSignedIn = true
-      store.avatar = user?.photoURL
+      store.avatar = auth.currentUser?.avatar || user?.photoURL
+      // store.avatar = user?.avatar
     } else {
       store.userId = ''
       store.userEmail = ''
       store.isSignedIn = false
       store.avatar = ''
+      // store.weeks = []
     }
   })
 }

@@ -8,9 +8,20 @@ import {
   signInWithRedirect,
   GoogleAuthProvider,
   getRedirectResult,
+  signInWithPopup,
 } from 'firebase/auth'
 import { store } from '@/stores/store'
 import { useSnapshot } from 'valtio'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  query,
+  setDoc,
+  where,
+} from 'firebase/firestore'
 
 // const auth = getAuth()
 // signInWithPopup(auth, provider)
@@ -76,6 +87,7 @@ export function useGoogleAuth() {
   const [error, setError] = useState(null)
   const toast = useToast()
   const navigate = useNavigate()
+  // const [authUser, authLoading, Autherror] = useAuthState(auth)
 
   // const auth = getAuth()
   // const provider = new GoogleAuthProvider()
@@ -84,11 +96,36 @@ export function useGoogleAuth() {
     setIsLoading(true)
 
     try {
-      const res = await signInWithRedirect(auth, googleProvider)
+      const res = await signInWithPopup(auth, googleProvider)
       const result = await getRedirectResult(auth)
-      const credential = GoogleAuthProvider.credentialFromResult(result)
+      // const credential = GoogleAuthProvider.credentialFromResult(result)
       // const token = credential.accessToken
-      // const user = result.user
+      const user = res?.user
+
+      if (user) {
+        const snapshot = await getDoc(doc(db, 'users', user?.uid))
+
+        if (!snapshot.exists()) {
+          const data = {
+            id: user?.uid,
+            displayName: user?.displayName,
+            email: user?.email,
+            avatar: user?.photoURL,
+            createdAt: new Date(),
+          }
+          const userRef = doc(db, 'users', user?.uid)
+          await setDoc(userRef, data)
+
+          store.avatar = user?.photoURL
+          store.isSignedIn = true
+          store.userEmail = user?.email
+        } else {
+          store.avatar = snapshot.data()?.avatar
+          store.isSignedIn = true
+          store.userEmail = snapshot.data()?.email
+          store.avatar = snapshot.data()?.avatar
+        }
+      }
 
       toast({
         title: 'Successfully logged in',
@@ -100,8 +137,9 @@ export function useGoogleAuth() {
         colorScheme: 'cyan',
       })
 
-      navigate(routes.DASHBOARD)
+      navigate(`${routes.DASHBOARD}`)
     } catch (error) {
+      console.log('error', error)
       toast({
         title: 'Sign In failed',
         description: error.message,

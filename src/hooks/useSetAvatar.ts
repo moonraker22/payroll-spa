@@ -26,7 +26,7 @@ export function useSetAvatar() {
       })
       return false
     }
-    const docRef = doc(db, `users`, user.id)
+    const docRef = doc(db, `users`, `${user.id}`)
 
     try {
       await updateDoc(docRef, {

@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react'
 import currency from 'currency.js'
 import { format } from 'date-fns'
-import { DayModal } from '@/components/DayModal'
+import { motion as m } from 'framer-motion'
 
 export function WeekDisplay({
   totalMiles,
@@ -41,7 +41,14 @@ export function WeekDisplay({
 
   return (
     <LinkBox>
-      <Card m="10px" bg={bg} border="1px" borderColor={colorScheme} px="10px">
+      <Card
+        m="10px"
+        bg={bg}
+        border="1px"
+        borderColor={colorScheme}
+        px="10px"
+        as={m.div}
+      >
         <LinkOverlay
           as={Link}
           to="/weekly"
@@ -83,7 +90,7 @@ export function WeekDisplay({
               </Heading>
               <Center>
                 <Text pt="2" fontSize="sm">
-                  {totalBackHaulPay}
+                  {currency(totalBackHaulPay).format()}
                 </Text>
               </Center>
             </Box>

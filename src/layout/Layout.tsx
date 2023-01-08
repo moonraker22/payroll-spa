@@ -1,11 +1,4 @@
-import {
-  Outlet,
-  NavLink,
-  useNavigate,
-  useLoaderData,
-  defer,
-  Await,
-} from 'react-router-dom'
+import { Outlet, NavLink, useNavigate } from 'react-router-dom'
 import { ColorModeSwitcher } from '../ColorModeSwitcher'
 import {
   Box,
@@ -31,7 +24,7 @@ import { useLogout } from '../hooks/useAuth'
 import { routes } from '../lib/routes'
 import { store, useSnapshot, snapshot } from '@/stores/store'
 import { FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa'
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 
 export default function Layout() {
   const bg = useColorModeValue('white', ' gray.800')

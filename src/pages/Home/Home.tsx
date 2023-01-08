@@ -14,17 +14,9 @@ import {
   Flex,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { db, auth } from '@/firebaseConf'
-import {
-  collection,
-  getDocs,
-  addDoc,
-  doc,
-  setDoc,
-  getDocFromServer,
-} from 'firebase/firestore'
-import { useState, useEffect, useRef } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 import { motion as m } from 'framer-motion'
+import { routes } from '../../lib/routes'
 
 export default function Home() {
   const bg = useColorModeValue('white', ' gray.800')
@@ -65,11 +57,21 @@ export default function Home() {
             </Text>
 
             <Flex dir="row" my="10">
-              <Button variant="outline" colorScheme="cyan">
+              <Button
+                variant="outline"
+                colorScheme="cyan"
+                as={RouterLink}
+                to={routes.REGISTER}
+              >
                 Register
               </Button>
               <Spacer />
-              <Button variant="outline" colorScheme="cyan">
+              <Button
+                variant="outline"
+                colorScheme="cyan"
+                as={RouterLink}
+                to={routes.LOGIN}
+              >
                 Sign in
               </Button>
             </Flex>

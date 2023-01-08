@@ -25,7 +25,7 @@ export function useAddPay() {
   const toast = useToast()
   const navigate = useNavigate()
   const { user, isLoading } = useAuth()
-  // const snap = useSnapshot(store)
+  const snap = useSnapshot(store)
 
   async function addPay({
     date,

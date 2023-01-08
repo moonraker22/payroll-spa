@@ -18,7 +18,7 @@ function getWeeklyTotals(array) {
       existingTotal.startingMiles += object.startingMiles
       existingTotal.totalMiles += object.totalMiles
       existingTotal.totalPay += Number(
-        computePay(object.totalMiles, object.payMiles)
+        computePay(object.totalMiles, object.payMiles, object.backhaul)
       )
     } else {
       weeklyTotals.push({
@@ -29,7 +29,9 @@ function getWeeklyTotals(array) {
         payMiles: object.payMiles,
         startingMiles: object.startingMiles,
         totalMiles: object.totalMiles,
-        totalPay: Number(computePay(object.totalMiles, object.payMiles)),
+        totalPay: Number(
+          computePay(object.totalMiles, object.payMiles, object.backhaul)
+        ),
       })
     }
   })
@@ -39,11 +41,11 @@ function getWeeklyTotals(array) {
   return weeklyTotals
 }
 
-function computePay(totalPay, payMiles) {
+function computePay(totalPay, payMiles, backhaul = 0) {
   if (totalPay > payMiles) {
-    return currency(totalPay, { precision: 2 }).multiply(0.515)
+    return currency(totalPay, { precision: 2 }).multiply(0.515).add(backhaul)
   } else {
-    return currency(payMiles, { precision: 2 }).multiply(0.515)
+    return currency(payMiles, { precision: 2 }).multiply(0.515).add(backhaul)
   }
 }
 

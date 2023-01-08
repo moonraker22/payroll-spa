@@ -35,13 +35,16 @@ export default function Week({ day }) {
     }
   }
 
-  const totalPay = currency(miles(), { precision: 2 }).multiply(0.515).format()
+  const totalPay = currency(miles(), { precision: 2 })
+    .multiply(0.515)
+    .add(day?.backhaul)
+    .format()
   return (
     <Tr>
       <Td>{dayFormat}</Td>
       <Td isNumeric>{day.payMiles}</Td>
       <Td isNumeric>{day.totalMiles}</Td>
-      <Td isNumeric>{day.backhaul}</Td>
+      <Td isNumeric>{currency(day.backhaul).format()}</Td>
       <Td isNumeric>{totalPay}</Td>
     </Tr>
   )
