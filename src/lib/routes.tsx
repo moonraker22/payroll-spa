@@ -17,6 +17,8 @@ import ErrorPage from '@/pages/Error/ErrorPage'
 import PasswordReset from '@/pages/PasswordReset/PasswordReset'
 import ProfilePage from '@/pages/Profile/Profile'
 
+// import { loader as dashLoader } from '@/pages/Dashboard/Dashboard'
+
 // ROUTE CONSTANTS
 export const routes = {
   HOME: '/',
@@ -48,7 +50,12 @@ const router = createBrowserRouter(
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoutes />}>
-          <Route index path={routes.DASHBOARD} element={<Dashboard />} />
+          <Route
+            index
+            path={routes.DASHBOARD}
+            element={<Dashboard />}
+            // loader={dashLoader}
+          />
           <Route path={routes.DAILY} element={<DailyPage />} />
           <Route path={routes.WEEKLY} element={<WeeklyPage />} />
           <Route path={routes.PROFILE} element={<ProfilePage />} />

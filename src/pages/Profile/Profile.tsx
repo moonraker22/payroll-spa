@@ -103,6 +103,9 @@ export default function Profile() {
         >
           <Stack spacing="10px">
             <Center mt="50px">
+              <VisuallyHidden>
+                <Image src={user.avatar} referrerPolicy="no-referrer" />
+              </VisuallyHidden>
               <Avatar
                 size="xl"
                 name={user.userEmail}
@@ -111,9 +114,6 @@ export default function Profile() {
               >
                 <AvatarBadge boxSize="1.25em" bg="cyan.700" />
               </Avatar>
-              <VisuallyHidden>
-                <Image src={user.avatar} referrerPolicy="no-referrer" />
-              </VisuallyHidden>
             </Center>
             <Divider orientation="horizontal" />
             <Center mt="20px">

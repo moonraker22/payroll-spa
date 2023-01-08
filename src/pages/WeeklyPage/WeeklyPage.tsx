@@ -25,10 +25,11 @@ import { useState, useEffect } from 'react'
 import { motion as m } from 'framer-motion'
 
 export default function WeeklyPage(props) {
-  const [widthState, setWidthState] = useState(window.innerWidth)
+  // const [widthState, setWidthState] = useState(window.innerWidth)
 
   const location = useLocation()
   const { state } = location
+
   const startDate = state?.startDate
   // const endDate = state?.endDate
   const weekStartFormat = state?.weekStartFormat

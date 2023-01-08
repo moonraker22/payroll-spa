@@ -112,8 +112,14 @@ const DailyForm = () => {
 
   return (
     <m.div
-      initial={{ opacity: 0, y: 80 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 80, scale: 0.8 }}
+      animate={{ opacity: 1, y: 0, scale: [0.9, 1.2, 1] }}
+      transition={{
+        type: 'spring',
+        stiffness: 90,
+
+        damping: 15,
+      }}
       exit={{ opacity: 0 }}
     >
       <Box

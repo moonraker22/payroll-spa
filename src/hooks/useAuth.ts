@@ -21,9 +21,10 @@ export function useAuth() {
   useEffect(() => {
     async function fetchData() {
       setLoading(true)
-      const ref = doc(db, 'users', snap.userId)
+      const ref = doc(db, 'users', `${authUser.uid}`)
       const docSnap = await getDoc(ref)
       setUser(docSnap.data())
+      // store.avatar = docSnap.data()?.avatar
       setLoading(false)
     }
 
@@ -46,7 +47,8 @@ export function useLogin() {
     setLoading(true)
 
     try {
-      await signInWithEmailAndPassword(auth, email, password)
+      const res = await signInWithEmailAndPassword(auth, email, password)
+
       toast({
         title: 'You are logged in',
         status: 'success',
@@ -88,12 +90,19 @@ export function useRegister() {
 
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password)
+      const ref = doc(db, 'users', `${res.user.uid}`)
+      const docSnap = await getDoc(ref)
+      store.avatar = docSnap.data().avatar
+      store.userId = res.user.uid
+      store.userEmail = res.user.email
+      store.isSignedIn = true
 
       await setDoc(doc(db, 'users', res.user.uid), {
         id: res.user.uid,
         email: res.user.email,
         avatar: '',
-        date: Date.now(),
+        createdAt: Date.now(),
+        displayName: '',
       })
 
       toast({
