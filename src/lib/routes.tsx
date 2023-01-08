@@ -5,17 +5,17 @@ import {
 } from 'react-router-dom'
 
 //Pages
-import Home from '@/pages/Home/Home'
+import Home from '@/pages/Home/HomePage'
 import DailyPage from '@/pages/DailyPage/DailyPage'
 import WeeklyPage from '@/pages/WeeklyPage/WeeklyPage'
-import Registration from '@/pages/Registration/Registration'
-import Login from '@/pages/Login/Login'
-import Dashboard from '@/pages/Dashboard/Dashboard'
+import Registration from '@/pages/Registration/RegistrationPage'
+import Login from '@/pages/Login/LoginPage'
+import Dashboard from '@/pages/Dashboard/DashboardPage'
 import ProtectedRoutes from '@/components/protected/Protected'
 import Layout from '@/layout/Layout'
 import ErrorPage from '@/pages/Error/ErrorPage'
-import PasswordReset from '@/pages/PasswordReset/PasswordReset'
-import ProfilePage from '@/pages/Profile/Profile'
+import PasswordReset from '@/pages/PasswordReset/PasswordResetPage'
+import ProfilePage from '@/pages/Profile/ProfilePage'
 
 // import { loader as dashLoader } from '@/pages/Dashboard/Dashboard'
 

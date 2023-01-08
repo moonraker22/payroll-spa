@@ -1,11 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form'
-import {
-  Form,
-  useNavigate,
-  Link as RouterLink,
-  useLocation,
-  useParams,
-} from 'react-router-dom'
+import { Form, useNavigate, Link as RouterLink } from 'react-router-dom'
 import {
   FormErrorMessage,
   FormLabel,
@@ -29,7 +23,7 @@ import {
   Flex,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Login as LoginResolver } from '../../data/paySchema'
+import { Login as LoginResolver } from '@/data/paySchema'
 import { useEffect, useRef } from 'react'
 import { motion as m } from 'framer-motion'
 import { useLogin } from '@/hooks/useAuth'
@@ -108,7 +102,7 @@ export default function Login() {
   }
 
   return (
-    <Container maxW="container.xl" centerContent mt={10}>
+    <Container maxW="container.xl" centerContent mt={8}>
       <m.div
         initial={{ opacity: 0, y: 80 }}
         animate={{ opacity: 1, y: 0 }}
@@ -139,7 +133,7 @@ export default function Login() {
           mt={10}
           mb={10}
           w="50vw"
-          maxW="500px"
+          maxW="450px"
           minW="300px"
         >
           <Box p="3">
@@ -242,6 +236,21 @@ export default function Login() {
                     >
                       {' '}
                       Sign up
+                    </Button>
+                  </Center>
+                  <Center>
+                    {/* <Text mt="3px" mr="5px" color="gray.300">
+                      Don't have an account?
+                    </Text> */}
+                    <Button
+                      mt="8px"
+                      as={RouterLink}
+                      variant="link"
+                      colorScheme="cyan"
+                      to={routes.REGISTER}
+                    >
+                      {' '}
+                      Forgot Password
                     </Button>
                   </Center>
                 </Box>
