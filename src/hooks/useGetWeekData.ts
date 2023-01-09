@@ -24,7 +24,7 @@ export function useGetWeekData({ weekStart }) {
     collection(db, `users`, `${snap?.userId}`, `${COLLECTIONS.PAYSHEETS}`),
     where('date', '>=', weekStart),
     where('date', '<=', Date.parse(weekEnd)),
-    orderBy('date', 'asc')
+    orderBy('date', 'desc')
   )
 
   const [weekData, loading, error, snapshot] = useCollectionData(q, {})

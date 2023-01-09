@@ -2,7 +2,7 @@ import { getWeeklyTotals } from '@/lib/utils'
 import { useSnapshot } from 'valtio'
 import { store } from '@/stores/store'
 import { useEffect } from 'react'
-import { collection, query } from 'firebase/firestore'
+import { collection, orderBy, query } from 'firebase/firestore'
 
 import { db, auth } from '@/firebaseConf'
 import { COLLECTIONS, returnPaysheetString } from '@/lib/constants'
@@ -18,7 +18,8 @@ export function useGetWeeklyTotals() {
   let q
   if (!authLoading) {
     q = query(
-      collection(db, `users`, `${authUser.uid}`, `${COLLECTIONS.PAYSHEETS}`)
+      collection(db, `users`, `${authUser.uid}`, `${COLLECTIONS.PAYSHEETS}`),
+      orderBy('date', 'desc')
     )
   }
 
@@ -28,6 +29,9 @@ export function useGetWeeklyTotals() {
     if (!totalsLoading && !authLoading) {
       const sheets = totals.docs.map((doc) => doc.data())
       weeks = getWeeklyTotals(sheets)
+
+      weeks.sort((a, b) => b.weekStart - a.weekStart)
+
       store.weeks = weeks
     }
   }, [totalsLoading])

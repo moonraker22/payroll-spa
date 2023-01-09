@@ -31,6 +31,7 @@ import { usePasswordReset } from '@/hooks/usePasswordReset'
 // import PasswordPrompt from './PasswordPrompt'
 
 export default function PasswordReset() {
+  const [isGoogle, setIsGoogle] = useState(false)
   const user = useSnapshot(store)
   const {
     register,
@@ -95,6 +96,10 @@ export default function PasswordReset() {
     isDirty &&
     isValid &&
     password === passwordConfirmation
+
+  useEffect(() => {
+    setIsGoogle(isAuthenticatedWithGoogle())
+  }, [])
 
   return (
     <Container maxW="container.xl" centerContent mt={10}>
@@ -205,7 +210,6 @@ export default function PasswordReset() {
                 size="lg"
                 disabled={!canSubmit}
                 variant="outline"
-                // onClick={onOpen}
               >
                 Submit
               </Button>
@@ -216,16 +220,10 @@ export default function PasswordReset() {
                 Log in
               </Button>
             </HStack>
-            {/* <PasswordPrompt
-              setPass={setPassRevalidate}
-              isOpen={isOpen}
-              onOpen={onOpen}
-              onClose={onClose}
-            /> */}
           </Form>
         </Box>
       </Box>
-      <SlideIn isGoogle={isAuthenticatedWithGoogle} />
+      <SlideIn isGoogle={isGoogle} />
     </Container>
   )
 }
