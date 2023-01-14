@@ -19,18 +19,9 @@ import { useAddPay } from '@/hooks/usePay'
 import { format } from 'date-fns'
 import { motion as m } from 'framer-motion'
 
-type PaysheetInputs = {
-  date: string
-  startingMiles: string
-  endingMiles: string
-  totalMiles: number
-  payMiles: string
-  backhaul: string
-}
-
 const DailyForm = () => {
   const location = useLocation()
-  const day = location?.state?.day
+  const day = location?.state
 
   const date = new Date().toISOString().slice(0, 10)
 
@@ -246,6 +237,11 @@ const DailyForm = () => {
                 disabled={!canSubmit}
                 loadingText={day ? 'Updating' : 'Submitting'}
                 variant="outline"
+                _hover={{
+                  bg: 'cyan.800',
+                  color: 'white',
+                  scale: 1.1,
+                }}
               >
                 Submit
               </Button>
@@ -256,6 +252,11 @@ const DailyForm = () => {
                 onClick={() => reset()}
                 disabled={isSubmitting}
                 variant="outline"
+                _hover={{
+                  bg: 'red.600',
+                  color: 'white',
+                  scale: 1.1,
+                }}
               >
                 Reset
               </Button>
@@ -269,3 +270,12 @@ const DailyForm = () => {
 }
 
 export default DailyForm
+
+type PaysheetInputs = {
+  date: string
+  startingMiles: string
+  endingMiles: string
+  totalMiles: number
+  payMiles: string
+  backhaul: string
+}

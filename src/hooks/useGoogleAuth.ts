@@ -2,7 +2,7 @@ import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { routes } from '@/lib/routes'
-import { db, googleProvider, auth } from '@/firebaseConf'
+import { db, googleProvider, auth } from '@/firebase'
 import {
   getAuth,
   signInWithRedirect,
@@ -19,6 +19,7 @@ import {
   doc,
   getDoc,
   query,
+  serverTimestamp,
   setDoc,
   where,
 } from 'firebase/firestore'
@@ -111,7 +112,9 @@ export function useGoogleAuth() {
             displayName: user?.displayName,
             email: user?.email,
             avatar: user?.photoURL,
-            createdAt: new Date(),
+            createdAt: serverTimestamp(),
+            role: 'user',
+            isAdmin: false,
           }
           const userRef = doc(db, 'users', user?.uid)
           await setDoc(userRef, data)

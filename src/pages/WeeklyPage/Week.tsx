@@ -1,17 +1,9 @@
-import {
-  Box,
-  Button,
-  HStack,
-  StackDivider,
-  Text,
-  VStack,
-  Link,
-  Tr,
-  Td,
-} from '@chakra-ui/react'
+import { Link as RouterLink } from 'react-router-dom'
+import { Tr, Td, Icon } from '@chakra-ui/react'
 import currency from 'currency.js'
 import { getDay } from 'date-fns'
-import { Link as RouterLink } from 'react-router-dom'
+import { AiOutlineEdit } from 'react-icons/ai'
+import { routes } from '../../lib/routes'
 
 export default function Week({ day }) {
   const result = getDay(day?.date)
@@ -41,11 +33,20 @@ export default function Week({ day }) {
     .format()
   return (
     <Tr>
-      <Td>{dayFormat}</Td>
+      <Td>
+        <RouterLink to={routes.DAILY} state={day}>
+          {dayFormat}
+        </RouterLink>
+      </Td>
       <Td isNumeric>{day.payMiles}</Td>
       <Td isNumeric>{day.totalMiles}</Td>
       <Td isNumeric>{currency(day.backhaul).format()}</Td>
       <Td isNumeric>{totalPay}</Td>
+      <Td isNumeric>
+        <RouterLink to={routes.DAILY} state={day}>
+          <Icon as={AiOutlineEdit} w={6} h={6} color="cyan.600" />
+        </RouterLink>
+      </Td>
     </Tr>
   )
 }

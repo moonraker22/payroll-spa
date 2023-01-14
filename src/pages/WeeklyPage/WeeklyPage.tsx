@@ -1,5 +1,6 @@
 import {
   Container,
+  Link,
   Table,
   TableCaption,
   TableContainer,
@@ -12,10 +13,13 @@ import {
 } from '@chakra-ui/react'
 import { useLocation } from 'react-router-dom'
 import { useGetWeekData, DayType } from '@/hooks/useGetWeekData'
+import { Link as RouterLink } from 'react-router-dom'
+
 import Week from './Week'
 import { motion as m } from 'framer-motion'
+import { routes } from '../../lib/routes'
 
-export default function WeeklyPage(props) {
+export default function WeeklyPage() {
   const location = useLocation()
   const { state } = location
 
@@ -26,7 +30,7 @@ export default function WeeklyPage(props) {
   const { weekData, loading } = useGetWeekData({
     weekStart: Date.parse(startDate),
   })
-  const colorScheme = useColorModeValue('gray', 'cyan')
+  const colorScheme = useColorModeValue('gray', 'cyan.600')
 
   return (
     <Container maxW={{ base: '100%', sm: '95%', lg: '90%' }}>
@@ -50,6 +54,12 @@ export default function WeeklyPage(props) {
           <TableCaption placement="bottom">
             Week from {weekStartFormat} - {weekEndFormat}
           </TableCaption>
+          <TableCaption placement="bottom">
+            Go back to{' '}
+            <Link as={RouterLink} to={routes.DASHBOARD}>
+              Dashboard
+            </Link>
+          </TableCaption>
           <Thead>
             <Tr>
               <Th>Day</Th>
@@ -57,6 +67,7 @@ export default function WeeklyPage(props) {
               <Th isNumeric>Actual Miles</Th>
               <Th isNumeric>Backhaul</Th>
               <Th isNumeric>Total Pay</Th>
+              <Th isNumeric>Edit</Th>
             </Tr>
           </Thead>
 
@@ -73,6 +84,7 @@ export default function WeeklyPage(props) {
               <Th isNumeric>Actual Miles</Th>
               <Th isNumeric>Backhaul</Th>
               <Th isNumeric>Total Pay</Th>
+              <Th isNumeric>Edit</Th>
             </Tr>
           </Tfoot>
         </Table>

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 import {
   Box,
   Center,
@@ -13,13 +13,21 @@ import {
   Button,
   Skeleton,
   useDisclosure,
-  Link as ChakraLink,
+  Link,
   LinkBox,
   LinkOverlay,
+  Table,
+  TableCaption,
+  Th,
+  Thead,
+  Tr,
+  Tbody,
+  Tfoot,
 } from '@chakra-ui/react'
 import currency from 'currency.js'
 import { format } from 'date-fns'
 import { motion as m } from 'framer-motion'
+import { routes } from '@/lib/routes'
 
 export function WeekDisplay({
   totalMiles,
@@ -37,66 +45,60 @@ export function WeekDisplay({
   const weekStartFormat = format(startDate, 'MM/dd/yyyy')
   const weekEndFormat = format(endDate, 'MM/dd/yyyy')
 
-  const colorScheme = useColorModeValue('gray', 'cyan.700')
-
+  const colorScheme = useColorModeValue('gray', 'cyan.600')
+  // const colorScheme = useColorModeValue('gray', 'cyan')
   return (
     <LinkBox>
-      <Card
-        m="10px"
-        bg={bg}
-        border="1px"
-        borderColor={colorScheme}
-        px="10px"
-        // as={m.div}
+      <LinkOverlay
+        as={RouterLink}
+        to="/weekly"
+        state={{ weekStartFormat, weekEndFormat, startDate, endDate }}
+        sx={{ textDecoration: 'none' }}
       >
-        <LinkOverlay
-          as={Link}
-          to="/weekly"
-          state={{ weekStartFormat, weekEndFormat, startDate, endDate }}
-        />
-        <Heading size="md" mt={5} mx={'auto'}>
-          Week {weekStartFormat} - {weekEndFormat}
-        </Heading>
-
-        <CardBody>
-          <Stack
-            divider={<StackDivider borderColor="gray.200" mx="10px" />}
-            spacing="auto"
-            direction="row"
-          >
-            <Box>
-              <Heading size="xs" textTransform="uppercase">
-                Total Miles
+        <Card
+          m="10px"
+          bg={bg}
+          border="1px"
+          borderColor={colorScheme}
+          px="10px"
+          // as={m.div}
+        >
+          <CardBody>
+            <Center>
+              <Heading size="xs">
+                Dates: {weekStartFormat} - {weekEndFormat}
               </Heading>
-              <Center>
-                <Text pt="2" fontSize="sm">
-                  {totalMiles}
-                </Text>
-              </Center>
-            </Box>
-            <Box>
-              <Heading size="xs" textTransform="uppercase">
-                Total Pay
-              </Heading>
-              <Center>
-                <Text pt="2" fontSize="sm">
-                  {currency(totalPay).format()}
-                </Text>
-              </Center>
-            </Box>
-            <Box>
-              <Heading size="xs" textTransform="uppercase">
-                Total Backhaul
-              </Heading>
-              <Center>
-                <Text pt="2" fontSize="sm">
-                  {currency(totalBackHaulPay).format()}
-                </Text>
-              </Center>
-            </Box>
-          </Stack>
-        </CardBody>
-      </Card>
+            </Center>
+            <Table
+              variant="simple"
+              colorScheme={colorScheme}
+              size={{ base: 'sm', sm: 'md', lg: 'lg' }}
+            >
+              <Thead>
+                <Tr>
+                  <Th isNumeric>Total </Th>
+                  <Th isNumeric>Total </Th>
+                  <Th isNumeric>Total </Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                  <Th isNumeric>{totalMiles}</Th>
+                  <Th isNumeric>{currency(totalPay).format()}</Th>
+                  <Th isNumeric>{currency(totalBackHaulPay).format()}</Th>
+                </Tr>
+              </Tbody>
+              <Tfoot>
+                <Tr>
+                  <Th isNumeric> Miles</Th>
+                  <Th isNumeric> Pay</Th>
+                  <Th isNumeric> Backhaul</Th>
+                </Tr>
+              </Tfoot>
+            </Table>
+          </CardBody>
+        </Card>
+      </LinkOverlay>
     </LinkBox>
   )
 }

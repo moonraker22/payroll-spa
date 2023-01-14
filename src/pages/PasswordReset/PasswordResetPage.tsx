@@ -24,7 +24,7 @@ import { useEffect, useState } from 'react'
 import { useRegister } from '../../hooks/useAuth'
 import { store } from '@/stores/store'
 import { useSnapshot } from 'valtio'
-import { auth } from '@/firebaseConf'
+import { auth } from '@/firebase'
 
 import SlideIn from '@/pages/PasswordReset/SlideIn'
 import { usePasswordReset } from '@/hooks/usePasswordReset'

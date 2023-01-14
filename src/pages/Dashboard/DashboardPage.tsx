@@ -21,7 +21,7 @@ import { store, useSnapshot } from '@/stores/store'
 import { useGetWeeklyTotals } from '@/hooks/useGetWeeklyTotals'
 import SpinnerComp from '@/components/SpinnerComp'
 import { animate, motion as m } from 'framer-motion'
-import { auth } from '@/firebaseConf'
+import { auth } from '@/firebase'
 
 export default function Dashboard() {
   const { id } = useParams<{ id: string }>()
@@ -182,7 +182,7 @@ export default function Dashboard() {
                     as={RouterLink}
                     to={routes.PROFILE}
                     _hover={{
-                      bg: 'cyan.600',
+                      bg: 'cyan.800',
                       color: 'white',
                       scale: 1.1,
                     }}
