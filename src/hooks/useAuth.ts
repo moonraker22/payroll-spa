@@ -3,12 +3,12 @@ import {
   createUserWithEmailAndPassword,
 } from 'firebase/auth'
 import { useAuthState, useSignOut, useIdToken } from 'react-firebase-hooks/auth'
-import { auth, db } from '@/firebaseConf'
+import { auth, db } from '@/firebase'
 import { useEffect, useState } from 'react'
 import { routes } from '@/lib/routes'
 import { useToast } from '@chakra-ui/react'
-import { useNavigate } from 'react-router-dom'
-import { setDoc, doc, getDoc } from 'firebase/firestore'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { setDoc, doc, getDoc, serverTimestamp } from 'firebase/firestore'
 import { store } from '@/stores/store'
 import { useSnapshot } from 'valtio'
 
@@ -42,6 +42,9 @@ export function useLogin() {
   const [error, setError] = useState(null)
   const toast = useToast()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const from = location.state?.from?.pathname || '/'
 
   async function login({ email, password, redirectTo = routes.DASHBOARD }) {
     setLoading(true)
@@ -58,7 +61,7 @@ export function useLogin() {
         colorScheme: 'cyan',
         variant: 'solid',
       })
-      navigate(redirectTo)
+      navigate(from || redirectTo, { replace: true })
     } catch (error) {
       toast({
         title: 'Logging in failed',
@@ -84,6 +87,9 @@ export function useRegister() {
   const [error, setError] = useState(null)
   const toast = useToast()
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const from = location.state?.from?.pathname || '/'
 
   async function register({ email, password, redirectTo = routes.DASHBOARD }) {
     setLoading(true)
@@ -101,8 +107,10 @@ export function useRegister() {
         id: res.user.uid,
         email: res.user.email,
         avatar: '',
-        createdAt: Date.now(),
+        createdAt: serverTimestamp(),
         displayName: '',
+        role: 'user',
+        isAdmin: false,
       })
 
       toast({
@@ -116,7 +124,7 @@ export function useRegister() {
         colorScheme: 'cyan',
       })
 
-      navigate(redirectTo)
+      navigate(from || redirectTo, { replace: true })
     } catch (error) {
       toast({
         title: 'Sign Up failed',

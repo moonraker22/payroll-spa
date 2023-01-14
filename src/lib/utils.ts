@@ -1,7 +1,22 @@
 import { endOfWeek, toDate, isEqual, startOfWeek } from 'date-fns'
 import currency from 'currency.js'
 
-function getWeeklyTotals(array) {
+interface WeekType {
+  backhaul: number
+  date: number
+  endingMiles: number
+  payMiles: number
+  startingMiles: number
+  totalMiles: 10
+  uid: string
+}
+
+interface WeeklyTotalsType extends WeekType {
+  weekStart: number
+  weekEnd: number
+}
+
+function getWeeklyTotals(array: WeekType[]): WeeklyTotalsType[] {
   const weeklyTotals = []
   array.forEach((object) => {
     const weekStart = startOfWeek(toDate(object.date))
@@ -41,7 +56,11 @@ function getWeeklyTotals(array) {
   return weeklyTotals
 }
 
-function computePay(totalPay, payMiles, backhaul = 0) {
+function computePay(
+  totalPay: number,
+  payMiles: number,
+  backhaul = 0
+): currency {
   if (totalPay > payMiles) {
     return currency(totalPay, { precision: 2 }).multiply(0.515).add(backhaul)
   } else {
@@ -49,7 +68,7 @@ function computePay(totalPay, payMiles, backhaul = 0) {
   }
 }
 
-function sortWeeklyTotals(array) {
+function sortWeeklyTotals(array: WeeklyTotalsType[]): void {
   array.sort((a, b) => {
     return a.weekStart - b.weekStart
   })

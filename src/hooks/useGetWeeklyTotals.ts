@@ -4,7 +4,7 @@ import { store } from '@/stores/store'
 import { useEffect } from 'react'
 import { collection, orderBy, query } from 'firebase/firestore'
 
-import { db, auth } from '@/firebaseConf'
+import { db, auth } from '@/firebase'
 import { COLLECTIONS, returnPaysheetString } from '@/lib/constants'
 import { useCollectionOnce } from 'react-firebase-hooks/firestore'
 import { useAuth } from './useAuth'
@@ -18,8 +18,13 @@ export function useGetWeeklyTotals() {
   let q
   if (!authLoading) {
     q = query(
-      collection(db, `users`, `${authUser.uid}`, `${COLLECTIONS.PAYSHEETS}`),
-      orderBy('date', 'desc')
+      collection(
+        db,
+        COLLECTIONS.USERS,
+        `${authUser.uid}`,
+        `${COLLECTIONS.PAYSHEETS}`
+      ),
+      orderBy('date', 'asc')
     )
   }
 

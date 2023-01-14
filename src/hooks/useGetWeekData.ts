@@ -8,13 +8,13 @@ import {
 } from 'firebase/firestore'
 import { useState } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { db } from '@/firebaseConf'
+import { db } from '@/firebase'
 import { addDays, addWeeks } from 'date-fns'
 import { useSnapshot } from 'valtio'
 import { store } from '@/stores/store'
 import { COLLECTIONS } from '@/lib/constants'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { auth } from '@/firebaseConf'
+import { auth } from '@/firebase'
 
 export function useGetWeekData({ weekStart }) {
   const snap = useSnapshot(store)

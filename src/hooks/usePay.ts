@@ -1,5 +1,5 @@
 import { useAuthState, useSignOut } from 'react-firebase-hooks/auth'
-import { auth, db } from '@/firebaseConf'
+import { auth, db } from '@/firebase'
 import { useEffect, useState } from 'react'
 import { routes } from '@/lib/routes'
 import { useToast } from '@chakra-ui/react'

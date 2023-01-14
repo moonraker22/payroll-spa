@@ -130,7 +130,7 @@ export default function Profile() {
                         colorScheme="cyan"
                         variant="outline"
                         _hover={{
-                          bg: 'cyan.600',
+                          bg: 'cyan.800',
                           color: 'white',
                           scale: 1.1,
                         }}
@@ -154,7 +154,7 @@ export default function Profile() {
                 as={RouterLink}
                 to={routes.PASSWORD_RESET}
                 _hover={{
-                  bg: 'cyan.600',
+                  bg: 'cyan.800',
                   color: 'white',
                   scale: 1.1,
                 }}

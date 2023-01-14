@@ -6,6 +6,7 @@ import { AnimatePresence } from 'framer-motion'
 import '@fontsource/roboto/400.css'
 import '@fontsource/ubuntu/400.css'
 import './App.css'
+import { AuthUserProvider } from './stores/auth'
 
 // const colors = {
 //   brand: {
@@ -26,9 +27,11 @@ import './App.css'
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <AnimatePresence>
-        <RouterProvider router={router} />
-      </AnimatePresence>
+      <AuthUserProvider>
+        <AnimatePresence>
+          <RouterProvider router={router} />
+        </AnimatePresence>
+      </AuthUserProvider>
     </ChakraProvider>
   )
 }

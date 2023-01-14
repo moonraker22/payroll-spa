@@ -1,7 +1,7 @@
 import { doc, updateDoc } from 'firebase/firestore'
 import { useState } from 'react'
 import { store } from '@/stores/store'
-import { db } from '@/firebaseConf'
+import { db } from '@/firebase'
 import { useToast } from '@chakra-ui/react'
 import { useAuth } from './useAuth'
 

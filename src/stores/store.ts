@@ -1,7 +1,7 @@
 import { proxy, useSnapshot, subscribe, snapshot } from 'valtio'
 import { devtools, derive } from 'valtio/utils'
 import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from '@/firebaseConf'
+import { auth } from '@/firebase'
 
 const store = proxy({
   userId: '',
@@ -58,37 +58,38 @@ const store = proxy({
 
 devtools(store, 'Payroll')
 
-let unsubscribe: () => void
+// let unsubscribe: () => void
 
-async function init() {
-  unsubscribe = onAuthStateChanged(auth, (user) => {
-    if (user) {
-      store.userId = user?.uid
-      store.userEmail = user?.email
-      store.isSignedIn = true
-      store.avatar = auth.currentUser?.avatar || user?.photoURL
-      // store.avatar = user?.avatar
-    } else {
-      store.userId = ''
-      store.userEmail = ''
-      store.isSignedIn = false
-      store.avatar = ''
-      // store.weeks = []
-    }
-  })
-}
+// async function init() {
+//   unsubscribe = onAuthStateChanged(auth, (user) => {
+//     if (user) {
+//       store.userId = user?.uid
+//       store.userEmail = user?.email
+//       store.isSignedIn = true
+//       store.avatar = auth.currentUser?.photoURL || user?.photoURL
+//       // store.avatar = user?.avatar
+//     } else {
+//       store.userId = ''
+//       store.userEmail = ''
+//       store.isSignedIn = false
+//       store.avatar = ''
+//       // store.weeks = []
+//     }
+//   })
+// }
 
-init()
+// init()
 
-function unSubscribe() {
-  unsubscribe()
-}
+// function unSubscribe() {
+//   unsubscribe()
+// }
 
-subscribe(store, () => {
-  if (!store.isSignedIn) {
-    unSubscribe()
-    // signOut(auth)
-  }
-})
+// subscribe(store, () => {
+//   if (!store.isSignedIn) {
+//     unSubscribe()
+//     // signOut(auth)
+//   }
+// })
 
-export { store, useSnapshot, unSubscribe, snapshot }
+// export { store, useSnapshot, unSubscribe, snapshot }
+export { store, useSnapshot, snapshot }
