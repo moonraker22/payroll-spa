@@ -4,24 +4,20 @@ import { store } from '@/stores/store'
 import { useEffect } from 'react'
 import { collection, orderBy, query } from 'firebase/firestore'
 
-import { db, auth } from '@/firebase'
+import { db } from '@/firebase'
 import { COLLECTIONS, returnPaysheetString } from '@/lib/constants'
 import { useCollectionOnce } from 'react-firebase-hooks/firestore'
-import { useAuth } from './useAuth'
-import { useAuthState } from 'react-firebase-hooks/auth'
 
 export function useGetWeeklyTotals() {
   const snap = useSnapshot(store)
-  // const { user } = useAuth()
-  const [authUser, authLoading, authError] = useAuthState(auth)
 
   let q
-  if (!authLoading) {
+  if (snap?.isSignedIn && snap?.userId) {
     q = query(
       collection(
         db,
         COLLECTIONS.USERS,
-        `${authUser.uid}`,
+        `${snap?.userId}`,
         `${COLLECTIONS.PAYSHEETS}`
       ),
       orderBy('date', 'asc')
@@ -31,7 +27,7 @@ export function useGetWeeklyTotals() {
   const [totals, totalsLoading, totalsError]: any = useCollectionOnce(q)
   let weeks = []
   useEffect(() => {
-    if (!totalsLoading && !authLoading) {
+    if (!totalsLoading && snap?.isSignedIn) {
       const sheets = totals.docs.map((doc) => doc.data())
       weeks = getWeeklyTotals(sheets)
 

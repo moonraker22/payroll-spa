@@ -33,6 +33,7 @@ export default function WeeklyPage() {
     weekStart: Date.parse(startDate),
   })
   const colorScheme = useColorModeValue('gray', 'cyan.600')
+  // const colorScheme = useColorModeValue('gray', 'cyan')
 
   useEffect(() => {
     if (!state) {
@@ -64,7 +65,7 @@ export default function WeeklyPage() {
           </TableCaption>
           <TableCaption placement="bottom">
             Go back to{' '}
-            <Link as={RouterLink} to={routes.DASHBOARD}>
+            <Link as={RouterLink} to={routes.DASHBOARD} color={colorScheme}>
               Dashboard
             </Link>
           </TableCaption>

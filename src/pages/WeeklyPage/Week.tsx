@@ -1,12 +1,13 @@
 import { Link as RouterLink } from 'react-router-dom'
 import { Tr, Td, Icon } from '@chakra-ui/react'
 import currency from 'currency.js'
-import { getDay } from 'date-fns'
+// import { getDay, parseISO } from 'date-fns'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { routes } from '../../lib/routes'
 
 export default function Week({ day }) {
-  const result = getDay(day?.date)
+  // const result = getDay(day?.date)
+
   const daysOfWeek = new Map([
     [0, 'Sun'],
     [1, 'Mon'],
@@ -17,7 +18,9 @@ export default function Week({ day }) {
     [6, 'Sat'],
   ])
 
-  const dayFormat = daysOfWeek.get(result)
+  const dayFormat = `${new Date(day?.date)
+    .toDateString()
+    .slice(0, 3)} ${new Date(day?.date).toDateString().slice(8, 10)}th`
 
   const miles = () => {
     if (day?.payMiles > day?.totalMiles) {
