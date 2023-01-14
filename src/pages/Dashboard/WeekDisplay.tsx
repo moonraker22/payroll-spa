@@ -61,7 +61,7 @@ export function WeekDisplay({
           border="1px"
           borderColor={colorScheme}
           px="10px"
-          // as={m.div}
+          boxShadow="xl"
         >
           <CardBody>
             <Center>

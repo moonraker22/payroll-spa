@@ -1,7 +1,5 @@
 import { proxy, useSnapshot, subscribe, snapshot } from 'valtio'
 import { devtools, derive } from 'valtio/utils'
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from '@/firebase'
 
 const store = proxy({
   userId: '',
@@ -92,4 +90,4 @@ devtools(store, 'Payroll')
 // })
 
 // export { store, useSnapshot, unSubscribe, snapshot }
-export { store, useSnapshot, snapshot }
+export { store, useSnapshot }

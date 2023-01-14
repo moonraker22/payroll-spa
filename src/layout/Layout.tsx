@@ -25,7 +25,7 @@ import { ImCoinDollar } from 'react-icons/im'
 import { useDisclosure } from '@chakra-ui/react'
 import { useLogout } from '../hooks/useAuth'
 import { routes } from '../lib/routes'
-import { store, useSnapshot, snapshot } from '@/stores/store'
+import { store, useSnapshot } from '@/stores/store'
 import { FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa'
 import { useRef, useEffect, useContext, Suspense } from 'react'
 import { useFireAuth } from '@/stores/auth'
@@ -60,10 +60,10 @@ export default function Layout() {
     navigate(routes.LOGIN)
   }
 
-  // const user = useSnapshot(store)
-  const { authUser: user, isLoading, isSignedIn } = useFireAuth()
+  const user = useSnapshot(store)
+  // const { authUser: user, isLoading, isSignedIn } = useFireAuth()
 
-  if (isLoading) {
+  if (!user) {
     return <SpinnerComp />
   }
   return (
@@ -130,7 +130,7 @@ export default function Layout() {
                   md: 'inline-flex',
                 }}
               >
-                {user && isSignedIn ? (
+                {user && user.isSignedIn ? (
                   <>
                     {' '}
                     <Button
@@ -260,7 +260,7 @@ export default function Layout() {
                     aria-label="Close menu"
                     onClick={mobileNav.onClose}
                   />
-                  {user && isSignedIn ? (
+                  {user && user.isSignedIn ? (
                     <>
                       <Button
                         variant="ghost"
