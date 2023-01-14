@@ -46,7 +46,7 @@ export function WeekDisplay({
   const weekEndFormat = format(endDate, 'MM/dd/yyyy')
 
   const colorScheme = useColorModeValue('gray', 'cyan.600')
-  // const colorScheme = useColorModeValue('gray', 'cyan')
+  const tableColorScheme = useColorModeValue('blackAlpha', 'cyan')
   return (
     <LinkBox>
       <LinkOverlay
@@ -61,7 +61,9 @@ export function WeekDisplay({
           border="1px"
           borderColor={colorScheme}
           px="10px"
-          // as={m.div}
+          boxShadow="xl"
+          rounded={20}
+          // textColor={colorScheme}
         >
           <CardBody>
             <Center>
@@ -71,7 +73,7 @@ export function WeekDisplay({
             </Center>
             <Table
               variant="simple"
-              colorScheme={colorScheme}
+              colorScheme={tableColorScheme}
               size={{ base: 'sm', sm: 'md', lg: 'lg' }}
             >
               <Thead>

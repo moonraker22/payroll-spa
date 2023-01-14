@@ -62,6 +62,8 @@ const DailyForm = () => {
   })
   const onSubmit: SubmitHandler<PaysheetInputs> = (data) => {
     try {
+      console.log('🚀 ~ file: DailyForm.tsx:275 ~ DailyForm ~ data', data)
+
       addPay({ ...data })
       reset()
     } catch (error) {
@@ -100,6 +102,9 @@ const DailyForm = () => {
     [isDirty, isValid, isSubmitting, errors, day]
   )
   const canSubmit = canSubmitFunc()
+  // console.log(new Date(1673654400000), 'date')
+  // console.log(new Date(), 'today date')
+  // console.log(getValues('date'), 'date')
 
   return (
     <m.div

@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth, GoogleAuthProvider } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
+import { getAuth, GoogleAuthProvider, connectAuthEmulator } from 'firebase/auth'
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 
 const config = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -18,5 +18,8 @@ const app = initializeApp(config)
 
 const auth = getAuth(app)
 const db = getFirestore(app)
+
+connectFirestoreEmulator(db, 'localhost', 8080)
+connectAuthEmulator(auth, 'http://localhost:9099')
 
 export { auth, db, app, googleProvider }

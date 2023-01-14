@@ -1,9 +1,9 @@
 import { z } from 'zod'
+import { parseISO } from 'date-fns'
 
 //DailyPaySheet Schema
 export const Paysheet = z.object({
-  // uid: z.string(),
-  date: z.string().transform((value) => Date.parse(value)),
+  date: z.string().transform((value) => parseISO(value).getTime()),
   startingMiles: z.string().transform((value) => Number(value)),
   endingMiles: z.string().transform((value) => Number(value)),
   totalMiles: z.number().transform((value) => Number(value)),

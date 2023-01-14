@@ -165,10 +165,10 @@ export default function Dashboard() {
                   </VisuallyHidden>
                 </Center>
                 <Divider orientation="horizontal" />
-                <Center mt="20px">
+                <Center mt="20px" overflow={'hidden'}>
                   <Heading
                     as="h3"
-                    fontSize="2xl"
+                    fontSize="xl"
                     fontWeight="extrabold"
                     // color={'black'}
                   >

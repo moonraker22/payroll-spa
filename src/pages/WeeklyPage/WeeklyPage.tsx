@@ -11,16 +11,18 @@ import {
   Tr,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useGetWeekData, DayType } from '@/hooks/useGetWeekData'
 import { Link as RouterLink } from 'react-router-dom'
 
 import Week from './Week'
 import { motion as m } from 'framer-motion'
 import { routes } from '../../lib/routes'
+import { useEffect } from 'react'
 
 export default function WeeklyPage() {
   const location = useLocation()
+  const navigate = useNavigate()
   const { state } = location
 
   const startDate = state?.startDate
@@ -31,6 +33,13 @@ export default function WeeklyPage() {
     weekStart: Date.parse(startDate),
   })
   const colorScheme = useColorModeValue('gray', 'cyan.600')
+  // const colorScheme = useColorModeValue('gray', 'cyan')
+
+  useEffect(() => {
+    if (!state) {
+      navigate(routes.DASHBOARD)
+    }
+  }, [state, navigate])
 
   return (
     <Container maxW={{ base: '100%', sm: '95%', lg: '90%' }}>
@@ -56,7 +65,7 @@ export default function WeeklyPage() {
           </TableCaption>
           <TableCaption placement="bottom">
             Go back to{' '}
-            <Link as={RouterLink} to={routes.DASHBOARD}>
+            <Link as={RouterLink} to={routes.DASHBOARD} color={colorScheme}>
               Dashboard
             </Link>
           </TableCaption>
