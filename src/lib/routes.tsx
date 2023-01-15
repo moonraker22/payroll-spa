@@ -46,7 +46,6 @@ const router = createBrowserRouter(
 
         <Route path={routes.REGISTER} element={<Registration />} />
         <Route path={routes.LOGIN} element={<Login />} />
-        <Route path={routes.PASSWORD_RESET} element={<PasswordReset />} />
         <Route path={routes.FORGOT_PASSWORD} element={<ForgotPassword />} />
 
         {/* Protected Routes */}
@@ -55,6 +54,7 @@ const router = createBrowserRouter(
           <Route path={routes.DAILY} element={<DailyPage />} />
           <Route path={routes.WEEKLY} element={<WeeklyPage />} />
           <Route path={routes.PROFILE} element={<ProfilePage />} />
+          <Route path={routes.PASSWORD_RESET} element={<PasswordReset />} />
         </Route>
       </Route>
     </>

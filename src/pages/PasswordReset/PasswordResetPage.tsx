@@ -144,8 +144,8 @@ export default function PasswordReset() {
               <FormControl
                 isInvalid={errors.password ? true : false}
                 isRequired
+                variant="floating"
               >
-                <FormLabel htmlFor="password">Password:</FormLabel>
                 <Input
                   {...register('password')}
                   id="password"
@@ -153,6 +153,7 @@ export default function PasswordReset() {
                   placeholder="Password"
                   autoComplete="new-password"
                 />
+                <FormLabel htmlFor="password">Password:</FormLabel>
                 <FormErrorMessage>
                   {errors.password && errors.password.message}
                 </FormErrorMessage>
@@ -162,10 +163,8 @@ export default function PasswordReset() {
               <FormControl
                 isInvalid={errors.passwordConfirmation ? true : false}
                 isRequired
+                variant="floating"
               >
-                <FormLabel htmlFor="passwordConfirmation">
-                  Password Confirmation:
-                </FormLabel>
                 <Input
                   {...register('passwordConfirmation')}
                   id="passwordConfirmation"
@@ -173,6 +172,9 @@ export default function PasswordReset() {
                   placeholder="Password Confirmation"
                   autoComplete="new-password"
                 />
+                <FormLabel htmlFor="passwordConfirmation">
+                  Password Confirmation:
+                </FormLabel>
                 <FormErrorMessage>
                   {errors.passwordConfirmation &&
                     errors.passwordConfirmation.message}
@@ -183,10 +185,8 @@ export default function PasswordReset() {
               <FormControl
                 isInvalid={errors.currentPassword ? true : false}
                 isRequired
+                variant="floating"
               >
-                <FormLabel htmlFor="currentPassword">
-                  Current Password:
-                </FormLabel>
                 <Input
                   {...register('currentPassword')}
                   id="currentPassword"
@@ -194,6 +194,9 @@ export default function PasswordReset() {
                   placeholder="Password Confirmation"
                   autoComplete="new-password"
                 />
+                <FormLabel htmlFor="currentPassword">
+                  Current Password:
+                </FormLabel>
                 <FormErrorMessage>
                   {errors.currentPassword && errors.currentPassword.message}
                 </FormErrorMessage>
