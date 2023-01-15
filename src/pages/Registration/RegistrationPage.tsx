@@ -142,17 +142,20 @@ export default function Registration() {
           <Box p="3">
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Box my={2}>
-                <FormControl isInvalid={errors.email ? true : false} isRequired>
-                  <FormLabel htmlFor="email" color="gray.300">
-                    Email:
-                  </FormLabel>
+                <FormControl
+                  isInvalid={errors.email ? true : false}
+                  isRequired
+                  variant="floating"
+                >
                   <Input
                     {...register('email')}
                     id="email"
                     type="email"
                     placeholder="Email"
                     autoComplete="email"
+                    mb="5"
                   />
+                  <FormLabel htmlFor="email">Email:</FormLabel>
                   <FormErrorMessage>
                     {errors.email && errors.email.message}
                   </FormErrorMessage>
@@ -162,17 +165,17 @@ export default function Registration() {
                 <FormControl
                   isInvalid={errors.password ? true : false}
                   isRequired
+                  variant="floating"
                 >
-                  <FormLabel htmlFor="password" color="gray.300">
-                    Password:
-                  </FormLabel>
                   <Input
                     {...register('password')}
                     id="password"
                     type="password"
                     placeholder="Password"
                     autoComplete="new-password"
+                    mb="5"
                   />
+                  <FormLabel htmlFor="password">Password:</FormLabel>
                   <FormErrorMessage>
                     {errors.password && errors.password.message}
                   </FormErrorMessage>
@@ -182,17 +185,19 @@ export default function Registration() {
                 <FormControl
                   isInvalid={errors.passwordConfirmation ? true : false}
                   isRequired
+                  variant="floating"
                 >
-                  <FormLabel htmlFor="passwordConfirmation" color="gray.300">
-                    Password Confirmation:
-                  </FormLabel>
                   <Input
                     {...register('passwordConfirmation')}
                     id="passwordConfirmation"
                     type="password"
                     placeholder="Password Confirmation"
                     autoComplete="new-password"
+                    mb="2"
                   />
+                  <FormLabel htmlFor="passwordConfirmation">
+                    Password Confirmation:
+                  </FormLabel>
                   <FormErrorMessage>
                     {errors.passwordConfirmation &&
                       errors.passwordConfirmation.message}
@@ -211,6 +216,11 @@ export default function Registration() {
                   disabled={!canSubmit}
                   loadingText="Logging In"
                   variant={'outline'}
+                  _hover={{
+                    bg: 'cyan.600',
+                    color: 'white',
+                    scale: 1.1,
+                  }}
                 >
                   Submit
                 </Button>

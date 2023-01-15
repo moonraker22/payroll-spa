@@ -23,7 +23,7 @@ import {
   Flex,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Login as LoginResolver } from '@/data/paySchema'
+import { Login as LoginResolver, LoginType } from '@/data/paySchema'
 import { useEffect, useRef } from 'react'
 import { motion as m } from 'framer-motion'
 import { useLogin } from '@/hooks/useAuth'
@@ -33,11 +33,6 @@ import { routes } from '@/lib/routes'
 import { useGoogleAuth } from '@/hooks/useGoogleAuth'
 import { store } from '@/stores/store'
 import { useSnapshot } from 'valtio'
-
-type RegistrationInputs = {
-  email: string
-  password: string
-}
 
 export default function Login() {
   const snap = useSnapshot(store)
@@ -56,18 +51,20 @@ export default function Login() {
     watch,
     setFocus,
     formState: { errors, isDirty, isSubmitting, isValid, touchedFields },
-  } = useForm<RegistrationInputs>({
+  } = useForm<LoginType>({
     resolver: zodResolver(LoginResolver),
   })
 
   const bg = useColorModeValue('white', ' gray.800')
+  const color = useColorModeValue('gray.800', 'white')
+
   const password = watch('password')
   const email = watch('email')
   const canSubmit = isDirty && isValid && password && email
   // const { loginUser } = useStore()
   const { login, isLoading, error } = useLogin()
 
-  const onSubmit: SubmitHandler<RegistrationInputs> = async (data) => {
+  const onSubmit: SubmitHandler<LoginType> = async (data) => {
     try {
       login({ email: data.email, password: data.password })
     } catch (error) {
@@ -139,17 +136,20 @@ export default function Login() {
           <Box p="3">
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Box mb={2}>
-                <FormControl isInvalid={errors.email ? true : false} isRequired>
-                  <FormLabel htmlFor="email" color="gray.300">
-                    Email
-                  </FormLabel>
+                <FormControl
+                  isInvalid={errors.email ? true : false}
+                  isRequired
+                  variant="floating"
+                >
                   <Input
                     {...register('email')}
                     id="email"
                     type="email"
                     placeholder="Email"
                     autoComplete="email"
+                    mb="5"
                   />
+                  <FormLabel htmlFor="email">Email</FormLabel>
                   <FormErrorMessage>
                     {errors.email && errors.email.message}
                   </FormErrorMessage>
@@ -159,11 +159,8 @@ export default function Login() {
                 <FormControl
                   isInvalid={errors.password ? true : false}
                   isRequired
+                  variant="floating"
                 >
-                  <FormLabel htmlFor="password" color="gray.300">
-                    Password
-                  </FormLabel>
-
                   <InputGroup>
                     <InputRightElement>
                       <IconButton
@@ -183,7 +180,9 @@ export default function Login() {
                       autoComplete="current-password"
                       required
                       placeholder="Password"
+                      mb="2"
                     />
+                    <FormLabel htmlFor="password">Password</FormLabel>
                   </InputGroup>
                   <FormErrorMessage>
                     {errors.password && errors.password.message}
@@ -202,6 +201,11 @@ export default function Login() {
                   disabled={!canSubmit}
                   loadingText="Logging In"
                   variant={'outline'}
+                  _hover={{
+                    bg: 'cyan.600',
+                    color: 'white',
+                    scale: 1.1,
+                  }}
                 >
                   Submit
                 </Button>
@@ -239,15 +243,12 @@ export default function Login() {
                     </Button>
                   </Center>
                   <Center>
-                    {/* <Text mt="3px" mr="5px" color="gray.300">
-                      Don't have an account?
-                    </Text> */}
                     <Button
                       mt="8px"
                       as={RouterLink}
                       variant="link"
                       colorScheme="cyan"
-                      to={routes.REGISTER}
+                      to={routes.FORGOT_PASSWORD}
                     >
                       {' '}
                       Forgot Password

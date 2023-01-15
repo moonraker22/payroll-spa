@@ -47,6 +47,7 @@ export default function Profile() {
   }
 
   const bg = useColorModeValue('white', ' gray.800')
+  const color = useColorModeValue('gray.800', 'white')
 
   return (
     <Container p="10px" color="gray.300">
@@ -109,19 +110,27 @@ export default function Profile() {
                 fontSize="2xl"
                 fontWeight="extrabold"
                 // color={'black'}
+                color={color}
               >
                 {user.userEmail}
               </Heading>
             </Center>
             <Center mt="20px">
               <Form onSubmit={handleSubmit(onSubmit)}>
-                <FormControl isInvalid={errors.avatar?.message ? true : false}>
-                  <HStack spacing="10px">
-                    <FormLabel htmlFor="avatar" placeholder="Avatar URL">
-                      Avatar URL
-                    </FormLabel>
+                <FormControl
+                  isInvalid={errors.avatar?.message ? true : false}
+                  variant="floating"
+                >
+                  <HStack spacing="10px" mt="5">
                     <Box>
                       <Input {...register('avatar')} placeholder="Avatar" />
+                      <FormLabel
+                        htmlFor="avatar"
+                        placeholder="Avatar URL"
+                        sx={{ color: color }}
+                      >
+                        Avatar URL
+                      </FormLabel>
                     </Box>
 
                     <Box>
@@ -130,7 +139,7 @@ export default function Profile() {
                         colorScheme="cyan"
                         variant="outline"
                         _hover={{
-                          bg: 'cyan.800',
+                          bg: 'cyan.600',
                           color: 'white',
                           scale: 1.1,
                         }}
@@ -154,7 +163,7 @@ export default function Profile() {
                 as={RouterLink}
                 to={routes.PASSWORD_RESET}
                 _hover={{
-                  bg: 'cyan.800',
+                  bg: 'cyan.600',
                   color: 'white',
                   scale: 1.1,
                 }}

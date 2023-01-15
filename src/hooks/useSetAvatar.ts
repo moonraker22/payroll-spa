@@ -1,4 +1,4 @@
-import { doc, updateDoc } from 'firebase/firestore'
+import { doc, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { useState } from 'react'
 import { store } from '@/stores/store'
 import { db } from '@/firebase'
@@ -31,6 +31,7 @@ export function useSetAvatar() {
     try {
       await updateDoc(docRef, {
         avatar: avatarUrl,
+        updatedAt: serverTimestamp(),
       })
       store.avatar = avatarUrl
       toast({

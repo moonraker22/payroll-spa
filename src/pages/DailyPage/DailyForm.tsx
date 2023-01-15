@@ -62,8 +62,6 @@ const DailyForm = () => {
   })
   const onSubmit: SubmitHandler<PaysheetInputs> = (data) => {
     try {
-      console.log('🚀 ~ file: DailyForm.tsx:275 ~ DailyForm ~ data', data)
-
       addPay({ ...data })
       reset()
     } catch (error) {
@@ -134,14 +132,20 @@ const DailyForm = () => {
       >
         <Box p="4">
           <Form onSubmit={handleSubmit(onSubmit)}>
-            <FormControl isInvalid={errors.date ? true : false} isRequired>
-              <FormLabel htmlFor="date">Date</FormLabel>
+            <FormControl
+              isInvalid={errors.date ? true : false}
+              isRequired
+              variant="floating"
+            >
               <Input
                 {...register('date')}
                 id="date"
                 type="date"
                 placeholder="date"
+                mb="3"
+                mt="3"
               />
+              <FormLabel htmlFor="date">Date</FormLabel>
               <FormErrorMessage>
                 {errors.date && errors.date.message}
               </FormErrorMessage>
@@ -151,14 +155,16 @@ const DailyForm = () => {
               <FormControl
                 isInvalid={errors.startingMiles ? true : false}
                 isRequired
+                variant="floating"
               >
-                <FormLabel htmlFor="startingMiles">Starting Miles:</FormLabel>
                 <Input
                   {...register('startingMiles')}
                   id="startingMiles"
                   type="number"
                   placeholder="Starting Miles"
+                  mb="3"
                 />
+                <FormLabel htmlFor="startingMiles">Starting Miles:</FormLabel>
                 <FormErrorMessage>
                   {errors.startingMiles && errors.startingMiles.message}
                 </FormErrorMessage>
@@ -168,14 +174,16 @@ const DailyForm = () => {
               <FormControl
                 isInvalid={errors.endingMiles ? true : false}
                 isRequired
+                variant="floating"
               >
-                <FormLabel htmlFor="endingMiles">Ending Miles:</FormLabel>
                 <Input
                   {...register('endingMiles')}
                   id="endingMiles"
                   type="number"
                   placeholder="Ending Miles"
+                  mb="3"
                 />
+                <FormLabel htmlFor="endingMiles">Ending Miles:</FormLabel>
                 <FormErrorMessage>
                   {errors.endingMiles && errors.endingMiles.message}
                 </FormErrorMessage>
@@ -185,15 +193,17 @@ const DailyForm = () => {
               <FormControl
                 isInvalid={errors.totalMiles ? true : false}
                 isRequired
+                variant="floating"
               >
-                <FormLabel htmlFor="totalMiles">Total Miles:</FormLabel>
                 <Input
                   {...register('totalMiles')}
                   id="totalMiles"
                   type="number"
                   placeholder="Total Miles"
                   disabled
+                  mb="3"
                 />
+                <FormLabel htmlFor="totalMiles">Total Miles:</FormLabel>
                 <FormErrorMessage>
                   {errors.totalMiles && errors.totalMiles.message}
                 </FormErrorMessage>
@@ -203,14 +213,16 @@ const DailyForm = () => {
               <FormControl
                 isInvalid={errors.payMiles ? true : false}
                 isRequired
+                variant="floating"
               >
-                <FormLabel htmlFor="payMiles">Pay Miles:</FormLabel>
                 <Input
                   {...register('payMiles')}
                   id="payMiles"
                   type="number"
                   placeholder="Pay Miles"
+                  mb="3"
                 />
+                <FormLabel htmlFor="payMiles">Pay Miles:</FormLabel>
                 <FormErrorMessage>
                   {errors.payMiles && errors.payMiles.message}
                 </FormErrorMessage>
@@ -220,13 +232,15 @@ const DailyForm = () => {
               <FormControl
                 isInvalid={errors.backhaul ? true : false}
                 isRequired
+                variant="floating"
               >
-                <FormLabel htmlFor="backhaul">Backhaul:</FormLabel>
                 <Input
                   {...register('backhaul')}
                   id="backhaul"
                   placeholder="BackHaul"
+                  mb="3"
                 />
+                <FormLabel htmlFor="backhaul">Backhaul:</FormLabel>
                 <FormErrorMessage>
                   {errors.backhaul && errors.backhaul.message}
                 </FormErrorMessage>
@@ -243,7 +257,7 @@ const DailyForm = () => {
                 loadingText={day ? 'Updating' : 'Submitting'}
                 variant="outline"
                 _hover={{
-                  bg: 'cyan.800',
+                  bg: 'cyan.600',
                   color: 'white',
                   scale: 1.1,
                 }}

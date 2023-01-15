@@ -74,4 +74,23 @@ function sortWeeklyTotals(array: WeeklyTotalsType[]): void {
   })
 }
 
-export { getWeeklyTotals, endOfWeek, startOfWeek, toDate, isEqual }
+const promiseWrapper = (fn: (...args: any) => any) => {
+  return (...args: any) =>
+    new Promise(async (resolve, reject) => {
+      try {
+        const response = await fn(...args)
+        resolve(response)
+      } catch (error) {
+        reject(error)
+      }
+    })
+}
+
+export {
+  getWeeklyTotals,
+  endOfWeek,
+  startOfWeek,
+  toDate,
+  isEqual,
+  promiseWrapper,
+}

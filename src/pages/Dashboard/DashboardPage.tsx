@@ -182,7 +182,7 @@ export default function Dashboard() {
                     as={RouterLink}
                     to={routes.PROFILE}
                     _hover={{
-                      bg: 'cyan.800',
+                      bg: 'cyan.600',
                       color: 'white',
                       scale: 1.1,
                     }}
