@@ -11,6 +11,10 @@ import {
   EmailAuthProvider,
 } from 'firebase/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import { collection, getDocs, query, where } from 'firebase/firestore'
+import { COLLECTIONS } from '@/lib/constants'
+import { db } from '@/firebase'
+import { routes } from '../lib/routes'
 
 export const usePasswordReset = () => {
   const [error, setError] = useState('')
@@ -21,6 +25,8 @@ export const usePasswordReset = () => {
   const toast = useToast()
 
   const passwordResetEmail = async (email: string) => {
+    console.log('email', email)
+
     setLoading(true)
     if (!email) {
       setError('Please enter your email')
@@ -35,60 +41,33 @@ export const usePasswordReset = () => {
       })
       return
     }
-    if (!authUser) {
-      setError('User not found')
+
+    try {
+      await sendPasswordResetEmail(auth, email)
+      toast({
+        title: 'Password reset email sent, please check your inbox',
+        status: 'success',
+        isClosable: true,
+        position: 'top',
+        duration: 5000,
+        colorScheme: 'cyan',
+        variant: 'solid',
+      })
+      navigate(routes.LOGIN)
+    } catch (error) {
+      setError(error.message)
       toast({
         title: 'Password reset failed',
-        description: 'User not found',
+        description: error.message,
         status: 'error',
         isClosable: true,
         position: 'top',
         duration: 5000,
         variant: 'solid',
       })
-      return
+    } finally {
+      setLoading(false)
     }
-    if (authUser.email !== email) {
-      setError('Email does not match')
-      toast({
-        title: 'Password reset failed',
-        description: 'Email does not match',
-        status: 'error',
-        isClosable: true,
-        position: 'top',
-        duration: 5000,
-        variant: 'solid',
-      })
-      return
-    }
-    if (!authLoading && !authError)
-      try {
-        // const auth = getAuth()
-        await sendPasswordResetEmail(auth, email)
-        toast({
-          title: 'Password reset email sent, please check your inbox',
-          status: 'success',
-          isClosable: true,
-          position: 'top',
-          duration: 5000,
-          colorScheme: 'cyan',
-          variant: 'solid',
-        })
-        navigate('/login')
-      } catch (error) {
-        setError(error.message)
-        toast({
-          title: 'Password reset failed',
-          description: error.message,
-          status: 'error',
-          isClosable: true,
-          position: 'top',
-          duration: 5000,
-          variant: 'solid',
-        })
-      } finally {
-        setLoading(false)
-      }
   }
 
   const confirmPassReset = async (code: string, newPassword: string) => {
@@ -144,7 +123,7 @@ export const usePasswordReset = () => {
         colorScheme: 'cyan',
         variant: 'solid',
       })
-      navigate('/login')
+      navigate(routes.LOGIN)
     } catch (error) {
       setError(error.message)
       toast({

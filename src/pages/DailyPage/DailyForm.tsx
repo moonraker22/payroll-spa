@@ -62,8 +62,6 @@ const DailyForm = () => {
   })
   const onSubmit: SubmitHandler<PaysheetInputs> = (data) => {
     try {
-      console.log('🚀 ~ file: DailyForm.tsx:275 ~ DailyForm ~ data', data)
-
       addPay({ ...data })
       reset()
     } catch (error) {

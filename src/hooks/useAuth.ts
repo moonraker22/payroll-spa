@@ -11,6 +11,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { setDoc, doc, getDoc, serverTimestamp } from 'firebase/firestore'
 import { store } from '@/stores/store'
 import { useSnapshot } from 'valtio'
+import { COLLECTIONS } from '../lib/constants'
 
 export function useAuth() {
   const [authUser, authLoading, error] = useAuthState(auth)
@@ -96,18 +97,19 @@ export function useRegister() {
 
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password)
-      const ref = doc(db, 'users', `${res.user.uid}`)
+      const ref = doc(db, COLLECTIONS.USERS, `${res.user.uid}`)
       const docSnap = await getDoc(ref)
-      store.avatar = docSnap.data().avatar
+      store.avatar = docSnap.data()?.avatar || ''
       store.userId = res.user.uid
       store.userEmail = res.user.email
       store.isSignedIn = true
 
-      await setDoc(doc(db, 'users', res.user.uid), {
+      await setDoc(doc(db, COLLECTIONS.USERS, res.user.uid), {
         id: res.user.uid,
         email: res.user.email,
         avatar: '',
         createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
         displayName: '',
         role: 'user',
         isAdmin: false,
@@ -166,3 +168,25 @@ export function useLogout() {
 
   return { logout, isLoading, error }
 }
+
+// import { getAuth, sendEmailVerification } from 'firebase/auth'
+
+// const auth = getAuth()
+// sendEmailVerification(auth.currentUser).then(() => {
+//   // Email verification sent!
+//   // ...
+// })
+
+// import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
+
+// const auth = getAuth()
+// sendPasswordResetEmail(auth, email)
+//   .then(() => {
+//     // Password reset email sent!
+//     // ..
+//   })
+//   .catch((error) => {
+//     const errorCode = error.code
+//     const errorMessage = error.message
+//     // ..
+//   })

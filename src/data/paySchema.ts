@@ -72,3 +72,9 @@ export const PasswordPromptSchema = z.object({
 })
 
 export type PasswordPromptType = z.infer<typeof PasswordPromptSchema>
+
+export const EmailSchema = z.object({
+  email: z.string().email({ message: 'Invalid email address' }),
+})
+
+export type EmailType = z.infer<typeof EmailSchema>

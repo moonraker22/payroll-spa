@@ -20,7 +20,12 @@ export default function Week({ day }) {
 
   const dayFormat = `${new Date(day?.date)
     .toDateString()
-    .slice(0, 3)} ${new Date(day?.date).toDateString().slice(8, 10)}th`
+    // .slice(0, 3)} ${new Date(day?.date).toDateString().slice(8, 10)}th`
+    .slice(0, 3)} ${new Date(day?.date)
+    .toISOString()
+    .slice(6, 10)
+    .split('-')
+    .join('/')}`
 
   const miles = () => {
     if (day?.payMiles > day?.totalMiles) {
