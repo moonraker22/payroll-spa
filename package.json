@@ -29,6 +29,7 @@
     "react-firebase-hooks": "^5.1.1",
     "react-hook-form": "^7.41.0",
     "react-icons": "^4.7.1",
+    "react-paginate": "^8.1.4",
     "react-router-dom": "^6.6.0",
     "valtio": "^1.8.0",
     "zod": "^3.20.2"

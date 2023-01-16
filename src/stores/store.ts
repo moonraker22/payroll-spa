@@ -8,8 +8,11 @@ const store = proxy({
   avatar: '',
   paysheets: [],
   weeks: [],
+  weeksTmp: [],
   paysheet: {},
   filterPaysheets: '',
+  offset: 0,
+  currentItems: [], // current items to display
 })
 
 // derive(

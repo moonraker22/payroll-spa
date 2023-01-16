@@ -152,6 +152,7 @@ export default function PasswordReset() {
                   type="password"
                   placeholder="Password"
                   autoComplete="new-password"
+                  mb="3"
                 />
                 <FormLabel htmlFor="password">Password:</FormLabel>
                 <FormErrorMessage>
@@ -171,6 +172,7 @@ export default function PasswordReset() {
                   type="password"
                   placeholder="Password Confirmation"
                   autoComplete="new-password"
+                  mb="3"
                 />
                 <FormLabel htmlFor="passwordConfirmation">
                   Password Confirmation:
@@ -191,8 +193,9 @@ export default function PasswordReset() {
                   {...register('currentPassword')}
                   id="currentPassword"
                   type="password"
-                  placeholder="Password Confirmation"
+                  placeholder="Current Password"
                   autoComplete="new-password"
+                  mb="1"
                 />
                 <FormLabel htmlFor="currentPassword">
                   Current Password:
