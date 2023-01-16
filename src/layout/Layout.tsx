@@ -19,6 +19,9 @@ import {
   useOutsideClick,
   Icon,
   Skeleton,
+  Avatar,
+  AvatarBadge,
+  Image,
 } from '@chakra-ui/react'
 import { AiOutlineMail, AiOutlineMenu } from 'react-icons/ai'
 import { ImCoinDollar } from 'react-icons/im'
@@ -31,11 +34,12 @@ import { useRef, useEffect, useContext, Suspense } from 'react'
 import { useFireAuth } from '@/stores/auth'
 import SpinnerComp from '../components/SpinnerComp'
 import Footer from './Footer'
+import { BiUserCircle } from 'react-icons/bi'
 
 export default function Layout() {
   const bg = useColorModeValue('white', ' gray.800')
   const mobileNav = useDisclosure()
-  const ref = useRef()
+  // const ref = useRef()
   // useOutsideClick({
   //   ref: ref,
   //   handler: () => mobileNav.onClose(),
@@ -132,8 +136,7 @@ export default function Layout() {
               >
                 {user && user.isSignedIn ? (
                   <>
-                    {' '}
-                    <Button
+                    {/* <Button
                       variant="ghost"
                       onClick={() => navigate(routes.HOME)}
                     >
@@ -145,7 +148,7 @@ export default function Layout() {
                       >
                         Home
                       </NavLink>
-                    </Button>
+                    </Button> */}
                     <Button
                       variant="ghost"
                       onClick={() => navigate(routes.DAILY)}
@@ -180,6 +183,18 @@ export default function Layout() {
                     >
                       Logout
                     </Button>
+                    <VisuallyHidden>
+                      <Image src={user.avatar} referrerPolicy="no-referrer" />
+                    </VisuallyHidden>
+                    <Avatar
+                      as={NavLink}
+                      to={routes.PROFILE}
+                      size="sm"
+                      name={user.userEmail}
+                      src={user.avatar}
+                    >
+                      <AvatarBadge boxSize="1em" bg="cyan.600" />
+                    </Avatar>
                   </>
                 ) : (
                   <>

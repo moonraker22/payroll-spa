@@ -17,6 +17,7 @@ import ErrorPage from '@/pages/Error/ErrorPage'
 import PasswordReset from '@/pages/PasswordReset/PasswordResetPage'
 import ProfilePage from '@/pages/Profile/ProfilePage'
 import ForgotPassword from '@/pages/ForgotPassword/ForgotPasswordPage'
+import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage'
 
 // ROUTE CONSTANTS
 export const routes = {
@@ -47,6 +48,7 @@ const router = createBrowserRouter(
         <Route path={routes.REGISTER} element={<Registration />} />
         <Route path={routes.LOGIN} element={<Login />} />
         <Route path={routes.FORGOT_PASSWORD} element={<ForgotPassword />} />
+        <Route path="*" element={<NotFoundPage />} />
 
         {/* Protected Routes */}
         <Route element={<ProtectedRoutes />}>

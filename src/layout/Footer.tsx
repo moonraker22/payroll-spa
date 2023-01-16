@@ -21,19 +21,19 @@ export default function Footer() {
               <ButtonGroup variant="ghost">
                 <IconButton
                   as="a"
-                  href="#"
+                  href="mailto:knzkustomz@gmail.com"
                   aria-label="LinkedIn"
                   icon={<AiOutlineMail fontSize="1.25rem" />}
                 />
                 <IconButton
                   as="a"
-                  href="#"
+                  href="https://github.com/moonraker22"
                   aria-label="GitHub"
                   icon={<FaGithub fontSize="1.25rem" />}
                 />
                 <IconButton
                   as="a"
-                  href="#"
+                  href="https://github.com/moonraker22"
                   aria-label="Twitter"
                   icon={<FaTwitter fontSize="1.25rem" />}
                 />

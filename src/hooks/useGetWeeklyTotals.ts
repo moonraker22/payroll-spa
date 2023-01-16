@@ -1,12 +1,22 @@
 import { getWeeklyTotals } from '@/lib/utils'
 import { useSnapshot } from 'valtio'
 import { store } from '@/stores/store'
-import { useEffect } from 'react'
-import { collection, orderBy, query } from 'firebase/firestore'
+import { useEffect, useState } from 'react'
+import {
+  collection,
+  endAt,
+  limit,
+  orderBy,
+  query,
+  startAt,
+} from 'firebase/firestore'
 
 import { db } from '@/firebase'
 import { COLLECTIONS, returnPaysheetString } from '@/lib/constants'
-import { useCollectionOnce } from 'react-firebase-hooks/firestore'
+import {
+  useCollectionData,
+  useCollectionOnce,
+} from 'react-firebase-hooks/firestore'
 
 export function useGetWeeklyTotals() {
   const snap = useSnapshot(store)
@@ -20,18 +30,20 @@ export function useGetWeeklyTotals() {
         `${snap?.userId}`,
         `${COLLECTIONS.PAYSHEETS}`
       ),
-      orderBy('date', 'asc')
+      orderBy('date', 'desc')
+      // startAt(doc ? doc : 0)
+      // endAt(1673762400000)
+      // limit(2)
     )
   }
 
-  const [totals, totalsLoading, totalsError]: any = useCollectionOnce(q)
+  const [totals, totalsLoading, totalsError]: any = useCollectionData(q)
+
   let weeks = []
   useEffect(() => {
     if (!totalsLoading && snap?.isSignedIn) {
-      const sheets = totals.docs.map((doc) => doc.data())
-      weeks = getWeeklyTotals(sheets)
-
-      weeks.sort((a, b) => b.weekStart - a.weekStart)
+      store.paysheets = totals
+      weeks = getWeeklyTotals(totals)
 
       store.weeks = weeks
     }

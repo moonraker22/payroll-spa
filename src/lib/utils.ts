@@ -51,7 +51,7 @@ function getWeeklyTotals(array: WeekType[]): WeeklyTotalsType[] {
     }
   })
 
-  sortWeeklyTotals(weeklyTotals)
+  // sortWeeklyTotals(weeklyTotals)
 
   return weeklyTotals
 }
@@ -68,11 +68,11 @@ function computePay(
   }
 }
 
-function sortWeeklyTotals(array: WeeklyTotalsType[]): void {
-  array.sort((a, b) => {
-    return a.weekStart - b.weekStart
-  })
-}
+// function sortWeeklyTotals(array: WeeklyTotalsType[]): void {
+//   array.sort((a, b) => {
+//     return a.weekStart - b.weekStart
+//   })
+// }
 
 const promiseWrapper = (fn: (...args: any) => any) => {
   return (...args: any) =>

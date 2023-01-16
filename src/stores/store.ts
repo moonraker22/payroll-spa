@@ -1,93 +1,56 @@
 import { proxy, useSnapshot, subscribe, snapshot } from 'valtio'
 import { devtools, derive } from 'valtio/utils'
 
-const store = proxy({
+const state: State = {
   userId: '',
   userEmail: '',
   isSignedIn: false,
   avatar: '',
   paysheets: [],
   weeks: [],
-  paysheet: {},
+  weeksTmp: [],
+  // paysheet: {},
   filterPaysheets: '',
-})
-
-// derive(
-//   {
-//     weeklyTotals: (get) => {
-//       const weeks = get(store.weeks)
-//       const weeklyTotals = []
-//       weeks.forEach((week) => {
-//         const totalMiles = week.totalMiles
-//         const payMiles = week.payMiles
-//         if (totalMiles > payMiles) {
-//           weeklyTotals.push(totalMiles * 0.5)
-//         } else {
-//           weeklyTotals.push(payMiles * 0.5)
-//         }
-//       })
-//     }
-//   },
-//   {
-//     proxy: store,
-//   }
-// )
-// const test = derive(
-//   {
-//     weeklyTotals: (get) => {
-//       const weeks = get(store.weeks)
-//       const weeklyTotals = []
-//       weeks.forEach((week) => {
-//         const totalMiles = week.totalMiles
-//         const payMiles = week.payMiles
-//         if (totalMiles > payMiles) {
-//           weeklyTotals.push(totalMiles * 0.5)
-//         } else {
-//           weeklyTotals.push(payMiles * 0.5)
-//         }
-//       })
-//     },
-//   },
-//   {
-//     proxy: store,
-//   }
-// )
-// console.log('test', test)
+  // offset: 0,
+  // currentItems: [], // current items to display
+}
+const store = proxy(state)
 
 devtools(store, 'Payroll')
 
-// let unsubscribe: () => void
-
-// async function init() {
-//   unsubscribe = onAuthStateChanged(auth, (user) => {
-//     if (user) {
-//       store.userId = user?.uid
-//       store.userEmail = user?.email
-//       store.isSignedIn = true
-//       store.avatar = auth.currentUser?.photoURL || user?.photoURL
-//       // store.avatar = user?.avatar
-//     } else {
-//       store.userId = ''
-//       store.userEmail = ''
-//       store.isSignedIn = false
-//       store.avatar = ''
-//       // store.weeks = []
-//     }
-//   })
-// }
-
-// init()
-
-// function unSubscribe() {
-//   unsubscribe()
-// }
-
-// subscribe(store, () => {
-//   if (!store.isSignedIn) {
-//     unSubscribe()
-//     // signOut(auth)
-//   }
-// })
-
-// export { store, useSnapshot, unSubscribe, snapshot }
 export { store, useSnapshot }
+
+interface State {
+  userId: string
+  userEmail: string
+  isSignedIn: boolean
+  avatar: string
+  paysheets: Paysheet[]
+  weeks: Weeks[]
+  weeksTmp: any[]
+  // paysheet: any
+  filterPaysheets: string
+  // offset: number
+  // currentItems: any[]
+}
+
+interface Weeks {
+  weekStart: string
+  weekEnd: string
+  totalMiles: number
+  payMiles: number
+  totalPay: number
+  startingMiles: number
+  endingMiles: number
+  backhaul: number
+}
+
+interface Paysheet {
+  uid: string
+  date: number
+  startingMiles: number
+  endingMiles: number
+  payMiles: number
+  totalMiles: number
+  backhaul: number
+}

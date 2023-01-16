@@ -23,9 +23,18 @@ import { useEffect } from 'react'
 export default function WeeklyPage() {
   const location = useLocation()
   const navigate = useNavigate()
-  const { state } = location
+  const state = location?.state
 
-  const startDate = state?.startDate
+  /**
+   * TODO IF STATE IS UNDEFINED ON RELOAD ERROR OCCURS AND PAGE DOES NOT RENDER
+   */
+  useEffect(() => {
+    if (state === undefined) {
+      navigate(routes.DASHBOARD)
+    }
+  }, [location.state, navigate])
+
+  const startDate = state?.startDate || ''
   // const endDate = state?.endDate
   const weekStartFormat = state?.weekStartFormat
   const weekEndFormat = state?.weekEndFormat
@@ -34,12 +43,6 @@ export default function WeeklyPage() {
   })
   const colorScheme = useColorModeValue('gray', 'cyan.600')
   // const colorScheme = useColorModeValue('gray', 'cyan')
-
-  useEffect(() => {
-    if (!state) {
-      navigate(routes.DASHBOARD)
-    }
-  }, [state, navigate])
 
   return (
     <Container maxW={{ base: '100%', sm: '95%', lg: '90%' }}>

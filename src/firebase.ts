@@ -19,7 +19,12 @@ const app = initializeApp(config)
 const auth = getAuth(app)
 const db = getFirestore(app)
 
-connectFirestoreEmulator(db, 'localhost', 8080)
-connectAuthEmulator(auth, 'http://localhost:9099')
+if (import.meta.env.DEV) {
+  console.log('dev mode!!!!')
+  connectFirestoreEmulator(db, 'localhost', 8080)
+  connectAuthEmulator(auth, 'http://localhost:9099')
+}
+// connectFirestoreEmulator(db, 'localhost', 8080)
+// connectAuthEmulator(auth, 'http://localhost:9099')
 
 export { auth, db, app, googleProvider }
