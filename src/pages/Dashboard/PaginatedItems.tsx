@@ -6,31 +6,42 @@ import { useSnapshot } from 'valtio'
 import { store } from '../../stores/store'
 import { WeekDisplay } from './WeekDisplay'
 
-export default function PaginatedItems({ itemsPerPage }) {
+export default function PaginatedItems({
+  itemsPerPage,
+}: {
+  itemsPerPage: number
+}) {
   const [itemOffset, setItemOffset] = useState(0)
+  const [page, setPage] = useState(1)
+
   const snap = useSnapshot(store)
 
   const endOffset = itemOffset + itemsPerPage
+
   const currentItems = snap.weeks.slice(itemOffset, endOffset)
 
   const pageCount = Math.ceil(snap.weeks.length / itemsPerPage)
+
   const mapArray = Array.from(Array(pageCount).keys())
 
-  // Invoke when user click to request another page.
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % snap.weeks.length
     setItemOffset(newOffset)
+    setPage(event.selected + 1)
   }
 
   const handlePrevClick = () => {
     const newOffset = (itemOffset - itemsPerPage) % snap.weeks.length
     setItemOffset(newOffset)
+    setPage(page - 1)
   }
 
   const handleNextClick = () => {
     const newOffset = (itemOffset + itemsPerPage) % snap.weeks.length
     setItemOffset(newOffset)
+    setPage(page + 1)
   }
+
   return (
     <>
       {currentItems.map((week, index) => (
@@ -61,7 +72,7 @@ export default function PaginatedItems({ itemsPerPage }) {
           />
         </m.div>
       ))}
-
+      <Box h={mapArray.length < 3 ? '30px' : '20px'} />
       <Center>
         <HStack>
           {mapArray.length > 0 ? (
@@ -75,9 +86,9 @@ export default function PaginatedItems({ itemsPerPage }) {
                 color: 'white',
                 scale: 1.1,
               }}
+              disabled={page === 1}
             />
           ) : null}
-          {/* <Icon as={TbArrowBigLeftLines} onClick={handlePrevClick} /> */}
           {mapArray.map((_, i) => (
             <Button
               key={i}
@@ -93,7 +104,6 @@ export default function PaginatedItems({ itemsPerPage }) {
               {i + 1}
             </Button>
           ))}
-          {/* <Icon as={TbArrowBigRightLines} /> */}
           {mapArray.length > 0 ? (
             <Button
               leftIcon={<TbArrowBigRightLines />}
@@ -105,6 +115,7 @@ export default function PaginatedItems({ itemsPerPage }) {
                 color: 'white',
                 scale: 1.1,
               }}
+              disabled={page === pageCount}
             />
           ) : null}
         </HStack>

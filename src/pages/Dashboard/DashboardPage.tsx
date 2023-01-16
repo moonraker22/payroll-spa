@@ -125,78 +125,20 @@ export default function Dashboard() {
               exit={{ opacity: 0 }}
               bgGradient="linear(to-b, #42047e, #07f49e)"
               bgClip="text"
-              // sx={{
-              //   '@media screen and (max-width: 600px)': {
-              //     // fontSize: '3xl',
-              //     display: 'none',
-              //   },
-              // }}
             >
               Dashboard
             </Heading>
-
-            <Box w="100%" h="100%" bg={bg} rounded={'lg'}>
-              {/* {snap.weeks.map((week, index) => (
-                <m.div
-                  // as={m.div}
-                  key={week.weekStart}
-                  initial={{ x: -0, opacity: 0, scale: 0.8 }}
-                  animate={{
-                    x: 0,
-                    opacity: 0.9,
-                    scale: [0.8, 1, 1.2, 1.4, 1.2, 1],
-                  }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 90,
-                    delay: index * 0.2,
-                    damping: 15,
-                  }}
-                  // variants={container}
-                  // initial="hidden"
-                  // animate="visible"
-                  // exit={{ x: 800, opacity: 0 }}
-                  // whileHover={{
-                  //   scale: 1.02,
-                  //   transition: { duration: 0.2 },
-                  //   cursor: 'pointer',
-                  // }}
-                  whileHover={{ cursor: 'pointer', opacity: 1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <WeekDisplay
-                    // isLoading={totalsLoading}
-
-                    totalMiles={week.totalMiles}
-                    totalPay={week.totalPay}
-                    totalBackHaulPay={week.backhaul}
-                    weekStartDate={Date.parse(week?.weekStart).toString()}
-                    weekEndDate={Date.parse(week?.weekEnd).toString()}
-                  />
-                </m.div>
-              ))} */}
-              {/* <Center>
-                <HStack>
-                  <Icon as={TbArrowBigLeftLines} />
-                  {Array.from(Array(paginateLength).keys()).map((i) => (
-                    <Button
-                      key={i}
-                      colorScheme="cyan"
-                      variant="outline"
-                      _hover={{
-                        bg: 'cyan.600',
-                        color: 'white',
-                        scale: 1.1,
-                      }}
-                      onClick={() => handlePaginate(i)}
-                    >
-                      {i + 1}
-                    </Button>
-                  ))}
-                  <Icon as={TbArrowBigRightLines} />
-                </HStack>
-              </Center> */}
-              <PaginatedItems itemsPerPage={2} />
+            <Box w="100%" h="100%" bg={bg}>
+              {snap.weeks.length === 0 ? (
+                <Text fontSize="lg" fontWeight="extrabold" ml="20px">
+                  Here is where you will see your weekly totals. To get started
+                  click the DailyForm button on top or go{' '}
+                  <Link as={RouterLink} to={routes.DAILY} color="cyan.600">
+                    here
+                  </Link>
+                </Text>
+              ) : null}
+              <PaginatedItems itemsPerPage={4} />
             </Box>
           </GridItem>
           <GridItem w="100%" h="500px" bg={bg}>
@@ -223,12 +165,7 @@ export default function Dashboard() {
                 </Center>
                 <Divider orientation="horizontal" />
                 <Center mt="20px" overflow={'hidden'}>
-                  <Heading
-                    as="h3"
-                    fontSize="xl"
-                    fontWeight="extrabold"
-                    // color={'black'}
-                  >
+                  <Heading as="h3" fontSize="xl" fontWeight="extrabold">
                     {snap.userEmail}
                   </Heading>
                 </Center>

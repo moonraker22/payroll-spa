@@ -1,23 +1,13 @@
 import { Link as RouterLink } from 'react-router-dom'
 import {
-  Box,
   Center,
-  Stack,
   useColorModeValue,
   Heading,
-  Text,
   Card,
-  CardHeader,
   CardBody,
-  StackDivider,
-  Button,
-  Skeleton,
-  useDisclosure,
-  Link,
   LinkBox,
   LinkOverlay,
   Table,
-  TableCaption,
   Th,
   Thead,
   Tr,
@@ -26,8 +16,6 @@ import {
 } from '@chakra-ui/react'
 import currency from 'currency.js'
 import { format } from 'date-fns'
-import { motion as m } from 'framer-motion'
-import { routes } from '@/lib/routes'
 
 export function WeekDisplay({
   totalMiles,
@@ -35,7 +23,6 @@ export function WeekDisplay({
   totalBackHaulPay,
   weekStartDate,
   weekEndDate,
-  // isLoading,
 }) {
   const bg = useColorModeValue('gray.200', 'gray.800')
 

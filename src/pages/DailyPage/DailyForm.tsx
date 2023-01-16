@@ -11,6 +11,7 @@ import {
   useColorModeValue,
   Flex,
   Spacer,
+  useConst,
 } from '@chakra-ui/react'
 // import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -23,7 +24,7 @@ const DailyForm = () => {
   const location = useLocation()
   const day = location?.state
 
-  const date = new Date().toISOString().slice(0, 10)
+  const date = useConst(new Date().toISOString().slice(0, 10))
 
   const defaultValuesFunc = (day) => {
     if (day) {
