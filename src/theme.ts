@@ -45,14 +45,14 @@ export const theme = extendTheme({
 
   components: {
     Modal: {
-      variants: {
+      variants: ({ colorMode }) => ({
         floating: {
           dialog: {
-            bg: 'gray.900',
-            boxShadow: 'none',
+            bg: colorMode === 'dark' ? 'gray.900' : 'gray.50',
+            boxShadow: 'xl',
           },
         },
-      },
+      }),
     },
     Form: {
       variants: {
@@ -72,7 +72,7 @@ export const theme = extendTheme({
               left: 0,
               zIndex: 2,
               position: 'absolute',
-              backgroundColor: colorMode === 'dark' ? 'gray.800' : 'gray.50',
+              backgroundColor: colorMode === 'dark' ? 'gray.800' : 'white',
               pointerEvents: 'none',
               mx: 3,
               px: 1,

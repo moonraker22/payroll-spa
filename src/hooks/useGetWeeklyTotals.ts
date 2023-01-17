@@ -1,22 +1,12 @@
 import { getWeeklyTotals } from '@/lib/utils'
 import { useSnapshot } from 'valtio'
 import { store } from '@/stores/store'
-import { useEffect, useState } from 'react'
-import {
-  collection,
-  endAt,
-  limit,
-  orderBy,
-  query,
-  startAt,
-} from 'firebase/firestore'
+import { useEffect } from 'react'
+import { collection, orderBy, query } from 'firebase/firestore'
 
 import { db } from '@/firebase'
-import { COLLECTIONS, returnPaysheetString } from '@/lib/constants'
-import {
-  useCollectionData,
-  useCollectionOnce,
-} from 'react-firebase-hooks/firestore'
+import { COLLECTIONS } from '@/lib/constants'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
 
 export function useGetWeeklyTotals() {
   const snap = useSnapshot(store)
@@ -31,9 +21,6 @@ export function useGetWeeklyTotals() {
         `${COLLECTIONS.PAYSHEETS}`
       ),
       orderBy('date', 'desc')
-      // startAt(doc ? doc : 0)
-      // endAt(1673762400000)
-      // limit(2)
     )
   }
 

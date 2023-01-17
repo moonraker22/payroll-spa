@@ -69,6 +69,7 @@ export default function FilterField() {
                 placeholder="Date"
                 mb="3"
                 _placeholder={{ color: textColor }}
+                boxShadow="lg"
               />
               <FormLabel>Search Date</FormLabel>
               <FormErrorMessage>
@@ -88,6 +89,7 @@ export default function FilterField() {
                 color: 'white',
                 scale: 1.1,
               }}
+              boxShadow="lg"
             >
               Filter
             </Button>
