@@ -38,6 +38,7 @@ export default function Login() {
   const snap = useSnapshot(store)
 
   const navigate = useNavigate()
+  const textColor = useColorModeValue('gray.800', 'gray')
 
   useEffect(() => {
     if (snap.userId) {
@@ -148,6 +149,7 @@ export default function Login() {
                     placeholder="Email"
                     autoComplete="email"
                     mb="5"
+                    _placeholder={{ color: textColor }}
                   />
                   <FormLabel htmlFor="email">Email</FormLabel>
                   <FormErrorMessage>
@@ -181,6 +183,7 @@ export default function Login() {
                       required
                       placeholder="Password"
                       mb="2"
+                      _placeholder={{ color: textColor }}
                     />
                     <FormLabel htmlFor="password">Password</FormLabel>
                   </InputGroup>

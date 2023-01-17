@@ -1,9 +1,10 @@
-import { Center, HStack, Button, Box } from '@chakra-ui/react'
+import { Center, HStack, Button, Box, IconButton } from '@chakra-ui/react'
+import { isSameDay } from 'date-fns'
 import { motion as m } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { TbArrowBigLeftLines, TbArrowBigRightLines } from 'react-icons/tb'
 import { useSnapshot } from 'valtio'
-import { store } from '../../stores/store'
+import { store, WeeksType } from '../../stores/store'
 import { WeekDisplay } from './WeekDisplay'
 
 export default function PaginatedItems({
@@ -76,8 +77,8 @@ export default function PaginatedItems({
       <Center>
         <HStack>
           {mapArray.length > 0 ? (
-            <Button
-              leftIcon={<TbArrowBigLeftLines />}
+            <IconButton
+              icon={<TbArrowBigLeftLines />}
               variant="outline"
               colorScheme="cyan"
               onClick={handlePrevClick}
@@ -87,6 +88,7 @@ export default function PaginatedItems({
                 scale: 1.1,
               }}
               disabled={page === 1}
+              aria-label="Previous Page"
             />
           ) : null}
           {mapArray.map((_, i) => (
@@ -105,8 +107,8 @@ export default function PaginatedItems({
             </Button>
           ))}
           {mapArray.length > 0 ? (
-            <Button
-              leftIcon={<TbArrowBigRightLines />}
+            <IconButton
+              icon={<TbArrowBigRightLines />}
               variant="outline"
               colorScheme="cyan"
               onClick={handleNextClick}
@@ -116,6 +118,7 @@ export default function PaginatedItems({
                 scale: 1.1,
               }}
               disabled={page === pageCount}
+              aria-label="Next Page"
             />
           ) : null}
         </HStack>

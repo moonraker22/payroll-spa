@@ -28,6 +28,7 @@ import { auth } from '@/firebase'
 
 import SlideIn from '@/pages/PasswordReset/SlideIn'
 import { usePasswordReset } from '@/hooks/usePasswordReset'
+import { routes } from '../../lib/routes'
 // import PasswordPrompt from './PasswordPrompt'
 
 export default function PasswordReset() {
@@ -221,9 +222,14 @@ export default function PasswordReset() {
               </Button>
             </Center>
             <HStack spacing="1" justify="center">
-              <Text color="muted">Already have an account?</Text>
-              <Button variant="link" colorScheme="cyan">
-                Log in
+              <Text color="muted">Go back to</Text>
+              <Button
+                as={RouterLink}
+                to={routes.DASHBOARD}
+                variant="link"
+                colorScheme="cyan"
+              >
+                Dashboard
               </Button>
             </HStack>
           </Form>

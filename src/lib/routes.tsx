@@ -3,21 +3,25 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom'
-
+import { lazy } from 'react'
 //Pages
 import Home from '@/pages/Home/HomePage'
-import DailyPage from '@/pages/DailyPage/DailyPage'
-import WeeklyPage from '@/pages/WeeklyPage/WeeklyPage'
+const DailyPage = lazy(() => import('@/pages/DailyPage/DailyPage'))
+const WeeklyPage = lazy(() => import('@/pages/WeeklyPage/WeeklyPage'))
 import Registration from '@/pages/Registration/RegistrationPage'
 import Login from '@/pages/Login/LoginPage'
-import Dashboard from '@/pages/Dashboard/DashboardPage'
+const Dashboard = lazy(() => import('@/pages/Dashboard/DashboardPage'))
 import ProtectedRoutes from '@/components/protected/Protected'
 import Layout from '@/layout/Layout'
-import ErrorPage from '@/pages/Error/ErrorPage'
-import PasswordReset from '@/pages/PasswordReset/PasswordResetPage'
-import ProfilePage from '@/pages/Profile/ProfilePage'
-import ForgotPassword from '@/pages/ForgotPassword/ForgotPasswordPage'
-import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage'
+const ErrorPage = lazy(() => import('@/pages/Error/ErrorPage'))
+const PasswordReset = lazy(
+  () => import('@/pages/PasswordReset/PasswordResetPage')
+)
+const ProfilePage = lazy(() => import('@/pages/Profile/ProfilePage'))
+const ForgotPassword = lazy(
+  () => import('@/pages/ForgotPassword/ForgotPasswordPage')
+)
+const NotFoundPage = lazy(() => import('@/pages/NotFoundPage/NotFoundPage'))
 
 // ROUTE CONSTANTS
 export const routes = {

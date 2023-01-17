@@ -32,45 +32,15 @@ import SpinnerComp from '@/components/SpinnerComp'
 import { TbArrowBigLeftLines, TbArrowBigRightLines } from 'react-icons/tb'
 import { animate, motion as m } from 'framer-motion'
 import { auth } from '@/firebase'
-import ReactPaginate from 'react-paginate'
 import PaginatedItems from './PaginatedItems'
+import FilterField from './FilterField'
+import { WeeksType } from '@/stores/store'
 
 export default function Dashboard() {
-  const { id } = useParams<{ id: string }>()
+  // const { id } = useParams<{ id: string }>()
   const snap = useSnapshot(store)
-  const [paginateLength, setPaginateLength] = useState<number>(
-    Math.ceil(snap.weeks.length / 4)
-  )
-  const [currentPage, setCurrentPage] = useState([])
-  const [currentPageNum, setCurrentPageNum] = useState(1)
-  const [currentWeeks, setCurrentWeeks] = useState([])
-
-  // useEffect(() => {
-  //   if (snap.weeks.length > 0) {
-  //     setCurrentWeeks(snap.weeks.slice(0, currentPageNum * 4))
-  //     console.log(
-  //       '🚀 ~ file: DashboardPage.tsx:43 ~ useEffect ~ setCurrentWeeks',
-  //       currentWeeks
-  //     )
-  //   }
-  // }, [snap.weeks])
-
-  // const handlePaginate = (page: number) => {
-  //   setCurrentWeeks(snap.weeks.slice(page * 4, page * 4 + 4))
-  //   setCurrentPageNum(page)
-  //   console.log(currentWeeks, 'current weeks')
-  //   console.log(currentPageNum, 'current page num')
-  //   console.log(currentPage, 'current page')
-  //   console.log(paginateLength, 'paginate length')
-  // }
 
   const { weeks, totals, totalsLoading } = useGetWeeklyTotals()
-
-  // useEffect(() => {
-  //   if (weeks.length > 0) {
-  //     store.weeks = weeks
-  //   }
-  // }, [weeks])
 
   const bg = useColorModeValue('white', ' gray.800')
 
@@ -128,6 +98,7 @@ export default function Dashboard() {
             >
               Dashboard
             </Heading>
+            <FilterField />
             <Box w="100%" h="100%" bg={bg}>
               {snap.weeks.length === 0 ? (
                 <Text fontSize="lg" fontWeight="extrabold" ml="20px">
@@ -160,7 +131,11 @@ export default function Dashboard() {
                     <AvatarBadge boxSize="1.25em" bg="cyan.700" />
                   </Avatar>
                   <VisuallyHidden>
-                    <Image src={snap.avatar} referrerPolicy="no-referrer" />
+                    <Image
+                      src={snap.avatar}
+                      referrerPolicy="no-referrer"
+                      alt="avatar"
+                    />
                   </VisuallyHidden>
                 </Center>
                 <Divider orientation="horizontal" />

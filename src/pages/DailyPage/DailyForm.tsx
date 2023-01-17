@@ -104,6 +104,7 @@ const DailyForm = () => {
   // console.log(new Date(1673654400000), 'date')
   // console.log(new Date(), 'today date')
   // console.log(getValues('date'), 'date')
+  const textColor = useColorModeValue('gray.800', 'gray')
 
   return (
     <m.div
@@ -120,7 +121,7 @@ const DailyForm = () => {
       <Box
         bg={bg}
         border="2px"
-        borderColor="cyan.700"
+        borderColor="cyan.600"
         boxShadow="dark-lg"
         p="4"
         rounded="md"
@@ -145,6 +146,7 @@ const DailyForm = () => {
                 placeholder="date"
                 mb="3"
                 mt="3"
+                _placeholder={{ color: textColor }}
               />
               <FormLabel htmlFor="date">Date</FormLabel>
               <FormErrorMessage>
@@ -164,6 +166,7 @@ const DailyForm = () => {
                   type="number"
                   placeholder="Starting Miles"
                   mb="3"
+                  _placeholder={{ color: textColor }}
                 />
                 <FormLabel htmlFor="startingMiles">Starting Miles:</FormLabel>
                 <FormErrorMessage>
@@ -183,6 +186,7 @@ const DailyForm = () => {
                   type="number"
                   placeholder="Ending Miles"
                   mb="3"
+                  _placeholder={{ color: textColor }}
                 />
                 <FormLabel htmlFor="endingMiles">Ending Miles:</FormLabel>
                 <FormErrorMessage>
@@ -203,6 +207,7 @@ const DailyForm = () => {
                   placeholder="Total Miles"
                   disabled
                   mb="3"
+                  _placeholder={{ color: textColor }}
                 />
                 <FormLabel htmlFor="totalMiles">Total Miles:</FormLabel>
                 <FormErrorMessage>
@@ -222,6 +227,7 @@ const DailyForm = () => {
                   type="number"
                   placeholder="Pay Miles"
                   mb="3"
+                  _placeholder={{ color: textColor }}
                 />
                 <FormLabel htmlFor="payMiles">Pay Miles:</FormLabel>
                 <FormErrorMessage>
@@ -240,6 +246,7 @@ const DailyForm = () => {
                   id="backhaul"
                   placeholder="BackHaul"
                   mb="3"
+                  _placeholder={{ color: textColor }}
                 />
                 <FormLabel htmlFor="backhaul">Backhaul:</FormLabel>
                 <FormErrorMessage>

@@ -61,20 +61,30 @@ export const PasswordResetSchema = z.object({
 
 export type PasswordResetType = z.infer<typeof PasswordResetSchema>
 
+// User Update Schema
 export const AvatarSchema = z.object({
   avatar: z.string().url(),
 })
 
 export type AvatarType = z.infer<typeof AvatarSchema>
 
+// Password Prompt Schema
 export const PasswordPromptSchema = z.object({
   currentPassword: z.string().min(6),
 })
 
 export type PasswordPromptType = z.infer<typeof PasswordPromptSchema>
 
+// Email Schema
 export const EmailSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
 })
 
 export type EmailType = z.infer<typeof EmailSchema>
+
+// Date filter Schema
+export const DateFilterSchema = z.object({
+  date: z.string().transform((value) => parseISO(value).getTime()),
+})
+
+export type DateFilterType = z.infer<typeof DateFilterSchema>

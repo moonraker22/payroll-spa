@@ -44,6 +44,16 @@ export const theme = extendTheme({
   },
 
   components: {
+    Modal: {
+      variants: {
+        floating: {
+          dialog: {
+            bg: 'gray.900',
+            boxShadow: 'none',
+          },
+        },
+      },
+    },
     Form: {
       variants: {
         floating: ({ colorMode }) => ({
@@ -68,6 +78,7 @@ export const theme = extendTheme({
               px: 1,
               my: 2,
               transformOrigin: 'left top',
+              color: colorMode === 'dark' ? 'cyan.300' : 'cyan.800',
             },
           },
         }),
