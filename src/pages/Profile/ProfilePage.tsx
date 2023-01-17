@@ -92,7 +92,11 @@ export default function Profile() {
           <Stack spacing="10px">
             <Center mt="50px">
               <VisuallyHidden>
-                <Image src={user.avatar} referrerPolicy="no-referrer" />
+                <Image
+                  src={user.avatar}
+                  referrerPolicy="no-referrer"
+                  alt="avatar"
+                />
               </VisuallyHidden>
               <Avatar
                 size="xl"

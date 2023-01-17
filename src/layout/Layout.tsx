@@ -1,5 +1,4 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom'
-import { ColorModeSwitcher } from '../ColorModeSwitcher'
 import {
   Box,
   Button,
@@ -25,7 +24,7 @@ import {
 } from '@chakra-ui/react'
 import { AiOutlineMail, AiOutlineMenu } from 'react-icons/ai'
 import { ImCoinDollar } from 'react-icons/im'
-import { useDisclosure } from '@chakra-ui/react'
+import { useDisclosure, ColorModeScript } from '@chakra-ui/react'
 import { useLogout } from '../hooks/useAuth'
 import { routes } from '../lib/routes'
 import { store, useSnapshot } from '@/stores/store'
@@ -35,6 +34,8 @@ import { useFireAuth } from '@/stores/auth'
 import SpinnerComp from '../components/SpinnerComp'
 import Footer from './Footer'
 import { BiUserCircle } from 'react-icons/bi'
+import theme from '../theme'
+import { ColorModeSwitcher } from '../ColorModeSwitcher'
 
 export default function Layout() {
   const bg = useColorModeValue('white', ' gray.800')
@@ -73,6 +74,7 @@ export default function Layout() {
   return (
     <>
       <Suspense fallback={<SpinnerComp />}>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         {/* <Skeleton isLoaded={!isLoading}></Skeleton> */}
         <chakra.header
           bg={bg}
@@ -184,7 +186,11 @@ export default function Layout() {
                       Logout
                     </Button>
                     <VisuallyHidden>
-                      <Image src={user.avatar} referrerPolicy="no-referrer" />
+                      <Image
+                        src={user.avatar}
+                        referrerPolicy="no-referrer"
+                        alt="avatar"
+                      />
                     </VisuallyHidden>
                     <Avatar
                       as={NavLink}

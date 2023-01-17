@@ -25,8 +25,8 @@ interface State {
   userEmail: string
   isSignedIn: boolean
   avatar: string
-  paysheets: Paysheet[]
-  weeks: Weeks[]
+  paysheets: PaysheetType[]
+  weeks: WeeksType[]
   weeksTmp: any[]
   // paysheet: any
   filterPaysheets: string
@@ -34,7 +34,7 @@ interface State {
   // currentItems: any[]
 }
 
-interface Weeks {
+export interface WeeksType {
   weekStart: string
   weekEnd: string
   totalMiles: number
@@ -45,7 +45,7 @@ interface Weeks {
   backhaul: number
 }
 
-interface Paysheet {
+interface PaysheetType {
   uid: string
   date: number
   startingMiles: number

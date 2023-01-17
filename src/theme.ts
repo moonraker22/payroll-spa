@@ -44,6 +44,16 @@ export const theme = extendTheme({
   },
 
   components: {
+    Modal: {
+      variants: ({ colorMode }) => ({
+        floating: {
+          dialog: {
+            bg: colorMode === 'dark' ? 'gray.900' : 'gray.50',
+            boxShadow: 'xl',
+          },
+        },
+      }),
+    },
     Form: {
       variants: {
         floating: ({ colorMode }) => ({
@@ -62,12 +72,13 @@ export const theme = extendTheme({
               left: 0,
               zIndex: 2,
               position: 'absolute',
-              backgroundColor: colorMode === 'dark' ? 'gray.800' : 'gray.50',
+              backgroundColor: colorMode === 'dark' ? 'gray.800' : 'white',
               pointerEvents: 'none',
               mx: 3,
               px: 1,
               my: 2,
               transformOrigin: 'left top',
+              color: colorMode === 'dark' ? 'cyan.300' : 'cyan.800',
             },
           },
         }),

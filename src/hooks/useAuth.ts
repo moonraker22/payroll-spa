@@ -12,6 +12,7 @@ import { setDoc, doc, getDoc, serverTimestamp } from 'firebase/firestore'
 import { store } from '@/stores/store'
 import { useSnapshot } from 'valtio'
 import { COLLECTIONS } from '../lib/constants'
+import { firebaseErrorMap } from '@/lib/constants'
 
 export function useAuth() {
   const [authUser, authLoading, error] = useAuthState(auth)
@@ -64,9 +65,12 @@ export function useLogin() {
       })
       navigate(from || redirectTo, { replace: true })
     } catch (error) {
+      const errorMessage = firebaseErrorMap.get(`${error.code.toString()}`)
+      console.log(error.code.toString())
+
       toast({
         title: 'Logging in failed',
-        description: error.message,
+        description: errorMessage || error.message,
         status: 'error',
         isClosable: true,
         position: 'top',
@@ -128,9 +132,11 @@ export function useRegister() {
 
       navigate(from || redirectTo, { replace: true })
     } catch (error) {
+      const errorMessage = firebaseErrorMap.get(`${error.code.toString()}`)
+
       toast({
         title: 'Sign Up failed',
-        description: error.message,
+        description: errorMessage || error.message,
         status: 'error',
         isClosable: true,
         position: 'top',
