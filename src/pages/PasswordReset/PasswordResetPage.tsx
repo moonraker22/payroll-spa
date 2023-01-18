@@ -1,4 +1,4 @@
-import { useForm, SubmitHandler, Controller } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import { Form, useNavigate, Link as RouterLink } from 'react-router-dom'
 import {
   FormErrorMessage,
@@ -10,9 +10,7 @@ import {
   Container,
   Text,
   Center,
-  Divider,
   useColorModeValue,
-  Link,
   HStack,
   Heading,
   useDisclosure,
@@ -21,7 +19,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { PasswordResetSchema, PasswordResetType } from '@/data/paySchema'
 import { motion as m } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { useRegister } from '../../hooks/useAuth'
 import { store } from '@/stores/store'
 import { useSnapshot } from 'valtio'
 import { auth } from '@/firebase'
@@ -29,7 +26,6 @@ import { auth } from '@/firebase'
 import SlideIn from '@/pages/PasswordReset/SlideIn'
 import { usePasswordReset } from '@/hooks/usePasswordReset'
 import { routes } from '../../lib/routes'
-// import PasswordPrompt from './PasswordPrompt'
 
 export default function PasswordReset() {
   const [isGoogle, setIsGoogle] = useState(false)
@@ -128,7 +124,6 @@ export default function PasswordReset() {
         rounded="md"
         mt={10}
         mb={10}
-        // bgGradient="linear(to-l, #111621, #1A202C)"
         w="50vw"
         maxW="500px"
         minW="300px"

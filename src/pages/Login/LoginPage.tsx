@@ -10,16 +10,12 @@ import {
   Container,
   Text,
   Center,
-  Divider,
   useColorModeValue,
-  Link,
   InputGroup,
   InputRightElement,
   IconButton,
   useDisclosure,
-  HStack,
   Heading,
-  useBreakpointValue,
   Flex,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'

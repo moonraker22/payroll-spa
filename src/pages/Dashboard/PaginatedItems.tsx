@@ -1,10 +1,6 @@
-import { Center, HStack, Button, Box, IconButton } from '@chakra-ui/react'
-import { isSameDay } from 'date-fns'
+import { Center, Button, Box, IconButton, ButtonGroup } from '@chakra-ui/react'
 import { motion as m } from 'framer-motion'
-import { useState, useEffect } from 'react'
 import { TbArrowBigLeftLines, TbArrowBigRightLines } from 'react-icons/tb'
-import { useSnapshot } from 'valtio'
-import { store, WeeksType } from '@/stores/store'
 import { WeekDisplay } from './WeekDisplay'
 import { usePaginateData } from '@/hooks/usePaginate'
 
@@ -24,6 +20,19 @@ export default function PaginatedItems({
   } = usePaginateData({
     pageSize: itemsPerPage,
   })
+
+  const shouldDisplay = (i: number) => {
+    if (i === 1 || i === pageCount) {
+      return true
+    }
+    if (i >= currentPage - 2 && i <= currentPage + 2) {
+      return true
+    }
+    if (i < currentPage - 2 || i > currentPage + 2) {
+      return false
+    }
+    return false
+  }
 
   return (
     <>
@@ -59,9 +68,10 @@ export default function PaginatedItems({
         h={mapArray.length < 3 ? '30px' : '20px'}
         sx={{ overflow: 'hidden' }}
       />
+
       <Center>
-        <HStack>
-          {mapArray.length > 0 ? (
+        <ButtonGroup isAttached>
+          {mapArray.length > 0 && currentPage > 1 ? (
             <IconButton
               icon={<TbArrowBigLeftLines />}
               variant="outline"
@@ -82,7 +92,7 @@ export default function PaginatedItems({
               <Button
                 key={i}
                 colorScheme="cyan"
-                variant="outline"
+                variant={currentPage === i + 1 ? 'ghost' : 'outline'}
                 _hover={{
                   bg: 'cyan.600',
                   color: 'white',
@@ -90,12 +100,15 @@ export default function PaginatedItems({
                 }}
                 boxShadow="lg"
                 onClick={() => handlePageClick({ selected: i })}
+                display={shouldDisplay(i + 1) ? 'block' : 'none'}
+                // disabled={currentPage === i + 1}
+                // isLoading={currentPage === i + 1}
               >
                 {i + 1}
               </Button>
             )
           })}
-          {mapArray.length > 0 ? (
+          {mapArray.length > 0 && currentPage < pageCount ? (
             <IconButton
               icon={<TbArrowBigRightLines />}
               variant="outline"
@@ -111,7 +124,7 @@ export default function PaginatedItems({
               aria-label="Next Page"
             />
           ) : null}
-        </HStack>
+        </ButtonGroup>
       </Center>
     </>
   )

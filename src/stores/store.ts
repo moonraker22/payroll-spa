@@ -8,11 +8,6 @@ const state: State = {
   avatar: '',
   paysheets: [],
   weeks: [],
-  weeksTmp: [],
-  // paysheet: {},
-  filterPaysheets: '',
-  // offset: 0,
-  // currentItems: [], // current items to display
 }
 const store = proxy(state)
 
@@ -27,11 +22,6 @@ interface State {
   avatar: string
   paysheets: PaysheetType[]
   weeks: WeeksType[]
-  weeksTmp: any[]
-  // paysheet: any
-  filterPaysheets: string
-  // offset: number
-  // currentItems: any[]
 }
 
 export interface WeeksType {

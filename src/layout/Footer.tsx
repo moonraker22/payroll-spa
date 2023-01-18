@@ -6,7 +6,6 @@ import {
   IconButton,
   Text,
 } from '@chakra-ui/react'
-import React from 'react'
 import { AiOutlineMail } from 'react-icons/ai'
 import { FaGithub, FaTwitter } from 'react-icons/fa'
 
