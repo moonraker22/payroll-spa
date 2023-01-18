@@ -29,7 +29,11 @@ const activeLabelStyles = {
 }
 
 export const theme = extendTheme({
-  global: (props: any) => ({}),
+  global: (props: any) => ({
+    '.pagination': {
+      display: 'flex',
+    },
+  }),
 
   config,
   brand: {
