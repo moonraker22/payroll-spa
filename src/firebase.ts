@@ -3,18 +3,12 @@ import { getAuth, GoogleAuthProvider, connectAuthEmulator } from 'firebase/auth'
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 
 const config = {
-  // apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  // authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  // projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  // storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  // messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  // appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  apiKey: 'AIzaSyB1xpK5UkzPIsFrhLP473JVuqhQgNZnfQk',
-  authDomain: 'payroll-spa.firebaseapp.com',
-  projectId: 'payroll-spa',
-  storageBucket: 'payroll-spa.appspot.com',
-  messagingSenderId: '585006280973',
-  appId: '1:585006280973:web:55b94edaf257362987c044',
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 }
 
 const googleProvider = new GoogleAuthProvider()

@@ -9,10 +9,10 @@ lerna-debug.log*
 
 node_modules
 
-*.local
-*.local.*
-*.env
-*.env.*
+# *.local
+# *.local.*
+# *.env
+# *.env.*
 .vscode
 
 
