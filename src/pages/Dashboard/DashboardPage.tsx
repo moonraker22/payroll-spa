@@ -1,4 +1,4 @@
-import { Link as RouterLink, useParams } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 import {
   Box,
   Avatar,
@@ -13,28 +13,17 @@ import {
   AvatarBadge,
   Image,
   VisuallyHidden,
-  HStack,
-  Icon,
   Text,
   Link,
-  Flex,
-  Spacer,
-  Wrap,
-  WrapItem,
-  chakra,
 } from '@chakra-ui/react'
-import { WeekDisplay } from './WeekDisplay'
 import { routes } from '@/lib/routes'
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense } from 'react'
 import { store, useSnapshot } from '@/stores/store'
 import { useGetWeeklyTotals } from '@/hooks/useGetWeeklyTotals'
 import SpinnerComp from '@/components/SpinnerComp'
-import { TbArrowBigLeftLines, TbArrowBigRightLines } from 'react-icons/tb'
-import { animate, motion as m } from 'framer-motion'
-import { auth } from '@/firebase'
+import { motion as m } from 'framer-motion'
 import PaginatedItems from './PaginatedItems'
 import FilterField from './FilterField'
-import { WeeksType } from '@/stores/store'
 
 export default function Dashboard() {
   // const { id } = useParams<{ id: string }>()

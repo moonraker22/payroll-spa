@@ -10,16 +10,11 @@ import {
   reauthenticateWithCredential,
   EmailAuthProvider,
 } from 'firebase/auth'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { collection, getDocs, query, where } from 'firebase/firestore'
-import { COLLECTIONS } from '@/lib/constants'
-import { db } from '@/firebase'
 import { routes } from '../lib/routes'
 
 export const usePasswordReset = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const [authUser, authLoading, authError] = useAuthState(auth)
 
   const navigate = useNavigate()
   const toast = useToast()

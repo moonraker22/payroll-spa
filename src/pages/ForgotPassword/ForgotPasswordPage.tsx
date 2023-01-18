@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { Form, useNavigate, Link as RouterLink } from 'react-router-dom'
+import { Form, useNavigate } from 'react-router-dom'
 import {
   FormErrorMessage,
   FormLabel,
@@ -11,11 +11,9 @@ import {
   Center,
   useColorModeValue,
   Heading,
-  useBreakpointValue,
-  Flex,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { motion as m } from 'framer-motion'
 import { routes } from '@/lib/routes'
 import { store } from '@/stores/store'

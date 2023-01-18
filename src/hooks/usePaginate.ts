@@ -1,6 +1,47 @@
-import React, { useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSnapshot } from 'valtio'
 import { store } from '../stores/store'
+
+export const usePaginateData = ({ pageSize }) => {
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageData, setPageData] = useState([])
+
+  const snap = useSnapshot(store)
+
+  const pageCount = Math.ceil(snap.weeks.length / pageSize)
+
+  const maxPage = Math.ceil(snap.weeks.length / pageSize)
+  const mapArray: any = Array.from(Array(pageCount).keys())
+
+  const handlePageClick = (e) => {
+    const selectedPage = e.selected
+    setCurrentPage(selectedPage + 1)
+  }
+
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * pageSize
+    const newPageData = snap.weeks.slice(startIndex, startIndex + pageSize)
+    setPageData(newPageData)
+  }, [snap.weeks, currentPage, pageSize])
+
+  const getPreviousPage = () => {
+    setCurrentPage((page) => Math.max(page - 1, 1))
+  }
+
+  const getNextPage = () => {
+    setCurrentPage((page) => Math.min(page + 1, maxPage))
+  }
+
+  return {
+    currentPage,
+    pageData,
+    getPreviousPage,
+    getNextPage,
+    mapArray,
+    handlePageClick,
+    pageCount,
+  }
+}
 
 // export const usePagination = ({
 //   totalCount,
@@ -64,143 +105,102 @@ import { store } from '../stores/store'
 //   return { currentPage, pageData, getPreviousPage, getNextPage }
 // }
 
-export const usePaginateData = ({ pageSize }) => {
-  const [currentPage, setCurrentPage] = useState(1)
-  const [pageData, setPageData] = useState([])
+// export function usePaginateRange({ currentPage, siblingCount = 1, pageCount }) {
+//   const paginationRange = useMemo(() => {
+//     const totalPageNumbers = siblingCount + 5
 
-  const snap = useSnapshot(store)
+//     if (totalPageNumbers >= pageCount) {
+//       return [...Array(pageCount)].map((_, index) => index + 1)
+//     }
 
-  const pageCount = Math.ceil(snap.weeks.length / pageSize)
+//     const leftSiblingIndex = Math.max(currentPage - siblingCount, 1)
+//     const rightSiblingIndex = Math.min(currentPage + siblingCount, pageCount)
 
-  const maxPage = Math.ceil(snap.weeks.length / pageSize)
-  const mapArray: any = Array.from(Array(pageCount).keys())
+//     const shouldShowLeftDots = leftSiblingIndex > 2
+//     const shouldShowRightDots = rightSiblingIndex < pageCount - 2
 
-  const handlePageClick = (e) => {
-    const selectedPage = e.selected
-    setCurrentPage(selectedPage + 1)
-  }
+//     const firstPageIndex = 1
+//     const lastPageIndex = pageCount
 
-  React.useEffect(() => {
-    const startIndex = (currentPage - 1) * pageSize
-    const newPageData = snap.weeks.slice(startIndex, startIndex + pageSize)
-    setPageData(newPageData)
-  }, [snap.weeks, currentPage, pageSize])
+//     if (!shouldShowLeftDots && shouldShowRightDots) {
+//       let leftItemCount = 3 + 2 * siblingCount
+//       let leftRange = [...Array(leftItemCount)].map((_, index) => index + 1)
 
-  const getPreviousPage = () => {
-    setCurrentPage((page) => Math.max(page - 1, 1))
-  }
+//       return [...leftRange, '...', lastPageIndex]
+//     }
 
-  const getNextPage = () => {
-    setCurrentPage((page) => Math.min(page + 1, maxPage))
-  }
+//     if (shouldShowLeftDots && !shouldShowRightDots) {
+//       let rightItemCount = 3 + 2 * siblingCount
+//       let rightRange = [...Array(rightItemCount)].map(
+//         (_, index) => index + pageCount - rightItemCount + 1
+//       )
 
-  return {
-    currentPage,
-    pageData,
-    getPreviousPage,
-    getNextPage,
-    mapArray,
-    handlePageClick,
-    pageCount,
-  }
-}
+//       return [firstPageIndex, '...', ...rightRange]
+//     }
 
-export function usePaginateRange({ currentPage, siblingCount = 1, pageCount }) {
-  const paginationRange = useMemo(() => {
-    const totalPageNumbers = siblingCount + 5
+//     if (shouldShowLeftDots && shouldShowRightDots) {
+//       let middleRange = [...Array(2 * siblingCount + 3)].map(
+//         (_, index) => index + leftSiblingIndex
+//       )
 
-    if (totalPageNumbers >= pageCount) {
-      return [...Array(pageCount)].map((_, index) => index + 1)
-    }
+//       return [firstPageIndex, '...', ...middleRange, '...', lastPageIndex]
+//     }
+//   }, [currentPage, siblingCount, pageCount])
 
-    const leftSiblingIndex = Math.max(currentPage - siblingCount, 1)
-    const rightSiblingIndex = Math.min(currentPage + siblingCount, pageCount)
+//   return paginationRange
+// }
 
-    const shouldShowLeftDots = leftSiblingIndex > 2
-    const shouldShowRightDots = rightSiblingIndex < pageCount - 2
+// // function to paginate data and return data and array with ellipsis
+// export function useEllipsisPagination({
+//   currentPage,
+//   siblingCount = 1,
+//   totalCount,
+//   pageSize,
+//   arrayOfData,
+// }) {
+//   const paginationRange = useMemo(() => {
+//     const totalPageNumbers = siblingCount + 5
 
-    const firstPageIndex = 1
-    const lastPageIndex = pageCount
+//     if (totalPageNumbers >= totalCount) {
+//       return [...Array(totalCount)].map((_, index) => index + 1)
+//     }
 
-    if (!shouldShowLeftDots && shouldShowRightDots) {
-      let leftItemCount = 3 + 2 * siblingCount
-      let leftRange = [...Array(leftItemCount)].map((_, index) => index + 1)
+//     const leftSiblingIndex = Math.max(currentPage - siblingCount, 1)
+//     const rightSiblingIndex = Math.min(currentPage + siblingCount, totalCount)
 
-      return [...leftRange, '...', lastPageIndex]
-    }
+//     const shouldShowLeftDots = leftSiblingIndex > 2
+//     const shouldShowRightDots = rightSiblingIndex < totalCount - 2
 
-    if (shouldShowLeftDots && !shouldShowRightDots) {
-      let rightItemCount = 3 + 2 * siblingCount
-      let rightRange = [...Array(rightItemCount)].map(
-        (_, index) => index + pageCount - rightItemCount + 1
-      )
+//     const firstPageIndex = 1
+//     const lastPageIndex = totalCount
 
-      return [firstPageIndex, '...', ...rightRange]
-    }
+//     if (!shouldShowLeftDots && shouldShowRightDots) {
+//       let leftItemCount = 3 + 2 * siblingCount
+//       let leftRange = [...Array(leftItemCount)].map((_, index) => index + 1)
 
-    if (shouldShowLeftDots && shouldShowRightDots) {
-      let middleRange = [...Array(2 * siblingCount + 3)].map(
-        (_, index) => index + leftSiblingIndex
-      )
+//       return [...leftRange, '...', lastPageIndex]
+//     }
 
-      return [firstPageIndex, '...', ...middleRange, '...', lastPageIndex]
-    }
-  }, [currentPage, siblingCount, pageCount])
+//     if (shouldShowLeftDots && !shouldShowRightDots) {
+//       let rightItemCount = 3 + 2 * siblingCount
+//       let rightRange = [...Array(rightItemCount)].map(
+//         (_, index) => index + totalCount - rightItemCount + 1
+//       )
 
-  return paginationRange
-}
+//       return [firstPageIndex, '...', ...rightRange]
+//     }
 
-// function to paginate data and return data and array with ellipsis
-export function useEllipsisPagination({
-  currentPage,
-  siblingCount = 1,
-  totalCount,
-  pageSize,
-  arrayOfData,
-}) {
-  const paginationRange = useMemo(() => {
-    const totalPageNumbers = siblingCount + 5
+//     if (shouldShowLeftDots && shouldShowRightDots) {
+//       let middleRange = [...Array(2 * siblingCount + 3)].map(
+//         (_, index) => index + leftSiblingIndex
+//       )
 
-    if (totalPageNumbers >= totalCount) {
-      return [...Array(totalCount)].map((_, index) => index + 1)
-    }
+//       return [firstPageIndex, '...', ...middleRange, '...', lastPageIndex]
+//     }
+//   }, [totalCount, pageSize, siblingCount, currentPage, arrayOfData])
 
-    const leftSiblingIndex = Math.max(currentPage - siblingCount, 1)
-    const rightSiblingIndex = Math.min(currentPage + siblingCount, totalCount)
-
-    const shouldShowLeftDots = leftSiblingIndex > 2
-    const shouldShowRightDots = rightSiblingIndex < totalCount - 2
-
-    const firstPageIndex = 1
-    const lastPageIndex = totalCount
-
-    if (!shouldShowLeftDots && shouldShowRightDots) {
-      let leftItemCount = 3 + 2 * siblingCount
-      let leftRange = [...Array(leftItemCount)].map((_, index) => index + 1)
-
-      return [...leftRange, '...', lastPageIndex]
-    }
-
-    if (shouldShowLeftDots && !shouldShowRightDots) {
-      let rightItemCount = 3 + 2 * siblingCount
-      let rightRange = [...Array(rightItemCount)].map(
-        (_, index) => index + totalCount - rightItemCount + 1
-      )
-
-      return [firstPageIndex, '...', ...rightRange]
-    }
-
-    if (shouldShowLeftDots && shouldShowRightDots) {
-      let middleRange = [...Array(2 * siblingCount + 3)].map(
-        (_, index) => index + leftSiblingIndex
-      )
-
-      return [firstPageIndex, '...', ...middleRange, '...', lastPageIndex]
-    }
-  }, [totalCount, pageSize, siblingCount, currentPage, arrayOfData])
-
-  return paginationRange
-}
+//   return paginationRange
+// }
 
 // import { Center, HStack, Button, Box, IconButton } from '@chakra-ui/react'
 // import { isSameDay } from 'date-fns'

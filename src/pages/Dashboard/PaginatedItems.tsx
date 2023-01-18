@@ -1,20 +1,8 @@
-import {
-  Center,
-  HStack,
-  Button,
-  Box,
-  IconButton,
-  Flex,
-  chakra,
-} from '@chakra-ui/react'
-import { isSameDay } from 'date-fns'
+import { Center, Button, Box, IconButton, ButtonGroup } from '@chakra-ui/react'
 import { motion as m } from 'framer-motion'
-import { useState, useEffect } from 'react'
 import { TbArrowBigLeftLines, TbArrowBigRightLines } from 'react-icons/tb'
-import { useSnapshot } from 'valtio'
-import { store, WeeksType } from '@/stores/store'
 import { WeekDisplay } from './WeekDisplay'
-import { usePaginateData, usePaginateRange } from '@/hooks/usePaginate'
+import { usePaginateData } from '@/hooks/usePaginate'
 
 export default function PaginatedItems({
   itemsPerPage,
@@ -82,7 +70,7 @@ export default function PaginatedItems({
       />
 
       <Center>
-        <HStack>
+        <ButtonGroup isAttached>
           {mapArray.length > 0 && currentPage > 1 ? (
             <IconButton
               icon={<TbArrowBigLeftLines />}
@@ -104,7 +92,7 @@ export default function PaginatedItems({
               <Button
                 key={i}
                 colorScheme="cyan"
-                variant={currentPage === i + 1 ? 'solid' : 'outline'}
+                variant={currentPage === i + 1 ? 'ghost' : 'outline'}
                 _hover={{
                   bg: 'cyan.600',
                   color: 'white',
@@ -113,7 +101,8 @@ export default function PaginatedItems({
                 boxShadow="lg"
                 onClick={() => handlePageClick({ selected: i })}
                 display={shouldDisplay(i + 1) ? 'block' : 'none'}
-                disabled={currentPage === i + 1}
+                // disabled={currentPage === i + 1}
+                // isLoading={currentPage === i + 1}
               >
                 {i + 1}
               </Button>
@@ -135,7 +124,7 @@ export default function PaginatedItems({
               aria-label="Next Page"
             />
           ) : null}
-        </HStack>
+        </ButtonGroup>
       </Center>
     </>
   )

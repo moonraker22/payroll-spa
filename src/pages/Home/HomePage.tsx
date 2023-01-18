@@ -1,43 +1,25 @@
 import {
-  Image,
   Box,
   Button,
-  Card,
-  CardBody,
-  CardFooter,
   Center,
   Heading,
   Stack,
   Text,
-  HStack,
   Spacer,
   Flex,
   useColorModeValue,
 } from '@chakra-ui/react'
 import { Link as RouterLink } from 'react-router-dom'
-import { motion as m, useScroll, useIsPresent, animate } from 'framer-motion'
+import { motion as m } from 'framer-motion'
 import { routes } from '../../lib/routes'
-import { useEffect } from 'react'
 
 export default function Home() {
-  // const bg = useColorModeValue(
-  //   'linear(to-b, #42047e, #07f49e)',
-  //   ' linear(to-b, gray.800, cyan.900, gray.800)'
-  // )
   const color = useColorModeValue('gray.700', 'gray.300')
   const gradientColor = useColorModeValue(
     'gray.300',
     'linear(to-b, gray.800, cyan.900, gray.800)'
   )
 
-  // const { scrollY } = useScroll()
-  // const isPresent = useIsPresent()
-
-  // useEffect(() => {
-  //   return scrollY.onChange((latest) => {
-  //     console.log('Page scroll: ', latest)
-  //   })
-  // }, [scrollY])
   return (
     <Center
       bgGradient={'linear(to-b, gray.800, cyan.900, gray.800)'}

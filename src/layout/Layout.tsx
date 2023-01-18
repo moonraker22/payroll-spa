@@ -11,31 +11,22 @@ import {
   VisuallyHidden,
   VStack,
   Text,
-  ButtonGroup,
-  Container,
-  Stack,
-  Center,
-  useOutsideClick,
   Icon,
-  Skeleton,
   Avatar,
   AvatarBadge,
   Image,
 } from '@chakra-ui/react'
-import { AiOutlineMail, AiOutlineMenu } from 'react-icons/ai'
+import { AiOutlineMenu } from 'react-icons/ai'
 import { ImCoinDollar } from 'react-icons/im'
 import { useDisclosure, ColorModeScript } from '@chakra-ui/react'
 import { useLogout } from '../hooks/useAuth'
 import { routes } from '../lib/routes'
 import { store, useSnapshot } from '@/stores/store'
-import { FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa'
-import { useRef, useEffect, useContext, Suspense } from 'react'
-import { useFireAuth } from '@/stores/auth'
+import { Suspense } from 'react'
 import SpinnerComp from '../components/SpinnerComp'
-import Footer from './Footer'
-import { BiUserCircle } from 'react-icons/bi'
-import theme from '../theme'
 import { ColorModeSwitcher } from '../ColorModeSwitcher'
+import Footer from './Footer'
+import theme from '../theme'
 
 export default function Layout() {
   const bg = useColorModeValue('white', ' gray.800')
@@ -66,7 +57,6 @@ export default function Layout() {
   }
 
   const user = useSnapshot(store)
-  // const { authUser: user, isLoading, isSignedIn } = useFireAuth()
 
   if (!user) {
     return <SpinnerComp />
@@ -75,7 +65,6 @@ export default function Layout() {
     <>
       <Suspense fallback={<SpinnerComp />}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-        {/* <Skeleton isLoaded={!isLoading}></Skeleton> */}
         <chakra.header
           bg={bg}
           w="full"
@@ -138,19 +127,6 @@ export default function Layout() {
               >
                 {user && user.isSignedIn ? (
                   <>
-                    {/* <Button
-                      variant="ghost"
-                      onClick={() => navigate(routes.HOME)}
-                    >
-                      <NavLink
-                        to={routes.HOME}
-                        style={({ isActive }) =>
-                          isActive ? activeStyle : color
-                        }
-                      >
-                        Home
-                      </NavLink>
-                    </Button> */}
                     <Button
                       variant="ghost"
                       onClick={() => navigate(routes.DAILY)}
@@ -235,9 +211,6 @@ export default function Layout() {
 
                 <ColorModeSwitcher />
               </HStack>
-              {/* <Button colorScheme="brand.800" size="sm">
-              Get Started
-            </Button> */}
               <Box
                 display={{
                   base: 'inline-flex',
