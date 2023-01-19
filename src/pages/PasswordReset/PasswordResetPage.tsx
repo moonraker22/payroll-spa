@@ -126,7 +126,7 @@ export default function PasswordReset() {
         mb={10}
         w="50vw"
         maxW="500px"
-        minW="300px"
+        minW="350px"
       >
         <Box p="3">
           <Form onSubmit={handleSubmit(onSubmit)}>

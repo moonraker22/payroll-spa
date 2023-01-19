@@ -78,8 +78,8 @@ export default function Profile() {
         mt="50px"
         mb="100px"
         maxW="500px"
-        minW="200px"
         minH="300px"
+        minW="350px"
         initial={{ opacity: 0, y: 80 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0 }}

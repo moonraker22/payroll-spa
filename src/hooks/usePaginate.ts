@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { useSnapshot } from 'valtio'
 import { store, WeeksType } from '../stores/store'
 
-export const usePaginateData = ({ pageSize }) => {
-  const [currentPage, setCurrentPage] = useState(1)
+export const usePaginateData = ({ pageSize }: { pageSize: number }) => {
+  const [currentPage, setCurrentPage] = useState<number>(1)
   const [pageData, setPageData] = useState<WeeksType[]>([])
 
   const snap = useSnapshot(store)

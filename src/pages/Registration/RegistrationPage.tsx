@@ -138,7 +138,7 @@ export default function Registration() {
           mb={10}
           w="50vw"
           maxW="450px"
-          minW="300px"
+          minW="350px"
         >
           <Box p="3">
             <Form onSubmit={handleSubmit(onSubmit)}>

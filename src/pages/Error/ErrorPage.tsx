@@ -3,21 +3,11 @@ import {
   useNavigate,
   useRouteError,
 } from 'react-router-dom'
-import { routes } from '../../lib/routes'
-import { useEffect } from 'react'
 
 export default function RootBoundary() {
   const error = useRouteError()
   const navigate = useNavigate()
-  // useEffect(() => {
-  //   if (
-  //     JSON.stringify(error) ===
-  //     '{"code":"invalid-argument","name":"FirebaseError"}'
-  //   ) {
-  //     navigate(routes.DASHBOARD)
-  //   }
-  // }, [error, navigate])
-  console.log('🚀 ~ file: ErrorPage.tsx:27 ~ RootBoundary ~ error', error)
+  console.log(error)
 
   if (isRouteErrorResponse(error)) {
     if (error.status === 404) {

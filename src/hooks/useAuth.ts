@@ -1,18 +1,18 @@
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-} from 'firebase/auth'
-import { useAuthState, useSignOut, useIdToken } from 'react-firebase-hooks/auth'
 import { auth, db } from '@/firebase'
-import { useEffect, useState } from 'react'
+import { firebaseErrorMap } from '@/lib/constants'
 import { routes } from '@/lib/routes'
-import { useToast } from '@chakra-ui/react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { setDoc, doc, getDoc, serverTimestamp } from 'firebase/firestore'
 import { store } from '@/stores/store'
+import { useToast } from '@chakra-ui/react'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth'
+import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
+import { useEffect, useState } from 'react'
+import { useAuthState, useSignOut } from 'react-firebase-hooks/auth'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useSnapshot } from 'valtio'
 import { COLLECTIONS } from '../lib/constants'
-import { firebaseErrorMap } from '@/lib/constants'
 
 export function useAuth() {
   const [authUser, authLoading, error] = useAuthState(auth)
@@ -48,11 +48,21 @@ export function useLogin() {
 
   const from = location.state?.from?.pathname || '/'
 
-  async function login({ email, password, redirectTo = routes.DASHBOARD }) {
+  type LoginProps = {
+    email: string
+    password: string
+    redirectTo?: string
+  }
+
+  async function login({
+    email,
+    password,
+    redirectTo = routes.DASHBOARD,
+  }: LoginProps) {
     setLoading(true)
 
     try {
-      const res = await signInWithEmailAndPassword(auth, email, password)
+      await signInWithEmailAndPassword(auth, email, password)
 
       toast({
         title: 'You are logged in',
@@ -96,7 +106,17 @@ export function useRegister() {
 
   const from = location.state?.from?.pathname || '/'
 
-  async function register({ email, password, redirectTo = routes.DASHBOARD }) {
+  type RegisterProps = {
+    email: string
+    password: string
+    redirectTo?: string
+  }
+
+  async function register({
+    email,
+    password,
+    redirectTo = routes.DASHBOARD,
+  }: RegisterProps) {
     setLoading(true)
 
     try {

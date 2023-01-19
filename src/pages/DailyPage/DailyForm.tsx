@@ -131,7 +131,7 @@ const DailyForm = () => {
         // bgGradient="linear(to-l, #111621, #1A202C)"
         w="60vw"
         maxW="500px"
-        minW="300px"
+        minW="350px"
       >
         <Box p="4">
           <Form onSubmit={handleSubmit(onSubmit)}>
@@ -299,7 +299,7 @@ const DailyForm = () => {
 
 export default DailyForm
 
-type PaysheetInputs = {
+export type PaysheetInputs = {
   date: string
   startingMiles: string
   endingMiles: string

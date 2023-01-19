@@ -7,7 +7,6 @@ import {
   Box,
   Button,
   Center,
-  Container,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -94,7 +93,7 @@ export default function Login() {
   }
 
   return (
-    <Container maxW="container.xl" centerContent mt={8}>
+    <Center maxW={{ base: '100%', sm: '95%' }} mt={8}>
       <m.div
         initial={{ opacity: 0, y: 80 }}
         animate={{ opacity: 1, y: 0 }}
@@ -126,7 +125,7 @@ export default function Login() {
           mb={10}
           w="50vw"
           maxW="450px"
-          minW="300px"
+          minW="350px"
         >
           <Box p="3">
             <Form onSubmit={handleSubmit(onSubmit)}>
@@ -257,6 +256,6 @@ export default function Login() {
           </Box>
         </Box>
       </m.div>
-    </Container>
+    </Center>
   )
 }

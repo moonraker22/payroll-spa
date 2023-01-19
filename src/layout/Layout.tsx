@@ -126,15 +126,17 @@ export default function Layout() {
             </VisuallyHidden>
             <Show below="md">
               <ColorModeSwitcher ml="auto" />
-              <Avatar
-                as={NavLink}
-                to={routes.PROFILE}
-                size="sm"
-                name={snap.userEmail}
-                src={snap.avatar}
-              >
-                <AvatarBadge boxSize="1em" bg="cyan.600" />
-              </Avatar>
+              {snap.isSignedIn && (
+                <Avatar
+                  as={NavLink}
+                  to={routes.PROFILE}
+                  size="sm"
+                  name={snap.userEmail}
+                  src={snap.avatar}
+                >
+                  <AvatarBadge boxSize="1em" bg="cyan.600" />
+                </Avatar>
+              )}
             </Show>
             <HStack display="flex" alignItems="center" spacing={1}>
               <HStack
@@ -213,18 +215,20 @@ export default function Layout() {
                     </Button>
                   </>
                 )}
-                <Show above="md">
-                  <ColorModeSwitcher ml="auto" />
-                  <Avatar
-                    as={NavLink}
-                    to={routes.PROFILE}
-                    size="sm"
-                    name={snap.userEmail}
-                    src={snap.avatar}
-                  >
-                    <AvatarBadge boxSize="1em" bg="cyan.600" />
-                  </Avatar>
-                </Show>
+                {snap.isSignedIn && (
+                  <Show above="md">
+                    <Avatar
+                      as={NavLink}
+                      to={routes.PROFILE}
+                      size="sm"
+                      name={snap.userEmail}
+                      src={snap.avatar}
+                    >
+                      <AvatarBadge boxSize="1em" bg="cyan.600" />
+                    </Avatar>
+                    <ColorModeSwitcher ml="auto" />
+                  </Show>
+                )}
               </HStack>
               <Box
                 display={{

@@ -6,7 +6,7 @@ import { collection, orderBy, query, where } from 'firebase/firestore'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useSnapshot } from 'valtio'
 
-export function useGetWeekData({ weekStart }) {
+export function useGetWeekData({ weekStart }: { weekStart: Date }) {
   const snap = useSnapshot(store)
 
   const weekEnd = addWeeks(weekStart, 1).toISOString()

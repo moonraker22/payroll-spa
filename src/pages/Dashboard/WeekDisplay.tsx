@@ -51,6 +51,7 @@ export function WeekDisplay({
           px={{ base: '0px', sm: '10px', lg: '10px' }}
           boxShadow="xl"
           rounded={20}
+          variant="elevated"
         >
           <CardBody>
             <Center>
