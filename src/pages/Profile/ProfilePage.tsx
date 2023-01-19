@@ -1,31 +1,31 @@
 // import { useCallback, useEffect } from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { Form, Link as RouterLink } from 'react-router-dom'
 import {
-  Button,
-  Box,
-  Center,
-  useColorModeValue,
-  Heading,
-  Container,
   Avatar,
   AvatarBadge,
+  Box,
+  Button,
+  Center,
+  Container,
   Divider,
-  Stack,
-  Input,
-  HStack,
-  FormLabel,
-  Image,
-  VisuallyHidden,
   FormControl,
   FormErrorMessage,
+  FormLabel,
+  Heading,
+  HStack,
+  Image,
+  Input,
+  Stack,
+  useColorModeValue,
+  VisuallyHidden,
 } from '@chakra-ui/react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { Form, Link as RouterLink } from 'react-router-dom'
 // import { DevTool } from '@hookform/devtools'
-import { zodResolver } from '@hookform/resolvers/zod'
 import { AvatarSchema, AvatarType } from '@/data/paySchema'
 import { useSetAvatar } from '@/hooks/useSetAvatar'
 import { routes } from '@/lib/routes'
 import { store, useSnapshot } from '@/stores/store'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
 
 export default function Profile() {
@@ -48,6 +48,7 @@ export default function Profile() {
 
   const bg = useColorModeValue('white', ' gray.800')
   const color = useColorModeValue('gray.800', 'white')
+  const placeholderColor = useColorModeValue('gray.400', 'gray.500')
 
   return (
     <Container p="10px" color="gray.300">
@@ -131,7 +132,8 @@ export default function Profile() {
                       <FormLabel
                         htmlFor="avatar"
                         placeholder="Avatar URL"
-                        sx={{ color: color }}
+                        // sx={{ color: color }}
+                        _placeholder={{ color: placeholderColor }}
                       >
                         Avatar URL
                       </FormLabel>

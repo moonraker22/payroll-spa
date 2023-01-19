@@ -1,6 +1,11 @@
 {
   "compilerOptions": {
-    "types": ["vite/client", "vitest/globals"],
+    "types": [
+      "vite/client",
+      "vitest/globals",
+      "cypress",
+      "@testing-library/cypress"
+    ],
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
@@ -21,6 +26,6 @@
       "@/*": ["*"]
     }
   },
-  "include": ["src", "src/**/*.json"],
+  "include": ["src", "src/**/*.json", "cypress.d.ts", "./setupTest.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

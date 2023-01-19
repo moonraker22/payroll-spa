@@ -27,6 +27,8 @@ export default function useFirebaseAuth() {
     store.avatar = ''
     store.userEmail = ''
     store.isSignedIn = false
+    store.paysheets = []
+    store.weeks = []
   }
 
   const authStateChanged = async (user) => {
@@ -79,7 +81,6 @@ export default function useFirebaseAuth() {
         store.paysheets = data
         const weeks = getWeeklyTotals(data)
         store.weeks = weeks
-        console.log('weeks updated', weeks)
       })
       return () => unsubscribe()
     }

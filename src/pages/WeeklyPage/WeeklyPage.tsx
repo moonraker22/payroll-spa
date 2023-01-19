@@ -1,3 +1,5 @@
+import { useGetWeekData } from '@/hooks/useGetWeekData'
+import { routes } from '@/lib/routes'
 import {
   Container,
   Link,
@@ -11,12 +13,9 @@ import {
   Tr,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { useGetWeekData } from '@/hooks/useGetWeekData'
-import { Link as RouterLink } from 'react-router-dom'
 import { motion as m } from 'framer-motion'
-import { routes } from '@/lib/routes'
 import { useEffect } from 'react'
+import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom'
 import Week from './Week'
 
 export default function WeeklyPage() {
@@ -39,7 +38,7 @@ export default function WeeklyPage() {
   const colorScheme = useColorModeValue('gray', 'cyan.600')
 
   return (
-    <Container maxW={{ base: '100%', sm: '95%', lg: '90%' }}>
+    <Container maxW={{ base: '100%', sm: '95%', lg: '75%' }}>
       <TableContainer
         my="40"
         border="1px"
@@ -54,7 +53,7 @@ export default function WeeklyPage() {
         <Table
           variant="simple"
           colorScheme={colorScheme}
-          size={{ base: 'sm', sm: 'md', lg: 'lg' }}
+          size={{ base: 'sm', sm: 'md', lg: 'md' }}
         >
           <TableCaption placement="top">PAY FOR THE WEEK</TableCaption>
           <TableCaption placement="bottom">

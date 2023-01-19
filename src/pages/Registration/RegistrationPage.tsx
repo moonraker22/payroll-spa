@@ -69,6 +69,8 @@ export default function Registration() {
   }, [])
 
   const bg = useColorModeValue('white', ' gray.800')
+  const textColor = useColorModeValue('gray.800', 'gray.200')
+  const placeholderColor = useColorModeValue('gray.400', 'gray.500')
 
   const password = watch('password')
   const passwordConfirmation = watch('passwordConfirmation')
@@ -153,6 +155,7 @@ export default function Registration() {
                     placeholder="Email"
                     autoComplete="email"
                     mb="5"
+                    _placeholder={{ color: placeholderColor }}
                   />
                   <FormLabel htmlFor="email">Email:</FormLabel>
                   <FormErrorMessage>
@@ -173,6 +176,7 @@ export default function Registration() {
                     placeholder="Password"
                     autoComplete="new-password"
                     mb="5"
+                    _placeholder={{ color: placeholderColor }}
                   />
                   <FormLabel htmlFor="password">Password:</FormLabel>
                   <FormErrorMessage>
@@ -193,6 +197,7 @@ export default function Registration() {
                     placeholder="Password Confirmation"
                     autoComplete="new-password"
                     mb="2"
+                    _placeholder={{ color: placeholderColor }}
                   />
                   <FormLabel htmlFor="passwordConfirmation">
                     Password Confirmation:
@@ -225,7 +230,7 @@ export default function Registration() {
                 </Button>
               </Center>
               <Center mb="8px">
-                <Text color="gray.300">Or register in with Google</Text>
+                <Text color={textColor}>Or register in with Google</Text>
               </Center>
               <Flex justify="center" flexDir={'column'}>
                 <Box>
@@ -237,13 +242,14 @@ export default function Registration() {
                     variant="outline"
                     colorScheme="cyan"
                     size="lg"
+                    id="google-button"
                   >
                     <GoogleIcon boxSize="5" />
                   </Button>
                 </Box>
                 <Box>
                   <Center my="6px">
-                    <Text mt="3px" mr="5px" color="gray.300">
+                    <Text mt="3px" mr="5px" color={textColor}>
                       Already have an account?
                     </Text>
                     <Button
