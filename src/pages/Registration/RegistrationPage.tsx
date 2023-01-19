@@ -242,6 +242,7 @@ export default function Registration() {
                     variant="outline"
                     colorScheme="cyan"
                     size="lg"
+                    id="google-button"
                   >
                     <GoogleIcon boxSize="5" />
                   </Button>

@@ -27,6 +27,8 @@ export default function useFirebaseAuth() {
     store.avatar = ''
     store.userEmail = ''
     store.isSignedIn = false
+    store.paysheets = []
+    store.weeks = []
   }
 
   const authStateChanged = async (user) => {

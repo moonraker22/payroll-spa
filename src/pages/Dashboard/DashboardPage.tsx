@@ -29,14 +29,6 @@ export default function Dashboard() {
   // const { id } = useParams<{ id: string }>()
   const snap = useSnapshot(store)
 
-  // const { weeks, totals, totalsLoading } = useGetWeeklyTotals()
-  // useEffect(() => {
-  //   if (!totalsLoading) {
-  //     console.log('totals', totals)
-  //     console.log('weeks', weeks)
-  //   }
-  // }, [totalsLoading])
-
   const bg = useColorModeValue('white', ' gray.800')
 
   const container = {
@@ -106,6 +98,7 @@ export default function Dashboard() {
                   </Text>
                 </Container>
               ) : null}
+
               <PaginatedItems itemsPerPage={4} />
             </Box>
           </GridItem>

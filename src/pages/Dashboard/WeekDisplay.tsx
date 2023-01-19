@@ -43,14 +43,14 @@ export function WeekDisplay({
         sx={{ textDecoration: 'none' }}
       >
         <Card
-          m="10px"
+          my={{ base: '5px', sm: '10px', lg: '20px' }}
+          mx={{ base: '10px', sm: '20px', lg: '40px' }}
           bg={bg}
           border="1px"
           borderColor={colorScheme}
-          px="10px"
+          px={{ base: '0px', sm: '10px', lg: '10px' }}
           boxShadow="xl"
           rounded={20}
-          // textColor={colorScheme}
         >
           <CardBody>
             <Center>
