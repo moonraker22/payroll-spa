@@ -79,7 +79,6 @@ export default function useFirebaseAuth() {
         store.paysheets = data
         const weeks = getWeeklyTotals(data)
         store.weeks = weeks
-        console.log('weeks updated', weeks)
       })
       return () => unsubscribe()
     }

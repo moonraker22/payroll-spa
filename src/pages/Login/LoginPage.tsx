@@ -34,7 +34,9 @@ export default function Login() {
   const snap = useSnapshot(store)
 
   const navigate = useNavigate()
-  const textColor = useColorModeValue('gray.800', 'gray')
+  const textColor = useColorModeValue('gray.800', 'gray.200')
+  const placeholderColor = useColorModeValue('gray.400', 'gray.500')
+  const bg = useColorModeValue('white', ' gray.800')
 
   useEffect(() => {
     if (snap.userId) {
@@ -51,8 +53,6 @@ export default function Login() {
   } = useForm<LoginType>({
     resolver: zodResolver(LoginResolver),
   })
-
-  const bg = useColorModeValue('white', ' gray.800')
 
   const password = watch('password')
   const email = watch('email')
@@ -143,7 +143,7 @@ export default function Login() {
                     placeholder="Email"
                     autoComplete="email"
                     mb="5"
-                    _placeholder={{ color: textColor }}
+                    _placeholder={{ color: placeholderColor }}
                   />
                   <FormLabel htmlFor="email">Email</FormLabel>
                   <FormErrorMessage>
@@ -177,7 +177,7 @@ export default function Login() {
                       required
                       placeholder="Password"
                       mb="2"
-                      _placeholder={{ color: textColor }}
+                      _placeholder={{ color: placeholderColor }}
                     />
                     <FormLabel htmlFor="password">Password</FormLabel>
                   </InputGroup>
@@ -208,7 +208,7 @@ export default function Login() {
                 </Button>
               </Center>
               <Center mb="8px">
-                <Text color="gray.300">Or sign in with Google</Text>
+                <Text color={textColor}>Or sign in with Google</Text>
               </Center>
               <Flex justify="center" flexDir={'column'}>
                 <Box>
@@ -226,7 +226,7 @@ export default function Login() {
                 </Box>
                 <Box>
                   <Center my="6px">
-                    <Text mt="3px" mr="5px" color="gray.300">
+                    <Text mt="3px" mr="5px" color={textColor}>
                       Don't have an account?
                     </Text>
                     <Button
