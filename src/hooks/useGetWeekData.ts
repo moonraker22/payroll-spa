@@ -1,18 +1,10 @@
-import {
-  collection,
-  doc,
-  getDocs,
-  limit,
-  orderBy,
-  query,
-  where,
-} from 'firebase/firestore'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { db } from '@/firebase'
-import { addWeeks } from 'date-fns'
-import { useSnapshot } from 'valtio'
-import { store } from '@/stores/store'
 import { COLLECTIONS } from '@/lib/constants'
+import { store } from '@/stores/store'
+import { addWeeks } from 'date-fns'
+import { collection, orderBy, query, where } from 'firebase/firestore'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { useSnapshot } from 'valtio'
 
 export function useGetWeekData({ weekStart }) {
   const snap = useSnapshot(store)
@@ -28,7 +20,7 @@ export function useGetWeekData({ weekStart }) {
     ),
     where('date', '>=', weekStart),
     where('date', '<=', Date.parse(weekEnd)),
-    orderBy('date', 'desc')
+    orderBy('date', 'asc')
   )
 
   const [weekData, loading, error] = useCollectionData(q)
@@ -36,11 +28,11 @@ export function useGetWeekData({ weekStart }) {
   return { weekData, error, loading }
 }
 
-export type DayType = {
-  date: Date
-  backhaul: number
-  endingMiles: number
-  payMiles: number
-  startingMiles: number
-  totalMiles: number
-}
+// export type DayType = {
+//   date: Date
+//   backhaul: number
+//   endingMiles: number
+//   payMiles: number
+//   startingMiles: number
+//   totalMiles: number
+// }

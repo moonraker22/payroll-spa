@@ -1,21 +1,21 @@
-import { Link as RouterLink } from 'react-router-dom'
 import {
-  Center,
-  useColorModeValue,
-  Heading,
   Card,
   CardBody,
+  Center,
+  Heading,
   LinkBox,
   LinkOverlay,
   Table,
+  Tbody,
+  Tfoot,
   Th,
   Thead,
   Tr,
-  Tbody,
-  Tfoot,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import currency from 'currency.js'
 import { format } from 'date-fns'
+import { Link as RouterLink } from 'react-router-dom'
 
 export function WeekDisplay({
   totalMiles,

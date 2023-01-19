@@ -1,35 +1,41 @@
-import { Link as RouterLink } from 'react-router-dom'
-import {
-  Box,
-  Avatar,
-  Center,
-  Stack,
-  GridItem,
-  SimpleGrid,
-  useColorModeValue,
-  Heading,
-  Divider,
-  Button,
-  AvatarBadge,
-  Image,
-  VisuallyHidden,
-  Text,
-  Link,
-} from '@chakra-ui/react'
-import { routes } from '@/lib/routes'
-import { Suspense } from 'react'
-import { store, useSnapshot } from '@/stores/store'
-import { useGetWeeklyTotals } from '@/hooks/useGetWeeklyTotals'
 import SpinnerComp from '@/components/SpinnerComp'
+import { routes } from '@/lib/routes'
+import { store, useSnapshot } from '@/stores/store'
+import {
+  Avatar,
+  AvatarBadge,
+  Box,
+  Button,
+  Center,
+  Container,
+  Divider,
+  GridItem,
+  Heading,
+  Image,
+  Link,
+  SimpleGrid,
+  Stack,
+  Text,
+  useColorModeValue,
+  VisuallyHidden,
+} from '@chakra-ui/react'
 import { motion as m } from 'framer-motion'
-import PaginatedItems from './PaginatedItems'
+import { Suspense } from 'react'
+import { Link as RouterLink } from 'react-router-dom'
 import FilterField from './FilterField'
+import PaginatedItems from './PaginatedItems'
 
 export default function Dashboard() {
   // const { id } = useParams<{ id: string }>()
   const snap = useSnapshot(store)
 
-  const { weeks, totals, totalsLoading } = useGetWeeklyTotals()
+  // const { weeks, totals, totalsLoading } = useGetWeeklyTotals()
+  // useEffect(() => {
+  //   if (!totalsLoading) {
+  //     console.log('totals', totals)
+  //     console.log('weeks', weeks)
+  //   }
+  // }, [totalsLoading])
 
   const bg = useColorModeValue('white', ' gray.800')
 
@@ -90,15 +96,17 @@ export default function Dashboard() {
             <FilterField />
             <Box w="100%" h="100%" bg={bg}>
               {snap.weeks.length === 0 ? (
-                <Text fontSize="lg" fontWeight="extrabold" ml="20px">
-                  Here is where you will see your weekly totals. To get started
-                  click the DailyForm button on top or go{' '}
-                  <Link as={RouterLink} to={routes.DAILY} color="cyan.600">
-                    here
-                  </Link>
-                </Text>
+                <Container mt="30px">
+                  <Text fontSize="lg" fontWeight="extrabold" ml="20px">
+                    Here is where you will see your weekly totals. To get
+                    started click the DailyForm button on top or go{' '}
+                    <Link as={RouterLink} to={routes.DAILY} color="cyan.600">
+                      here
+                    </Link>
+                  </Text>
+                </Container>
               ) : null}
-              <PaginatedItems itemsPerPage={1} />
+              <PaginatedItems itemsPerPage={4} />
             </Box>
           </GridItem>
           <GridItem w="100%" h="500px" bg={bg}>

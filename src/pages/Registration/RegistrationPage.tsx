@@ -1,29 +1,29 @@
-import { useForm, SubmitHandler, Controller } from 'react-hook-form'
-import { Form, useNavigate, Link as RouterLink } from 'react-router-dom'
+import { Register } from '@/data/paySchema'
+import { useRegister } from '@/hooks/useAuth'
+import { useGoogleAuth } from '@/hooks/useGoogleAuth'
+import { routes } from '@/lib/routes'
 import {
+  Box,
+  Button,
+  Center,
+  Container,
+  Flex,
+  FormControl,
   FormErrorMessage,
   FormLabel,
-  FormControl,
-  Input,
-  Button,
-  Box,
-  Container,
-  Text,
-  Center,
-  useColorModeValue,
   Heading,
-  Flex,
+  Input,
+  Text,
+  useColorModeValue,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Register } from '@/data/paySchema'
 import { motion as m } from 'framer-motion'
 import { useEffect } from 'react'
-import { useRegister } from '@/hooks/useAuth'
-import { routes } from '@/lib/routes'
-import { GoogleIcon } from '../Login/GoogleIcon'
-import { useGoogleAuth } from '@/hooks/useGoogleAuth'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { Form, Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useSnapshot } from 'valtio'
 import { store } from '../../stores/store'
+import { GoogleIcon } from '../Login/GoogleIcon'
 
 type RegistrationInputs = {
   email: string
@@ -134,7 +134,6 @@ export default function Registration() {
           rounded="md"
           mt={10}
           mb={10}
-          // bgGradient="linear(to-l, #111621, #1A202C)"
           w="50vw"
           maxW="450px"
           minW="300px"

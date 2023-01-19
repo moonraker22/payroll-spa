@@ -73,7 +73,7 @@ export const theme = extendTheme({
               px: 1,
               my: 2,
               transformOrigin: 'left top',
-              color: colorMode === 'dark' ? 'cyan.300' : 'cyan.800',
+              color: colorMode === 'dark' ? 'cyan.100' : 'cyan.900',
             },
           },
         }),

@@ -1,32 +1,33 @@
-import { Outlet, NavLink, useNavigate } from 'react-router-dom'
+import { store, useSnapshot } from '@/stores/store'
 import {
+  Avatar,
+  AvatarBadge,
   Box,
   Button,
   chakra,
   CloseButton,
+  ColorModeScript,
   Flex,
   HStack,
+  Icon,
   IconButton,
+  Image,
+  Text,
   useColorModeValue,
+  useDisclosure,
   VisuallyHidden,
   VStack,
-  Text,
-  Icon,
-  Avatar,
-  AvatarBadge,
-  Image,
 } from '@chakra-ui/react'
+import { Suspense } from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { ImCoinDollar } from 'react-icons/im'
-import { useDisclosure, ColorModeScript } from '@chakra-ui/react'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { ColorModeSwitcher } from '../ColorModeSwitcher'
+import SpinnerComp from '../components/SpinnerComp'
 import { useLogout } from '../hooks/useAuth'
 import { routes } from '../lib/routes'
-import { store, useSnapshot } from '@/stores/store'
-import { Suspense } from 'react'
-import SpinnerComp from '../components/SpinnerComp'
-import { ColorModeSwitcher } from '../ColorModeSwitcher'
-import Footer from './Footer'
 import theme from '../theme'
+import Footer from './Footer'
 
 export default function Layout() {
   const bg = useColorModeValue('white', ' gray.800')

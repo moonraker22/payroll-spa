@@ -1,26 +1,21 @@
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { Form } from 'react-router-dom'
+import { PasswordPromptSchema, PasswordPromptType } from '@/data/paySchema'
 import {
-  useDisclosure,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
+  FormControl,
   FormErrorMessage,
   FormLabel,
-  FormControl,
   Input,
-  Box,
-  Container,
-  Text,
-  Center,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { PasswordPromptSchema, PasswordPromptType } from '@/data/paySchema'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { Form } from 'react-router-dom'
 
 export default function PasswordPrompt({ setPass, isOpen, onOpen, onClose }) {
   const {
@@ -66,13 +61,7 @@ export default function PasswordPrompt({ setPass, isOpen, onOpen, onClose }) {
           </ModalBody>
 
           <ModalFooter>
-            <Button
-              variant="outline"
-              colorScheme="cyan"
-              mr={3}
-              type="submit"
-              // onClick={onClose}
-            >
+            <Button variant="outline" colorScheme="cyan" mr={3} type="submit">
               Change Password
             </Button>
 
