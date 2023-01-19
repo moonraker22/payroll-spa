@@ -1,30 +1,30 @@
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { Form, useNavigate, Link as RouterLink } from 'react-router-dom'
+import { PasswordResetSchema, PasswordResetType } from '@/data/paySchema'
+import { auth } from '@/firebase'
+import { store } from '@/stores/store'
 import {
+  Box,
+  Button,
+  Center,
+  Container,
+  FormControl,
   FormErrorMessage,
   FormLabel,
-  FormControl,
-  Input,
-  Button,
-  Box,
-  Container,
-  Text,
-  Center,
-  useColorModeValue,
-  HStack,
   Heading,
+  HStack,
+  Input,
+  Text,
+  useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { PasswordResetSchema, PasswordResetType } from '@/data/paySchema'
 import { motion as m } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { store } from '@/stores/store'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { Form, Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useSnapshot } from 'valtio'
-import { auth } from '@/firebase'
 
-import SlideIn from '@/pages/PasswordReset/SlideIn'
 import { usePasswordReset } from '@/hooks/usePasswordReset'
+import SlideIn from '@/pages/PasswordReset/SlideIn'
 import { routes } from '../../lib/routes'
 
 export default function PasswordReset() {

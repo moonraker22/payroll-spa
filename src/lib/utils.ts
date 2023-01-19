@@ -1,22 +1,24 @@
-import { endOfWeek, toDate, isEqual, startOfWeek } from 'date-fns'
+import { PaysheetType, WeeksType } from '@/stores/store'
 import currency from 'currency.js'
+import { endOfWeek, isEqual, startOfWeek, toDate } from 'date-fns'
 
-interface WeekType {
-  backhaul: number
-  date: number
-  endingMiles: number
-  payMiles: number
-  startingMiles: number
-  totalMiles: 10
-  uid: string
-}
+// export interface WeekType {
+//   backhaul: number
+//   date: number
+//   endingMiles: number
+//   payMiles: number
+//   startingMiles: number
+//   totalMiles: number
+//   uid: string
+// }
 
-interface WeeklyTotalsType extends WeekType {
-  weekStart: number
-  weekEnd: number
-}
+// export interface WeeklyTotalsType extends WeekType {
+//   weekStart: number
+//   weekEnd: number
+//   totalPay: number
+// }
 
-function getWeeklyTotals(array: WeekType[]): WeeklyTotalsType[] {
+function getWeeklyTotals(array: PaysheetType[]): WeeksType[] {
   const weeklyTotals = []
   array.forEach((object) => {
     const weekStart = startOfWeek(toDate(object.date))
@@ -32,8 +34,16 @@ function getWeeklyTotals(array: WeekType[]): WeeklyTotalsType[] {
       existingTotal.payMiles += object.payMiles
       existingTotal.startingMiles += object.startingMiles
       existingTotal.totalMiles += object.totalMiles
+      existingTotal.finalMiles += computeFinalMiles({
+        totalMiles: object.totalMiles,
+        payMiles: object.payMiles,
+      })
       existingTotal.totalPay += Number(
-        computePay(object.totalMiles, object.payMiles, object.backhaul)
+        computePay({
+          totalMiles: object.totalMiles,
+          payMiles: object.payMiles,
+          backhaul: object.backhaul,
+        })
       )
     } else {
       weeklyTotals.push({
@@ -44,8 +54,16 @@ function getWeeklyTotals(array: WeekType[]): WeeklyTotalsType[] {
         payMiles: object.payMiles,
         startingMiles: object.startingMiles,
         totalMiles: object.totalMiles,
+        finalMiles: computeFinalMiles({
+          totalMiles: object.totalMiles,
+          payMiles: object.payMiles,
+        }),
         totalPay: Number(
-          computePay(object.totalMiles, object.payMiles, object.backhaul)
+          computePay({
+            totalMiles: object.totalMiles,
+            payMiles: object.payMiles,
+            backhaul: object.backhaul,
+          })
         ),
       })
     }
@@ -56,15 +74,33 @@ function getWeeklyTotals(array: WeekType[]): WeeklyTotalsType[] {
   return weeklyTotals
 }
 
-function computePay(
-  totalPay: number,
-  payMiles: number,
-  backhaul = 0
-): currency {
-  if (totalPay > payMiles) {
-    return currency(totalPay, { precision: 2 }).multiply(0.515).add(backhaul)
+export function computePay({
+  totalMiles,
+  payMiles,
+  backhaul = 0,
+}: {
+  totalMiles: number
+  payMiles: number
+  backhaul?: number
+}): currency {
+  if (totalMiles > payMiles) {
+    return currency(totalMiles, { precision: 2 }).multiply(0.515).add(backhaul)
   } else {
     return currency(payMiles, { precision: 2 }).multiply(0.515).add(backhaul)
+  }
+}
+
+export function computeFinalMiles({
+  totalMiles,
+  payMiles,
+}: {
+  totalMiles: number
+  payMiles: number
+}): number {
+  if (totalMiles > payMiles) {
+    return totalMiles
+  } else {
+    return payMiles
   }
 }
 

@@ -1,8 +1,8 @@
-import { Center, Button, Box, IconButton, ButtonGroup } from '@chakra-ui/react'
+import { usePaginateData } from '@/hooks/usePaginate'
+import { Box, Button, ButtonGroup, Center, IconButton } from '@chakra-ui/react'
 import { motion as m } from 'framer-motion'
 import { TbArrowBigLeftLines, TbArrowBigRightLines } from 'react-icons/tb'
 import { WeekDisplay } from './WeekDisplay'
-import { usePaginateData } from '@/hooks/usePaginate'
 
 export default function PaginatedItems({
   itemsPerPage,
@@ -56,7 +56,7 @@ export default function PaginatedItems({
           whileTap={{ scale: 0.9 }}
         >
           <WeekDisplay
-            totalMiles={week.totalMiles}
+            totalMiles={week.finalMiles}
             totalPay={week.totalPay}
             totalBackHaulPay={week.backhaul}
             weekStartDate={Date.parse(week?.weekStart).toString()}
@@ -90,7 +90,7 @@ export default function PaginatedItems({
           {mapArray.map((_, i) => {
             return (
               <Button
-                key={i}
+                key={_}
                 colorScheme="cyan"
                 variant={currentPage === i + 1 ? 'ghost' : 'outline'}
                 _hover={{
@@ -101,8 +101,6 @@ export default function PaginatedItems({
                 boxShadow="lg"
                 onClick={() => handlePageClick({ selected: i })}
                 display={shouldDisplay(i + 1) ? 'block' : 'none'}
-                // disabled={currentPage === i + 1}
-                // isLoading={currentPage === i + 1}
               >
                 {i + 1}
               </Button>

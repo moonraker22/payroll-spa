@@ -1,5 +1,5 @@
-import { proxy, useSnapshot, subscribe, snapshot } from 'valtio'
-import { devtools, derive } from 'valtio/utils'
+import { proxy, useSnapshot } from 'valtio'
+import { devtools } from 'valtio/utils'
 
 const state: State = {
   userId: '',
@@ -15,7 +15,7 @@ devtools(store, 'Payroll')
 
 export { store, useSnapshot }
 
-interface State {
+export interface State {
   userId: string
   userEmail: string
   isSignedIn: boolean
@@ -24,18 +24,14 @@ interface State {
   weeks: WeeksType[]
 }
 
-export interface WeeksType {
+export interface WeeksType extends PaysheetType {
   weekStart: string
   weekEnd: string
-  totalMiles: number
-  payMiles: number
+  finalMiles: number
   totalPay: number
-  startingMiles: number
-  endingMiles: number
-  backhaul: number
 }
 
-interface PaysheetType {
+export interface PaysheetType {
   uid: string
   date: number
   startingMiles: number

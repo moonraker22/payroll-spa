@@ -1,34 +1,34 @@
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { Form, useNavigate, Link as RouterLink } from 'react-router-dom'
+import { Login as LoginResolver, LoginType } from '@/data/paySchema'
+import { useLogin } from '@/hooks/useAuth'
+import { useGoogleAuth } from '@/hooks/useGoogleAuth'
+import { routes } from '@/lib/routes'
+import { store } from '@/stores/store'
 import {
+  Box,
+  Button,
+  Center,
+  Container,
+  Flex,
+  FormControl,
   FormErrorMessage,
   FormLabel,
-  FormControl,
+  Heading,
+  IconButton,
   Input,
-  Button,
-  Box,
-  Container,
-  Text,
-  Center,
-  useColorModeValue,
   InputGroup,
   InputRightElement,
-  IconButton,
+  Text,
+  useColorModeValue,
   useDisclosure,
-  Heading,
-  Flex,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Login as LoginResolver, LoginType } from '@/data/paySchema'
-import { useEffect, useRef } from 'react'
 import { motion as m } from 'framer-motion'
-import { useLogin } from '@/hooks/useAuth'
+import { useEffect, useRef } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { HiEye, HiEyeOff } from 'react-icons/hi'
-import { GoogleIcon } from './GoogleIcon'
-import { routes } from '@/lib/routes'
-import { useGoogleAuth } from '@/hooks/useGoogleAuth'
-import { store } from '@/stores/store'
+import { Form, Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useSnapshot } from 'valtio'
+import { GoogleIcon } from './GoogleIcon'
 
 export default function Login() {
   const snap = useSnapshot(store)
@@ -53,12 +53,10 @@ export default function Login() {
   })
 
   const bg = useColorModeValue('white', ' gray.800')
-  const color = useColorModeValue('gray.800', 'white')
 
   const password = watch('password')
   const email = watch('email')
   const canSubmit = isDirty && isValid && password && email
-  // const { loginUser } = useStore()
   const { login, isLoading, error } = useLogin()
 
   const onSubmit: SubmitHandler<LoginType> = async (data) => {

@@ -1,8 +1,8 @@
 import { getWeeklyTotals } from '@/lib/utils'
-import { useSnapshot } from 'valtio'
 import { store } from '@/stores/store'
-import { useEffect } from 'react'
 import { collection, orderBy, query } from 'firebase/firestore'
+import { useEffect } from 'react'
+import { useSnapshot } from 'valtio'
 
 import { db } from '@/firebase'
 import { COLLECTIONS } from '@/lib/constants'

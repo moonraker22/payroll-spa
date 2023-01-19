@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth, GoogleAuthProvider, connectAuthEmulator } from 'firebase/auth'
+import { connectAuthEmulator, getAuth, GoogleAuthProvider } from 'firebase/auth'
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 
 const config = {
@@ -24,7 +24,5 @@ if (import.meta.env.DEV) {
   connectFirestoreEmulator(db, 'localhost', 8080)
   connectAuthEmulator(auth, 'http://localhost:9099')
 }
-// connectFirestoreEmulator(db, 'localhost', 8080)
-// connectAuthEmulator(auth, 'http://localhost:9099')
 
 export { auth, db, app, googleProvider }

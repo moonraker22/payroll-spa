@@ -2,15 +2,15 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Heading,
+  Spacer,
   Stack,
   Text,
-  Spacer,
-  Flex,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { Link as RouterLink } from 'react-router-dom'
 import { motion as m } from 'framer-motion'
+import { Link as RouterLink } from 'react-router-dom'
 import { routes } from '../../lib/routes'
 
 export default function Home() {
@@ -44,23 +44,17 @@ export default function Home() {
         >
           <Box
             as={m.div}
-            // direction={{ base: 'column', sm: 'row' }}
             overflow="hidden"
-            // variant="elevated"
             bg="black"
             p="20px"
             rounded={20}
             w={{ base: '100%', sm: '500px' }}
             bgColor={gradientColor}
-            // opacity={0.7}
             borderWidth="1px"
             borderColor="cyan.300"
             display={{ base: 'flex', sm: 'block' }}
           >
-            {/* <Box maxW={{ base: '100%', sm: '200px' }} /> */}
-
             <Stack>
-              {/* <CardBody> */}
               <Heading
                 bgGradient="linear(to-b, #42047e, #07f49e)"
                 bgClip="text"
@@ -111,7 +105,6 @@ export default function Home() {
                   Sign in
                 </Button>
               </Flex>
-              {/* </CardBody> */}
             </Stack>
           </Box>
         </Box>

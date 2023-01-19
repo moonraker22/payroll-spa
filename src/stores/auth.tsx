@@ -1,8 +1,17 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import { onAuthStateChanged, signOut as authSignOut } from 'firebase/auth'
 import { auth, db } from '@/firebase'
-import { store } from './store'
-import { doc, getDoc } from 'firebase/firestore'
+import { getWeeklyTotals } from '@/lib/utils'
+import { onAuthStateChanged, signOut as authSignOut } from 'firebase/auth'
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  orderBy,
+  query,
+} from 'firebase/firestore'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { COLLECTIONS } from '../lib/constants'
+import { PaysheetType, store } from './store'
 
 export default function useFirebaseAuth() {
   const [authUser, setAuthUser] = useState(null)
@@ -41,6 +50,42 @@ export default function useFirebaseAuth() {
     setIsLoading(false)
   }
 
+  /**
+   * Get paysheets from firestore and put into global store
+   */
+  useEffect(() => {
+    if (!isSignedIn) return
+    if (authUser.uid !== null) {
+      const q = query(
+        collection(
+          db,
+          COLLECTIONS.USERS,
+          `${authUser.uid}`,
+          `${COLLECTIONS.PAYSHEETS}`
+        ),
+        orderBy('date', 'desc')
+      )
+
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const data: PaysheetType[] = querySnapshot.docs.map((doc) => ({
+          uid: doc.id,
+          startingMiles: doc.data().startingMiles,
+          endingMiles: doc.data().endingMiles,
+          date: doc.data().date,
+          totalMiles: doc.data().totalMiles,
+          payMiles: doc.data().payMiles,
+          backhaul: doc.data().backhaul,
+        }))
+        store.paysheets = data
+        const weeks = getWeeklyTotals(data)
+        store.weeks = weeks
+        console.log('weeks updated', weeks)
+      })
+      return () => unsubscribe()
+    }
+  }, [isSignedIn, authUser])
+
+  // Sign out
   const signOut = () => authSignOut(auth).then(clear)
 
   // Listen for Firebase Auth state change

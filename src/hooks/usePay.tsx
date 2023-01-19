@@ -1,20 +1,20 @@
 import { db } from '@/firebase'
-import { useState } from 'react'
+import { COLLECTIONS } from '@/lib/constants'
 import { routes } from '@/lib/routes'
+import { store } from '@/stores/store'
 import { useToast } from '@chakra-ui/react'
-import { useNavigate } from 'react-router-dom'
 import {
-  doc,
   addDoc,
   collection,
-  query,
-  where,
+  doc,
   getDocs,
+  query,
   updateDoc,
+  where,
 } from 'firebase/firestore'
-import { store } from '@/stores/store'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useSnapshot } from 'valtio'
-import { COLLECTIONS } from '@/lib/constants'
 
 export function useAddPay() {
   const [isPayLoading, setLoading] = useState(false)
