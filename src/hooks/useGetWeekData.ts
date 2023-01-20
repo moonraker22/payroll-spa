@@ -6,10 +6,10 @@ import { collection, orderBy, query, where } from 'firebase/firestore'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useSnapshot } from 'valtio'
 
-export function useGetWeekData({ weekStart }: { weekStart: Date | number }) {
+export function useGetWeekData() {
   const snap = useSnapshot(store)
 
-  const weekEnd = addWeeks(weekStart, 1).toISOString()
+  const weekEnd = addWeeks(new Date(snap?.weekData.startDate), 1).toISOString()
 
   const q = query(
     collection(
@@ -18,7 +18,7 @@ export function useGetWeekData({ weekStart }: { weekStart: Date | number }) {
       `${snap?.userId || 'empty'}`,
       `${COLLECTIONS.PAYSHEETS}`
     ),
-    where('date', '>=', weekStart),
+    where('date', '>=', new Date(snap?.weekData.startDate).getTime()),
     where('date', '<=', Date.parse(weekEnd)),
     orderBy('date', 'asc')
   )

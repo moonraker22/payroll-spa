@@ -117,7 +117,7 @@ export default function Login() {
         <Box
           bg={bg}
           border="2px"
-          borderColor="gray.700"
+          borderColor="cyan.600"
           boxShadow="dark-lg"
           p="6"
           rounded="md"

@@ -130,7 +130,7 @@ export default function Registration() {
         <Box
           bg={bg}
           border="2px"
-          borderColor="gray.700"
+          borderColor="cyan.600"
           boxShadow="dark-lg"
           p="5"
           rounded="md"

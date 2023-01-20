@@ -120,7 +120,6 @@ const DailyForm = () => {
       exit={{ opacity: 0 }}
     >
       <Box
-        bg={bg}
         border="2px"
         borderColor="cyan.600"
         boxShadow="dark-lg"
@@ -132,6 +131,7 @@ const DailyForm = () => {
         w="60vw"
         maxW="500px"
         minW="350px"
+        bg={bg}
       >
         <Box p="4">
           <Form onSubmit={handleSubmit(onSubmit)}>

@@ -215,20 +215,22 @@ export default function Layout() {
                     </Button>
                   </>
                 )}
-                {snap.isSignedIn && (
-                  <Show above="md">
-                    <Avatar
-                      as={NavLink}
-                      to={routes.PROFILE}
-                      size="sm"
-                      name={snap.userEmail}
-                      src={snap.avatar}
-                    >
-                      <AvatarBadge boxSize="1em" bg="cyan.600" />
-                    </Avatar>
-                    <ColorModeSwitcher ml="auto" />
-                  </Show>
-                )}
+                <Show above="md">
+                  {snap.isSignedIn && (
+                    <>
+                      <Avatar
+                        as={NavLink}
+                        to={routes.PROFILE}
+                        size="sm"
+                        name={snap.userEmail}
+                        src={snap.avatar}
+                      >
+                        <AvatarBadge boxSize="1em" bg="cyan.600" />
+                      </Avatar>
+                    </>
+                  )}
+                  <ColorModeSwitcher ml="auto" />
+                </Show>
               </HStack>
               <Box
                 display={{

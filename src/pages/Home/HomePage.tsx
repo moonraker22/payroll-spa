@@ -15,13 +15,10 @@ import { routes } from '../../lib/routes'
 
 export default function Home() {
   const color = useColorModeValue('gray.700', 'gray.300')
-  const gradientColor = useColorModeValue(
-    'radial-gradient(circle, rgba(26,32,44,1) 2%, rgba(14,149,203,1) 36%, rgba(255,255,255,1) 62%)',
-    'radial-gradient(circle, rgba(233,222,231,1) 2%, rgba(14,149,203,1) 36%, rgba(26,32,44,1) 62%)'
-  )
+
   const innerGradientColor = useColorModeValue(
-    'gray.400',
-    'linear(to-b, gray.800, cyan.900, gray.800)'
+    'blackAlpha.200',
+    'blackAlpha.500'
   )
   const buttonBackground = useColorModeValue('cyan.700', '')
   const buttonColor = useColorModeValue('white', 'cyan.300')
@@ -30,44 +27,56 @@ export default function Home() {
     'linear(to-b, #42047e, #07f49e)'
   )
 
+  const linear = useColorModeValue(
+    'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(14,149,203,0.8954175420168067) 40%, rgba(14,149,203,0.8898153011204482) 60%, rgba(255,255,255,1) 100%)',
+    'linear-gradient(180deg, rgba(26,32,44,0.9542410714285714) 20%, rgba(14,149,203,0.8169861694677871) 46%, rgba(14,149,203,0.8674063375350141) 54%, rgba(26,32,44,0.9430365896358543) 80%)'
+  )
   return (
     <Center
       as={m.div}
       initial={{ background: 'gray' }}
       animate={{
-        background: gradientColor,
+        background: [linear],
       }}
       // bgGradient={'linear(to-b, gray.800, cyan.900, gray.800)'}
       // bgGradient={'radial( cyan.900, gray.800, gray.900)'}
       h="100vh"
       w="100vw"
       // bg={gradientColor}
+      p="10px"
     >
       <m.div
-        initial={{ opacity: 0, scale: 0 }}
+        initial={{ opacity: 0, scale: 0, borderRadius: 0 }}
         animate={{
           opacity: [0.4, 0.9, 0.7, 0.8],
           scale: [0, 1.1, 1],
+          borderRadius: [0, 10, 15, 20],
         }}
         transition={{ duration: 0.6 }}
+        style={{ margin: '8px' }}
       >
         <Box
+          as={m.div}
+          // transition={{ duration: 0.6 }}
           w={{ base: '100%', sm: '510px' }}
           rounded={20}
           borderWidth="1px"
           borderColor="cyan.300"
           mb="20"
-          p="5px"
-          bg="gray.800"
+          p="15px"
+          bg="transparent"
           boxShadow={'dark-lg'}
+          mx="auto"
         >
           <Box
             as={m.div}
             overflow="hidden"
             bg="black"
-            p="20px"
+            p="25px"
             rounded={20}
-            w={{ base: '100%', sm: '500px' }}
+            h="350px"
+            // w={{ base: '100%', sm: '500px' }}s
+            // h="340px"
             bgColor={innerGradientColor}
             borderWidth="1px"
             borderColor="cyan.300"
