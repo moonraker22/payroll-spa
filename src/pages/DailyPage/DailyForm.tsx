@@ -16,9 +16,11 @@ import { Form, useLocation } from 'react-router-dom'
 // import { DevTool } from '@hookform/devtools'
 import { Paysheet } from '@/data/paySchema'
 import { useAddPay } from '@/hooks/usePay'
+import { ArrowForwardIcon } from '@chakra-ui/icons'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { motion as m } from 'framer-motion'
+import { GiCancel } from 'react-icons/gi'
 
 const DailyForm = () => {
   const location = useLocation()
@@ -120,7 +122,6 @@ const DailyForm = () => {
       exit={{ opacity: 0 }}
     >
       <Box
-        bg={bg}
         border="2px"
         borderColor="cyan.600"
         boxShadow="dark-lg"
@@ -131,7 +132,8 @@ const DailyForm = () => {
         // bgGradient="linear(to-l, #111621, #1A202C)"
         w="60vw"
         maxW="500px"
-        minW="300px"
+        minW="350px"
+        bg={bg}
       >
         <Box p="4">
           <Form onSubmit={handleSubmit(onSubmit)}>
@@ -258,7 +260,7 @@ const DailyForm = () => {
             <Flex>
               <Button
                 mt={4}
-                px={10}
+                px={5}
                 colorScheme="cyan"
                 isLoading={isSubmitting}
                 type="submit"
@@ -270,6 +272,7 @@ const DailyForm = () => {
                   color: 'white',
                   scale: 1.1,
                 }}
+                rightIcon={<ArrowForwardIcon />}
               >
                 Submit
               </Button>
@@ -285,6 +288,7 @@ const DailyForm = () => {
                   color: 'white',
                   scale: 1.1,
                 }}
+                rightIcon={<GiCancel />}
               >
                 Reset
               </Button>
@@ -292,14 +296,13 @@ const DailyForm = () => {
           </Form>
         </Box>
       </Box>
-      {/* <DevTool control={control} /> */}
     </m.div>
   )
 }
 
 export default DailyForm
 
-type PaysheetInputs = {
+export type PaysheetInputs = {
   date: string
   startingMiles: string
   endingMiles: string

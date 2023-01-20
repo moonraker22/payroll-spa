@@ -1,5 +1,12 @@
 import { usePaginateData } from '@/hooks/usePaginate'
-import { Box, Button, ButtonGroup, Center, IconButton } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Center,
+  IconButton,
+  useColorModeValue,
+} from '@chakra-ui/react'
 import { motion as m } from 'framer-motion'
 import { TbArrowBigLeftLines, TbArrowBigRightLines } from 'react-icons/tb'
 import { WeekDisplay } from './WeekDisplay'
@@ -33,27 +40,29 @@ export default function PaginatedItems({
     }
     return false
   }
-
+  const hoverBg = useColorModeValue('cyan.600', 'cyan.400')
   return (
     <>
       {pageData.map((week, index) => (
         <m.div
           // as={m.div}
           key={week.weekStart}
-          initial={{ x: -0, opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0 }}
           animate={{
-            x: 0,
             opacity: 0.9,
             scale: [0.8, 1, 1.2, 1.4, 1.2, 1],
           }}
+          exit={{ opacity: 0 }}
           transition={{
             type: 'spring',
             stiffness: 90,
             delay: index * 0.2,
             damping: 15,
           }}
-          whileHover={{ cursor: 'pointer', opacity: 1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{
+            cursor: 'pointer',
+            opacity: 1,
+          }}
         >
           <WeekDisplay
             totalMiles={week.finalMiles}

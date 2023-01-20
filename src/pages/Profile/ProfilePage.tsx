@@ -27,6 +27,8 @@ import { routes } from '@/lib/routes'
 import { store, useSnapshot } from '@/stores/store'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
+import { RiLockPasswordLine } from 'react-icons/ri'
+import { RxUpdate } from 'react-icons/rx'
 
 export default function Profile() {
   const defaultValues = {}
@@ -67,28 +69,33 @@ export default function Profile() {
           Profile
         </Heading>
       </Center>
-      <Center
-        as={m.div}
-        bg={bg}
-        border="2px"
-        borderColor="cyan.700"
-        boxShadow="dark-lg"
-        p="5"
-        rounded="md"
-        mt="50px"
-        mb="100px"
-        maxW="500px"
-        minW="200px"
-        minH="300px"
-        initial={{ opacity: 0, y: 80 }}
-        animate={{ opacity: 1, y: 0 }}
+      <m.div
+        initial={{ opacity: 0, y: 80, scale: 0.8 }}
+        animate={{ opacity: 1, y: 0, scale: [0.9, 1.2, 1] }}
+        transition={{
+          type: 'spring',
+          stiffness: 90,
+
+          damping: 15,
+        }}
         exit={{ opacity: 0 }}
       >
-        <m.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 90, delay: 0.5 }}
-          exit={{ opacity: 0 }}
+        <Center
+          as={m.div}
+          bg={bg}
+          border="2px"
+          borderColor="cyan.700"
+          boxShadow="dark-lg"
+          p="5"
+          rounded="md"
+          mt="50px"
+          mb="100px"
+          maxW="500px"
+          minH="300px"
+          minW="350px"
+          // initial={{ opacity: 0, y: 80 }}
+          // animate={{ opacity: 1, y: 0 }}
+          // exit={{ opacity: 0 }}
         >
           <Stack spacing="10px">
             <Center mt="50px">
@@ -149,6 +156,7 @@ export default function Profile() {
                           color: 'white',
                           scale: 1.1,
                         }}
+                        rightIcon={<RxUpdate />}
                       >
                         Update
                       </Button>
@@ -173,13 +181,14 @@ export default function Profile() {
                   color: 'white',
                   scale: 1.1,
                 }}
+                rightIcon={<RiLockPasswordLine />}
               >
                 Change Password
               </Button>
             </Center>
           </Stack>
-        </m.div>
-      </Center>
+        </Center>
+      </m.div>
       {/* <DevTool control={control} /> */}
     </Container>
   )

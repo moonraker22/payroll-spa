@@ -1,16 +1,27 @@
-import { WeekDisplay } from './WeekDisplay'
+import { WeeksType } from '@/stores/store'
 import {
+  Box,
+  Button,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Button,
-  Box,
+  ModalContent,
+  ModalFooter,
+  ModalOverlay,
 } from '@chakra-ui/react'
+import { WeekDisplay } from './WeekDisplay'
 
-export default function WeekModal({ filterDate, isOpen, onClose }) {
+type WeekModalProps = {
+  filterDate: [] | WeeksType[]
+  isOpen: boolean
+  onClose: () => void
+}
+
+export default function WeekModal({
+  filterDate,
+  isOpen,
+  onClose,
+}: WeekModalProps) {
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} size={'xl'} variant="floating">

@@ -1,8 +1,8 @@
+import SpinnerComp from '@/components/SpinnerComp'
+import { auth } from '@/firebase'
+import { routes } from '@/lib/routes'
 import { useIdToken } from 'react-firebase-hooks/auth'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
-import { auth } from '@/firebase'
-import SpinnerComp from '@/components/SpinnerComp'
-import { routes } from '../../lib/routes'
 
 // Protected route
 

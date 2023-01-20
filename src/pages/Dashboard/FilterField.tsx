@@ -1,5 +1,5 @@
 import { DateFilterSchema, DateFilterType } from '@/data/paySchema'
-import { store } from '@/stores/store'
+import { store, WeeksType } from '@/stores/store'
 import {
   Button,
   Center,
@@ -15,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { isWithinInterval } from 'date-fns'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { IoFilterSharp } from 'react-icons/io5'
 import { Form } from 'react-router-dom'
 import { useSnapshot } from 'valtio'
 import WeekModal from './WeekModal'
@@ -22,7 +23,8 @@ import WeekModal from './WeekModal'
 export default function FilterField() {
   const snap = useSnapshot(store)
   const textColor = useColorModeValue('gray.800', 'gray')
-  const [filterDate, setFilterDate] = useState([])
+  const [filterDate, setFilterDate] = useState<[] | WeeksType[]>([])
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const {
     register,
@@ -38,7 +40,7 @@ export default function FilterField() {
     onOpen()
   }
 
-  function findDate(date) {
+  function findDate(date: number) {
     const found = snap.weeks.filter((week) => {
       if (
         isWithinInterval(new Date(date), {
@@ -51,7 +53,6 @@ export default function FilterField() {
     })
     setFilterDate(found)
   }
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
     <>
@@ -90,6 +91,7 @@ export default function FilterField() {
                 scale: 1.1,
               }}
               boxShadow="lg"
+              rightIcon={<IoFilterSharp />}
             >
               Filter
             </Button>

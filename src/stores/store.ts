@@ -8,6 +8,12 @@ const state: State = {
   avatar: '',
   paysheets: [],
   weeks: [],
+  weekData: {
+    startDate: new Date(),
+    endDate: new Date(),
+    weekStartFormat: '',
+    weekEndFormat: '',
+  },
 }
 const store = proxy(state)
 
@@ -22,6 +28,7 @@ export interface State {
   avatar: string
   paysheets: PaysheetType[]
   weeks: WeeksType[]
+  weekData: WeekDataType
 }
 
 export interface WeeksType extends PaysheetType {
@@ -39,4 +46,11 @@ export interface PaysheetType {
   payMiles: number
   totalMiles: number
   backhaul: number
+}
+
+export interface WeekDataType {
+  startDate: Date | null
+  endDate: Date | null
+  weekStartFormat: string
+  weekEndFormat: string
 }

@@ -1,4 +1,9 @@
+import { ColorModeSwitcher } from '@/ColorModeSwitcher'
+import SpinnerComp from '@/components/SpinnerComp'
+import { useLogout } from '@/hooks/useAuth'
+import { routes } from '@/lib/routes'
 import { store, useSnapshot } from '@/stores/store'
+import theme from '@/theme'
 import {
   Avatar,
   AvatarBadge,
@@ -12,21 +17,18 @@ import {
   Icon,
   IconButton,
   Image,
+  Show,
   Text,
   useColorModeValue,
   useDisclosure,
   VisuallyHidden,
   VStack,
 } from '@chakra-ui/react'
+import { AnimatePresence } from 'framer-motion'
 import { Suspense } from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { ImCoinDollar } from 'react-icons/im'
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
-import { ColorModeSwitcher } from '../ColorModeSwitcher'
-import SpinnerComp from '../components/SpinnerComp'
-import { useLogout } from '../hooks/useAuth'
-import { routes } from '../lib/routes'
-import theme from '../theme'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Footer from './Footer'
 
 export default function Layout() {
@@ -57,9 +59,10 @@ export default function Layout() {
     navigate(routes.LOGIN)
   }
 
-  const user = useSnapshot(store)
+  const snap = useSnapshot(store)
+  const location = useLocation()
 
-  if (!user) {
+  if (!snap) {
     return <SpinnerComp />
   }
   return (
@@ -116,6 +119,27 @@ export default function Layout() {
                 </NavLink>
               </Button>
             </Flex>
+            <VisuallyHidden>
+              <Image
+                src={snap.avatar}
+                referrerPolicy="no-referrer"
+                alt="avatar"
+              />
+            </VisuallyHidden>
+            <Show below="md">
+              <ColorModeSwitcher ml="auto" />
+              {snap.isSignedIn && (
+                <Avatar
+                  as={NavLink}
+                  to={routes.PROFILE}
+                  size="sm"
+                  name={snap.userEmail}
+                  src={snap.avatar}
+                >
+                  <AvatarBadge boxSize="1em" bg="cyan.600" />
+                </Avatar>
+              )}
+            </Show>
             <HStack display="flex" alignItems="center" spacing={1}>
               <HStack
                 spacing={1}
@@ -126,7 +150,7 @@ export default function Layout() {
                   md: 'inline-flex',
                 }}
               >
-                {user && user.isSignedIn ? (
+                {snap && snap.isSignedIn ? (
                   <>
                     <Button
                       variant="ghost"
@@ -162,22 +186,6 @@ export default function Layout() {
                     >
                       Logout
                     </Button>
-                    <VisuallyHidden>
-                      <Image
-                        src={user.avatar}
-                        referrerPolicy="no-referrer"
-                        alt="avatar"
-                      />
-                    </VisuallyHidden>
-                    <Avatar
-                      as={NavLink}
-                      to={routes.PROFILE}
-                      size="sm"
-                      name={user.userEmail}
-                      src={user.avatar}
-                    >
-                      <AvatarBadge boxSize="1em" bg="cyan.600" />
-                    </Avatar>
                   </>
                 ) : (
                   <>
@@ -209,8 +217,22 @@ export default function Layout() {
                     </Button>
                   </>
                 )}
-
-                <ColorModeSwitcher />
+                <Show above="md">
+                  {snap.isSignedIn && (
+                    <>
+                      <Avatar
+                        as={NavLink}
+                        to={routes.PROFILE}
+                        size="sm"
+                        name={snap.userEmail}
+                        src={snap.avatar}
+                      >
+                        <AvatarBadge boxSize="1em" bg="cyan.600" />
+                      </Avatar>
+                    </>
+                  )}
+                  <ColorModeSwitcher ml="auto" />
+                </Show>
               </HStack>
               <Box
                 display={{
@@ -255,7 +277,7 @@ export default function Layout() {
                     aria-label="Close menu"
                     onClick={mobileNav.onClose}
                   />
-                  {user && user.isSignedIn ? (
+                  {snap && snap.isSignedIn ? (
                     <>
                       <Button
                         variant="ghost"
@@ -346,13 +368,23 @@ export default function Layout() {
           </Flex>
         </chakra.header>
         <Box as="main" role="main">
-          <Outlet />
+          <AnimatePresence mode="wait">
+            <Outlet />
+          </AnimatePresence>
+
           <Footer />
         </Box>
       </Suspense>
     </>
   )
 }
+
+// const AnimatedOutlet: React.FC = () => {
+//   const o = useOutlet()
+//   const [outlet] = useState(o)
+
+//   return <>{outlet}</>
+// }
 
 // export async function loader({ request, params }) {
 //   // async function getInitialAuthState() {

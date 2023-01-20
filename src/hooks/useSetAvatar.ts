@@ -1,8 +1,8 @@
+import { db } from '@/firebase'
+import { store } from '@/stores/store'
+import { useToast } from '@chakra-ui/react'
 import { doc, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { useState } from 'react'
-import { store } from '@/stores/store'
-import { db } from '@/firebase'
-import { useToast } from '@chakra-ui/react'
 import { useAuth } from './useAuth'
 
 export function useSetAvatar() {
@@ -11,7 +11,7 @@ export function useSetAvatar() {
   const { user } = useAuth()
   const toast = useToast()
 
-  async function setAvatar({ avatarUrl }) {
+  async function setAvatar({ avatarUrl }: { avatarUrl: string }) {
     setLoading(true)
 
     if (!user) {

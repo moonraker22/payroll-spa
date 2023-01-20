@@ -17,7 +17,19 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Form } from 'react-router-dom'
 
-export default function PasswordPrompt({ setPass, isOpen, onOpen, onClose }) {
+type PasswordPromptProps = {
+  setPass: (pass: string) => void
+  isOpen: boolean
+  onOpen: () => void
+  onClose: () => void
+}
+
+export default function PasswordPrompt({
+  setPass,
+  isOpen,
+  onOpen,
+  onClose,
+}: PasswordPromptProps) {
   const {
     register,
     handleSubmit,
@@ -42,7 +54,7 @@ export default function PasswordPrompt({ setPass, isOpen, onOpen, onClose }) {
           <ModalHeader>Current Password</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Form>
+            <Form onSubmit={handleSubmit(onSubmit)}>
               <FormControl id="password" isRequired isInvalid={false}>
                 <FormLabel>Password</FormLabel>
                 <Input

@@ -15,6 +15,7 @@ import {
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSnapshot } from 'valtio'
+import { PaysheetInputs } from '../pages/DailyPage/DailyForm'
 
 export function useAddPay() {
   const [isPayLoading, setLoading] = useState(false)
@@ -23,6 +24,8 @@ export function useAddPay() {
   const navigate = useNavigate()
   const snap = useSnapshot(store)
 
+  // type PaysheetsWithoutId = Omit<PaysheetType, 'uid'>
+
   async function addPay({
     date,
     startingMiles,
@@ -30,7 +33,7 @@ export function useAddPay() {
     totalMiles,
     payMiles,
     backhaul,
-  }) {
+  }: PaysheetInputs) {
     setLoading(true)
 
     // if (!isLoading && !user) {

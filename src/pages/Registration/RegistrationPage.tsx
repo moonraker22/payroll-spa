@@ -2,6 +2,7 @@ import { Register } from '@/data/paySchema'
 import { useRegister } from '@/hooks/useAuth'
 import { useGoogleAuth } from '@/hooks/useGoogleAuth'
 import { routes } from '@/lib/routes'
+import { store } from '@/stores/store'
 import {
   Box,
   Button,
@@ -22,7 +23,6 @@ import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Form, Link as RouterLink, useNavigate } from 'react-router-dom'
 import { useSnapshot } from 'valtio'
-import { store } from '../../stores/store'
 import { GoogleIcon } from '../Login/GoogleIcon'
 
 type RegistrationInputs = {
@@ -33,7 +33,6 @@ type RegistrationInputs = {
 
 export default function Registration() {
   const snap = useSnapshot(store)
-
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -108,8 +107,8 @@ export default function Registration() {
   return (
     <Container maxW="container.xl" centerContent mt={5}>
       <m.div
-        initial={{ opacity: 0, y: 80 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
         <Center>
@@ -127,146 +126,158 @@ export default function Registration() {
             Register
           </Heading>
         </Center>
-        <Box
-          bg={bg}
-          border="2px"
-          borderColor="gray.700"
-          boxShadow="dark-lg"
-          p="5"
-          rounded="md"
-          mt={10}
-          mb={10}
-          w="50vw"
-          maxW="450px"
-          minW="300px"
-        >
-          <Box p="3">
-            <Form onSubmit={handleSubmit(onSubmit)}>
-              <Box my={2}>
-                <FormControl
-                  isInvalid={errors.email ? true : false}
-                  isRequired
-                  variant="floating"
-                >
-                  <Input
-                    {...register('email')}
-                    id="email"
-                    type="email"
-                    placeholder="Email"
-                    autoComplete="email"
-                    mb="5"
-                    _placeholder={{ color: placeholderColor }}
-                  />
-                  <FormLabel htmlFor="email">Email:</FormLabel>
-                  <FormErrorMessage>
-                    {errors.email && errors.email.message}
-                  </FormErrorMessage>
-                </FormControl>
-              </Box>
-              <Box my={2}>
-                <FormControl
-                  isInvalid={errors.password ? true : false}
-                  isRequired
-                  variant="floating"
-                >
-                  <Input
-                    {...register('password')}
-                    id="password"
-                    type="password"
-                    placeholder="Password"
-                    autoComplete="new-password"
-                    mb="5"
-                    _placeholder={{ color: placeholderColor }}
-                  />
-                  <FormLabel htmlFor="password">Password:</FormLabel>
-                  <FormErrorMessage>
-                    {errors.password && errors.password.message}
-                  </FormErrorMessage>
-                </FormControl>
-              </Box>
-              <Box my={2}>
-                <FormControl
-                  isInvalid={errors.passwordConfirmation ? true : false}
-                  isRequired
-                  variant="floating"
-                >
-                  <Input
-                    {...register('passwordConfirmation')}
-                    id="passwordConfirmation"
-                    type="password"
-                    placeholder="Password Confirmation"
-                    autoComplete="new-password"
-                    mb="2"
-                    _placeholder={{ color: placeholderColor }}
-                  />
-                  <FormLabel htmlFor="passwordConfirmation">
-                    Password Confirmation:
-                  </FormLabel>
-                  <FormErrorMessage>
-                    {errors.passwordConfirmation &&
-                      errors.passwordConfirmation.message}
-                  </FormErrorMessage>
-                </FormControl>
-              </Box>
+        <m.div
+          initial={{ opacity: 0, y: 80, scale: 0.8 }}
+          animate={{ opacity: 1, y: 0, scale: [0.9, 1.2, 1] }}
+          transition={{
+            type: 'spring',
+            stiffness: 90,
 
-              <Center my={2}>
-                <Button
-                  mt={4}
-                  w="full"
-                  colorScheme="cyan"
-                  isLoading={isSubmitting}
-                  type="submit"
-                  size="lg"
-                  disabled={!canSubmit}
-                  loadingText="Logging In"
-                  variant={'outline'}
-                  _hover={{
-                    bg: 'cyan.600',
-                    color: 'white',
-                    scale: 1.1,
-                  }}
-                >
-                  Submit
-                </Button>
-              </Center>
-              <Center mb="8px">
-                <Text color={textColor}>Or register in with Google</Text>
-              </Center>
-              <Flex justify="center" flexDir={'column'}>
-                <Box>
-                  <Button
-                    width="full"
-                    onClick={googleSubmit}
-                    disabled={googleLoading}
-                    loadingText="Logging In"
-                    variant="outline"
-                    colorScheme="cyan"
-                    size="lg"
-                    id="google-button"
+            damping: 15,
+          }}
+          exit={{ opacity: 0 }}
+        >
+          <Box
+            bg={bg}
+            border="2px"
+            borderColor="cyan.600"
+            boxShadow="dark-lg"
+            p="5"
+            rounded="md"
+            mt={10}
+            mb={10}
+            w="50vw"
+            maxW="450px"
+            minW="350px"
+          >
+            <Box p="3">
+              <Form onSubmit={handleSubmit(onSubmit)}>
+                <Box my={2}>
+                  <FormControl
+                    isInvalid={errors.email ? true : false}
+                    isRequired
+                    variant="floating"
                   >
-                    <GoogleIcon boxSize="5" />
+                    <Input
+                      {...register('email')}
+                      id="email"
+                      type="email"
+                      placeholder="Email"
+                      autoComplete="email"
+                      mb="5"
+                      _placeholder={{ color: placeholderColor }}
+                    />
+                    <FormLabel htmlFor="email">Email:</FormLabel>
+                    <FormErrorMessage>
+                      {errors.email && errors.email.message}
+                    </FormErrorMessage>
+                  </FormControl>
+                </Box>
+                <Box my={2}>
+                  <FormControl
+                    isInvalid={errors.password ? true : false}
+                    isRequired
+                    variant="floating"
+                  >
+                    <Input
+                      {...register('password')}
+                      id="password"
+                      type="password"
+                      placeholder="Password"
+                      autoComplete="new-password"
+                      mb="5"
+                      _placeholder={{ color: placeholderColor }}
+                    />
+                    <FormLabel htmlFor="password">Password:</FormLabel>
+                    <FormErrorMessage>
+                      {errors.password && errors.password.message}
+                    </FormErrorMessage>
+                  </FormControl>
+                </Box>
+                <Box my={2}>
+                  <FormControl
+                    isInvalid={errors.passwordConfirmation ? true : false}
+                    isRequired
+                    variant="floating"
+                  >
+                    <Input
+                      {...register('passwordConfirmation')}
+                      id="passwordConfirmation"
+                      type="password"
+                      placeholder="Password Confirmation"
+                      autoComplete="new-password"
+                      mb="2"
+                      _placeholder={{ color: placeholderColor }}
+                    />
+                    <FormLabel htmlFor="passwordConfirmation">
+                      Password Confirmation:
+                    </FormLabel>
+                    <FormErrorMessage>
+                      {errors.passwordConfirmation &&
+                        errors.passwordConfirmation.message}
+                    </FormErrorMessage>
+                  </FormControl>
+                </Box>
+
+                <Center my={2}>
+                  <Button
+                    mt={4}
+                    w="full"
+                    colorScheme="cyan"
+                    isLoading={isSubmitting}
+                    type="submit"
+                    size="lg"
+                    disabled={!canSubmit}
+                    loadingText="Logging In"
+                    variant={'outline'}
+                    _hover={{
+                      bg: 'cyan.600',
+                      color: 'white',
+                      scale: 1.1,
+                    }}
+                  >
+                    Submit
                   </Button>
-                </Box>
-                <Box>
-                  <Center my="6px">
-                    <Text mt="3px" mr="5px" color={textColor}>
-                      Already have an account?
-                    </Text>
+                </Center>
+                <Center mb="8px">
+                  <Text color={textColor}>Or register in with Google</Text>
+                </Center>
+                <Flex justify="center" flexDir={'column'}>
+                  <Box>
                     <Button
-                      as={RouterLink}
-                      variant="link"
+                      width="full"
+                      onClick={googleSubmit}
+                      disabled={googleLoading}
+                      loadingText="Logging In"
+                      variant="outline"
                       colorScheme="cyan"
-                      to={routes.LOGIN}
+                      size="lg"
+                      id="google-button"
                     >
-                      {' '}
-                      Log In
+                      <GoogleIcon boxSize="5" />
                     </Button>
-                  </Center>
-                </Box>
-              </Flex>
-            </Form>
+                  </Box>
+                  <Box>
+                    <Center my="6px">
+                      <Text mt="3px" mr="5px" color={textColor}>
+                        Already have an account?
+                      </Text>
+                      <Button
+                        as={RouterLink}
+                        variant="link"
+                        colorScheme="cyan"
+                        to={routes.LOGIN}
+                      >
+                        {' '}
+                        Log In
+                      </Button>
+                    </Center>
+                  </Box>
+                </Flex>
+              </Form>
+            </Box>
           </Box>
-        </Box>
+        </m.div>
       </m.div>
     </Container>
   )

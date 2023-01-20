@@ -1,3 +1,0 @@
-pageData not updating after add pay
-
-total miles in week Display on Dashboard not showing greater of pay and ran miles

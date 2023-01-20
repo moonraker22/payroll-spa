@@ -1,5 +1,6 @@
 import { useGetWeekData } from '@/hooks/useGetWeekData'
 import { routes } from '@/lib/routes'
+import { useSnapshot } from '@/stores/store'
 import {
   Container,
   Link,
@@ -13,28 +14,27 @@ import {
   Tr,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { motion as m } from 'framer-motion'
-import { useEffect } from 'react'
-import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom'
+import { AnimatePresence, LayoutGroup, motion as m } from 'framer-motion'
+import { Fragment, useEffect } from 'react'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { store } from '../../stores/store'
+import Totals from './Totals'
 import Week from './Week'
 
 export default function WeeklyPage() {
   const location = useLocation()
-  const navigate = useNavigate()
   const state = location?.state
-
+  const snap = useSnapshot(store)
   useEffect(() => {
-    if (state === undefined) {
-      navigate(routes.DASHBOARD)
+    if (state?.startDate) {
+      store.weekData = state
     }
-  }, [location.state, navigate])
+  }, [state])
 
-  const startDate = state?.startDate || ''
-  const weekStartFormat = state?.weekStartFormat
-  const weekEndFormat = state?.weekEndFormat
-  const { weekData, loading } = useGetWeekData({
-    weekStart: Date.parse(startDate),
-  })
+  const weekStartFormat =
+    state?.weekStartFormat || snap.weekData.weekStartFormat
+  const weekEndFormat = state?.weekEndFormat || snap.weekData.weekEndFormat
+  const { weekData, loading } = useGetWeekData()
   const colorScheme = useColorModeValue('gray', 'cyan.600')
 
   return (
@@ -51,6 +51,8 @@ export default function WeeklyPage() {
         exit={{ opacity: 0 }}
       >
         <Table
+          as={m.table}
+          layout
           variant="simple"
           colorScheme={colorScheme}
           size={{ base: 'sm', sm: 'md', lg: 'md' }}
@@ -73,15 +75,22 @@ export default function WeeklyPage() {
               <Th isNumeric>Backhaul</Th>
               <Th isNumeric>Total Pay</Th>
               <Th isNumeric>Edit</Th>
+              <Th isNumeric>Delete</Th>
             </Tr>
           </Thead>
-
-          {!loading &&
-            weekData?.map((day, i) => (
-              <Tbody key={i}>
-                <Week day={day} />
-              </Tbody>
-            ))}
+          <Tbody>
+            <LayoutGroup>
+              <AnimatePresence>
+                {!loading &&
+                  weekData?.map((day, i) => (
+                    <Fragment key={day?.date}>
+                      <Week day={day} index={i} />
+                    </Fragment>
+                  ))}
+                <Totals weekData={weekData} />
+              </AnimatePresence>
+            </LayoutGroup>
+          </Tbody>
           <Tfoot>
             <Tr>
               <Th>Day</Th>
@@ -90,6 +99,7 @@ export default function WeeklyPage() {
               <Th isNumeric>Backhaul</Th>
               <Th isNumeric>Total Pay</Th>
               <Th isNumeric>Edit</Th>
+              <Th isNumeric>Delete</Th>
             </Tr>
           </Tfoot>
         </Table>

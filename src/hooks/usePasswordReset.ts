@@ -1,14 +1,14 @@
+import { auth } from '@/firebase'
 import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { auth } from '@/firebase'
 
 import {
-  sendPasswordResetEmail,
   confirmPasswordReset,
-  updatePassword,
-  reauthenticateWithCredential,
   EmailAuthProvider,
+  reauthenticateWithCredential,
+  sendPasswordResetEmail,
+  updatePassword,
 } from 'firebase/auth'
 import { routes } from '../lib/routes'
 
@@ -20,8 +20,6 @@ export const usePasswordReset = () => {
   const toast = useToast()
 
   const passwordResetEmail = async (email: string) => {
-    console.log('email', email)
-
     setLoading(true)
     if (!email) {
       setError('Please enter your email')

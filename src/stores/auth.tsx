@@ -29,6 +29,12 @@ export default function useFirebaseAuth() {
     store.isSignedIn = false
     store.paysheets = []
     store.weeks = []
+    store.weekData = {
+      startDate: new Date(),
+      endDate: new Date(),
+      weekStartFormat: '',
+      weekEndFormat: '',
+    }
   }
 
   const authStateChanged = async (user) => {
