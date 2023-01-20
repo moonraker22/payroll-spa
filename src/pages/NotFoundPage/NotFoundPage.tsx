@@ -1,7 +1,7 @@
-import { Container, Heading, Text, Link } from '@chakra-ui/react'
+import { routes } from '@/lib/routes'
+import { Container, Heading, Link, Text } from '@chakra-ui/react'
 import { motion as m } from 'framer-motion'
 import { Link as RouterLink } from 'react-router-dom'
-import { routes } from '@/lib/routes'
 
 export default function NotFoundPage() {
   return (

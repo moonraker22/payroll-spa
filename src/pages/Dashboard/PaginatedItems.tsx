@@ -47,12 +47,12 @@ export default function PaginatedItems({
         <m.div
           // as={m.div}
           key={week.weekStart}
-          initial={{ x: -0, opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0 }}
           animate={{
-            x: 0,
             opacity: 0.9,
             scale: [0.8, 1, 1.2, 1.4, 1.2, 1],
           }}
+          exit={{ opacity: 0 }}
           transition={{
             type: 'spring',
             stiffness: 90,

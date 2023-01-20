@@ -1,5 +1,6 @@
 import {
   isRouteErrorResponse,
+  useLocation,
   useNavigate,
   useRouteError,
 } from 'react-router-dom'
@@ -7,6 +8,7 @@ import {
 export default function RootBoundary() {
   const error = useRouteError()
   const navigate = useNavigate()
+  const location = useLocation()
   console.log(error)
 
   if (isRouteErrorResponse(error)) {

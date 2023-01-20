@@ -1,3 +1,5 @@
+import { routes } from '@/lib/routes'
+import { ArrowForwardIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -10,12 +12,11 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import { motion as m } from 'framer-motion'
+import { AiOutlineEdit } from 'react-icons/ai'
 import { Link as RouterLink } from 'react-router-dom'
-import { routes } from '../../lib/routes'
 
 export default function Home() {
   const color = useColorModeValue('gray.700', 'gray.300')
-
   const innerGradientColor = useColorModeValue(
     'blackAlpha.200',
     'blackAlpha.500'
@@ -61,7 +62,7 @@ export default function Home() {
           w={{ base: '100%', sm: '510px' }}
           rounded={20}
           borderWidth="1px"
-          borderColor="cyan.300"
+          // borderColor="cyan.300"
           mb="20"
           p="15px"
           bg="transparent"
@@ -79,7 +80,7 @@ export default function Home() {
             // h="340px"
             bgColor={innerGradientColor}
             borderWidth="1px"
-            borderColor="cyan.300"
+            // borderColor="cyan.300"
             display={{ base: 'flex', sm: 'block' }}
           >
             <Stack>
@@ -117,8 +118,9 @@ export default function Home() {
                   }}
                   bg={buttonBackground}
                   color={buttonColor}
+                  rightIcon={<AiOutlineEdit />}
                 >
-                  Register
+                  Sign Up
                 </Button>
                 <Spacer />
                 <Button
@@ -134,6 +136,7 @@ export default function Home() {
                   }}
                   bg={buttonBackground}
                   color={buttonColor}
+                  rightIcon={<ArrowForwardIcon />}
                 >
                   Sign in
                 </Button>

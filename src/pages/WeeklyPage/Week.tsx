@@ -1,20 +1,27 @@
 import { useDeletePay } from '@/hooks/useDeletePay'
 import { routes } from '@/lib/routes'
 import { store } from '@/stores/store'
-import { Icon, Td, Tr, useDisclosure, useToast } from '@chakra-ui/react'
+import { Icon, Td, useDisclosure, useToast } from '@chakra-ui/react'
 import currency from 'currency.js'
 import { isSameDay } from 'date-fns'
 import { DocumentData } from 'firebase/firestore'
+import { motion as m } from 'framer-motion'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { RiDeleteBin3Line } from 'react-icons/ri'
 import { Link as RouterLink } from 'react-router-dom'
 import { useSnapshot } from 'valtio'
 import DeleteAlert from './DeleteAlert'
 
-export default function Week({ day }: DocumentData) {
+export default function Week({
+  day,
+  index,
+}: {
+  day: DocumentData
+  index: number
+}) {
   const { isOpen, onOpen, onClose } = useDisclosure()
-
   const snap = useSnapshot(store)
+
   const [docId] = snap?.paysheets.filter((item) =>
     isSameDay(new Date(item.date), new Date(day.date))
   )
@@ -70,8 +77,24 @@ export default function Week({ day }: DocumentData) {
     .multiply(0.515)
     .add(day?.backhaul)
     .format()
+
   return (
-    <Tr>
+    // <AnimatePresence>
+    <m.tr
+      // layoutScroll
+      // key={day?.date}
+      // as={m.tr}
+      initial={{ opacity: 0, x: -200 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 200 }}
+      transition={{
+        duration: 0.5,
+        type: 'spring',
+        stiffness: 90,
+        delay: index * 0.2,
+        damping: 15,
+      }}
+    >
       <Td fontWeight="bold">
         <RouterLink to={routes.DAILY} state={day}>
           {dayFormat}
@@ -107,6 +130,7 @@ export default function Week({ day }: DocumentData) {
           handleDelete={handleDelete}
         />
       </Td>
-    </Tr>
+    </m.tr>
+    // </AnimatePresence>
   )
 }

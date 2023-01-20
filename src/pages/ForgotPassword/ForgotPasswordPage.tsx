@@ -1,25 +1,25 @@
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { Form, useNavigate } from 'react-router-dom'
-import {
-  FormErrorMessage,
-  FormLabel,
-  FormControl,
-  Input,
-  Button,
-  Box,
-  Container,
-  Center,
-  useColorModeValue,
-  Heading,
-} from '@chakra-ui/react'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect } from 'react'
-import { motion as m } from 'framer-motion'
+import { EmailSchema, EmailType } from '@/data/paySchema'
+import { usePasswordReset } from '@/hooks/usePasswordReset'
 import { routes } from '@/lib/routes'
 import { store } from '@/stores/store'
+import {
+  Box,
+  Button,
+  Center,
+  Container,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  Input,
+  useColorModeValue,
+} from '@chakra-ui/react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { motion as m } from 'framer-motion'
+import { useEffect } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { Form, useNavigate } from 'react-router-dom'
 import { useSnapshot } from 'valtio'
-import { usePasswordReset } from '@/hooks/usePasswordReset'
-import { EmailSchema, EmailType } from '@/data/paySchema'
 
 export default function Login() {
   const snap = useSnapshot(store)
@@ -81,10 +81,10 @@ export default function Login() {
         <Box
           bg={bg}
           border="2px"
-          borderColor="gray.700"
+          borderColor="cyan.600"
           boxShadow="dark-lg"
           p="6"
-          rounded="md"
+          rounded="lg"
           mt={10}
           mb={10}
           w="50vw"

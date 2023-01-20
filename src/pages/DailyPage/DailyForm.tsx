@@ -16,9 +16,11 @@ import { Form, useLocation } from 'react-router-dom'
 // import { DevTool } from '@hookform/devtools'
 import { Paysheet } from '@/data/paySchema'
 import { useAddPay } from '@/hooks/usePay'
+import { ArrowForwardIcon } from '@chakra-ui/icons'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { motion as m } from 'framer-motion'
+import { GiCancel } from 'react-icons/gi'
 
 const DailyForm = () => {
   const location = useLocation()
@@ -258,7 +260,7 @@ const DailyForm = () => {
             <Flex>
               <Button
                 mt={4}
-                px={10}
+                px={5}
                 colorScheme="cyan"
                 isLoading={isSubmitting}
                 type="submit"
@@ -270,6 +272,7 @@ const DailyForm = () => {
                   color: 'white',
                   scale: 1.1,
                 }}
+                rightIcon={<ArrowForwardIcon />}
               >
                 Submit
               </Button>
@@ -285,6 +288,7 @@ const DailyForm = () => {
                   color: 'white',
                   scale: 1.1,
                 }}
+                rightIcon={<GiCancel />}
               >
                 Reset
               </Button>
@@ -292,7 +296,6 @@ const DailyForm = () => {
           </Form>
         </Box>
       </Box>
-      {/* <DevTool control={control} /> */}
     </m.div>
   )
 }

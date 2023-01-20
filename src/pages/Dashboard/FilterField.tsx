@@ -15,6 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { isWithinInterval } from 'date-fns'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { IoFilterSharp } from 'react-icons/io5'
 import { Form } from 'react-router-dom'
 import { useSnapshot } from 'valtio'
 import WeekModal from './WeekModal'
@@ -90,6 +91,7 @@ export default function FilterField() {
                 scale: 1.1,
               }}
               boxShadow="lg"
+              rightIcon={<IoFilterSharp />}
             >
               Filter
             </Button>

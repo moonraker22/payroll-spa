@@ -24,10 +24,11 @@ import {
   VisuallyHidden,
   VStack,
 } from '@chakra-ui/react'
+import { AnimatePresence } from 'framer-motion'
 import { Suspense } from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { ImCoinDollar } from 'react-icons/im'
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Footer from './Footer'
 
 export default function Layout() {
@@ -59,6 +60,7 @@ export default function Layout() {
   }
 
   const snap = useSnapshot(store)
+  const location = useLocation()
 
   if (!snap) {
     return <SpinnerComp />
@@ -366,13 +368,23 @@ export default function Layout() {
           </Flex>
         </chakra.header>
         <Box as="main" role="main">
-          <Outlet />
+          <AnimatePresence mode="wait">
+            <Outlet />
+          </AnimatePresence>
+
           <Footer />
         </Box>
       </Suspense>
     </>
   )
 }
+
+// const AnimatedOutlet: React.FC = () => {
+//   const o = useOutlet()
+//   const [outlet] = useState(o)
+
+//   return <>{outlet}</>
+// }
 
 // export async function loader({ request, params }) {
 //   // async function getInitialAuthState() {

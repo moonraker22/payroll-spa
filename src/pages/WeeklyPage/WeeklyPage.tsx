@@ -14,7 +14,7 @@ import {
   Tr,
   useColorModeValue,
 } from '@chakra-ui/react'
-import { motion as m } from 'framer-motion'
+import { AnimatePresence, LayoutGroup, motion as m } from 'framer-motion'
 import { Fragment, useEffect } from 'react'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import { store } from '../../stores/store'
@@ -23,7 +23,6 @@ import Week from './Week'
 
 export default function WeeklyPage() {
   const location = useLocation()
-  // const navigate = useNavigate()
   const state = location?.state
   const snap = useSnapshot(store)
   useEffect(() => {
@@ -32,13 +31,6 @@ export default function WeeklyPage() {
     }
   }, [state])
 
-  // useEffect(() => {
-  //   if (state === undefined) {
-  //     navigate(routes.DASHBOARD)
-  //   }
-  // }, [location.state, navigate])
-
-  // const startDate = state?.startDate || snap.weekData.startDate
   const weekStartFormat =
     state?.weekStartFormat || snap.weekData.weekStartFormat
   const weekEndFormat = state?.weekEndFormat || snap.weekData.weekEndFormat
@@ -59,6 +51,8 @@ export default function WeeklyPage() {
         exit={{ opacity: 0 }}
       >
         <Table
+          as={m.table}
+          layout
           variant="simple"
           colorScheme={colorScheme}
           size={{ base: 'sm', sm: 'md', lg: 'md' }}
@@ -84,15 +78,18 @@ export default function WeeklyPage() {
               <Th isNumeric>Delete</Th>
             </Tr>
           </Thead>
-
           <Tbody>
-            {!loading &&
-              weekData?.map((day, i) => (
-                <Fragment key={i}>
-                  <Week day={day} />
-                </Fragment>
-              ))}
-            <Totals weekData={weekData} />
+            <LayoutGroup>
+              <AnimatePresence>
+                {!loading &&
+                  weekData?.map((day, i) => (
+                    <Fragment key={day?.date}>
+                      <Week day={day} index={i} />
+                    </Fragment>
+                  ))}
+                <Totals weekData={weekData} />
+              </AnimatePresence>
+            </LayoutGroup>
           </Tbody>
           <Tfoot>
             <Tr>

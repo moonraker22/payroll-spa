@@ -1,3 +1,4 @@
+import { WarningTwoIcon } from '@chakra-ui/icons'
 import {
   AlertDialog,
   AlertDialogBody,
@@ -31,16 +32,34 @@ export default function DeleteAlert({ isOpen, onClose, handleDelete }) {
             Are you sure you want to delete this pay? You can't undo this action
           </AlertDialogBody>
           <AlertDialogFooter>
-            <Button ref={cancelRef} onClick={onClose}>
-              No
+            <Button
+              ref={cancelRef}
+              onClick={onClose}
+              px={5}
+              colorScheme="cyan"
+              type="submit"
+              variant="outline"
+              _hover={{
+                bg: 'cyan.600',
+                color: 'white',
+                scale: 1.1,
+              }}
+            >
+              Cancel
             </Button>
             <Button
               colorScheme="red"
-              bg="red.500"
+              variant="outline"
+              _hover={{
+                bg: 'red.600',
+                color: 'white',
+                scale: 1.1,
+              }}
               ml={3}
               onClick={handleDelete}
+              rightIcon={<WarningTwoIcon />}
             >
-              Yes
+              Delete
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
