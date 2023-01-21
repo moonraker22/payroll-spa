@@ -17,18 +17,26 @@ import currency from 'currency.js'
 import { format } from 'date-fns'
 import { Link as RouterLink } from 'react-router-dom'
 
+interface WeekDisplayProps {
+  totalMiles: number
+  totalPay: number
+  backhaul: number
+  weekStart: string
+  weekEnd: string
+}
+
 export function WeekDisplay({
   totalMiles,
   totalPay,
-  totalBackHaulPay,
-  weekStartDate,
-  weekEndDate,
-}) {
+  backhaul,
+  weekStart,
+  weekEnd,
+}: WeekDisplayProps) {
   const bg = useColorModeValue('gray.200', 'gray.800')
 
   //Date formatting
-  const startDate = new Date(Number(weekStartDate))
-  const endDate = new Date(Number(weekEndDate))
+  const startDate = new Date(Number(weekStart))
+  const endDate = new Date(Number(weekEnd))
   const weekStartFormat = format(startDate, 'MM/dd/yyyy')
   const weekEndFormat = format(endDate, 'MM/dd/yyyy')
 
@@ -75,7 +83,7 @@ export function WeekDisplay({
                 <Tr>
                   <Th isNumeric>{totalMiles}</Th>
                   <Th isNumeric>{currency(totalPay).format()}</Th>
-                  <Th isNumeric>{currency(totalBackHaulPay).format()}</Th>
+                  <Th isNumeric>{currency(backhaul).format()}</Th>
                 </Tr>
               </Tbody>
               <Tfoot>

@@ -2,7 +2,7 @@ import { Login as LoginResolver, LoginType } from '@/data/paySchema'
 import { useLogin } from '@/hooks/useAuth'
 import { useGoogleAuth } from '@/hooks/useGoogleAuth'
 import { routes } from '@/lib/routes'
-import { store } from '@/stores/store'
+import { useStore } from '@/stores/store'
 import {
   Box,
   Button,
@@ -31,11 +31,10 @@ import {
   useLocation,
   useNavigate,
 } from 'react-router-dom'
-import { useSnapshot } from 'valtio'
 import { GoogleIcon } from './GoogleIcon'
 
 export default function Login() {
-  const snap = useSnapshot(store)
+  const snap = useStore()
   const location = useLocation()
 
   const navigate = useNavigate()

@@ -1,20 +1,19 @@
 import { db } from '@/firebase'
-import { store } from '@/stores/store'
+import { storeActions, useStore } from '@/stores/store'
 import { useToast } from '@chakra-ui/react'
 import { doc, serverTimestamp, updateDoc } from 'firebase/firestore'
 import { useState } from 'react'
-import { useAuth } from './useAuth'
 
 export function useSetAvatar() {
   const [isLoading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const { user } = useAuth()
+  const [error, setError] = useState<Error | null>(null)
+  const snap = useStore()
   const toast = useToast()
 
   async function setAvatar({ avatarUrl }: { avatarUrl: string }) {
     setLoading(true)
 
-    if (!user) {
+    if (!snap?.isSignedIn) {
       toast({
         title: 'You must be logged in to set avatar',
         status: 'error',
@@ -26,14 +25,14 @@ export function useSetAvatar() {
       })
       return false
     }
-    const docRef = doc(db, `users`, `${user.id}`)
+    const docRef = doc(db, `users`, `${snap?.userId || 'empty'}`)
 
     try {
       await updateDoc(docRef, {
         avatar: avatarUrl,
         updatedAt: serverTimestamp(),
       })
-      store.avatar = avatarUrl
+      storeActions.setAvatar(avatarUrl)
       toast({
         title: 'Avatar updated',
         status: 'success',
@@ -44,7 +43,7 @@ export function useSetAvatar() {
         variant: 'solid',
       })
       setLoading(false)
-    } catch (error) {
+    } catch (error: any) {
       setError(error)
       setLoading(false)
     }

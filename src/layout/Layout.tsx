@@ -2,7 +2,7 @@ import { ColorModeSwitcher } from '@/ColorModeSwitcher'
 import SpinnerComp from '@/components/SpinnerComp'
 import { useLogout } from '@/hooks/useAuth'
 import { routes } from '@/lib/routes'
-import { store, useSnapshot } from '@/stores/store'
+import { useStore } from '@/stores/store'
 import theme from '@/theme'
 import {
   Avatar,
@@ -59,7 +59,7 @@ export default function Layout() {
     navigate(routes.LOGIN)
   }
 
-  const snap = useSnapshot(store)
+  const snap = useStore()
   const location = useLocation()
 
   if (!snap) {

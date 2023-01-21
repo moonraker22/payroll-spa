@@ -35,9 +35,9 @@ export default function WeekModal({
                   <WeekDisplay
                     totalMiles={week.totalMiles}
                     totalPay={week.totalPay}
-                    totalBackHaulPay={week.backhaul}
-                    weekStartDate={Date.parse(week?.weekStart).toString()}
-                    weekEndDate={Date.parse(week?.weekEnd).toString()}
+                    backhaul={week.backhaul}
+                    weekStart={Date.parse(week?.weekStart).toString()}
+                    weekEnd={Date.parse(week?.weekEnd).toString()}
                   />
                 </div>
               ))}

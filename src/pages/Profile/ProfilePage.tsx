@@ -24,7 +24,7 @@ import { Form, Link as RouterLink } from 'react-router-dom'
 import { AvatarSchema, AvatarType } from '@/data/paySchema'
 import { useSetAvatar } from '@/hooks/useSetAvatar'
 import { routes } from '@/lib/routes'
-import { store, useSnapshot } from '@/stores/store'
+import { useStore } from '@/stores/store'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
 import { RiLockPasswordLine } from 'react-icons/ri'
@@ -33,7 +33,7 @@ import { RxUpdate } from 'react-icons/rx'
 export default function Profile() {
   const defaultValues = {}
 
-  const user = useSnapshot(store)
+  const user = useStore()
 
   const {
     register,

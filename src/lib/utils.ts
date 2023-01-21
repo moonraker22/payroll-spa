@@ -19,13 +19,13 @@ import { endOfWeek, isEqual, startOfWeek, toDate } from 'date-fns'
 // }
 
 function getWeeklyTotals(array: PaysheetType[]): WeeksType[] {
-  const weeklyTotals = []
+  const weeklyTotals: any = []
   array.forEach((object) => {
     const weekStart = startOfWeek(toDate(object.date))
     const weekEnd = endOfWeek(toDate(object.date))
 
     const existingTotal = weeklyTotals.find(
-      (total) =>
+      (total: any) =>
         isEqual(total.weekStart, weekStart) && isEqual(total.weekEnd, weekEnd)
     )
     if (existingTotal) {

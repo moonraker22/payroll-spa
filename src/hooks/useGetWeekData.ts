@@ -1,15 +1,14 @@
 import { db } from '@/firebase'
 import { COLLECTIONS } from '@/lib/constants'
-import { store } from '@/stores/store'
+import { useStore } from '@/stores/store'
 import { addWeeks } from 'date-fns'
 import { collection, orderBy, query, where } from 'firebase/firestore'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { useSnapshot } from 'valtio'
 
 export function useGetWeekData() {
-  const snap = useSnapshot(store)
-
-  const weekEnd = addWeeks(new Date(snap?.weekData.startDate), 1).toISOString()
+  const snap = useStore()
+  const startDate: any = snap?.weekData.startDate
+  const weekEnd = addWeeks(new Date(startDate), 1).toISOString()
 
   const q = query(
     collection(
@@ -18,7 +17,7 @@ export function useGetWeekData() {
       `${snap?.userId || 'empty'}`,
       `${COLLECTIONS.PAYSHEETS}`
     ),
-    where('date', '>=', new Date(snap?.weekData.startDate).getTime()),
+    where('date', '>=', new Date(startDate).getTime()),
     where('date', '<=', Date.parse(weekEnd)),
     orderBy('date', 'asc')
   )

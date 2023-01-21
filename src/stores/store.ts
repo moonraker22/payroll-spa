@@ -17,9 +17,49 @@ const state: State = {
 }
 const store = proxy(state)
 
-devtools(store, 'Payroll')
+if (import.meta.env.DEV) devtools(store, 'Payroll')
 
-export { store, useSnapshot }
+const useStore = () => useSnapshot(store)
+
+const storeActions: StoreActionsType = {
+  setUserId: (id: string) => {
+    store.userId = id
+  },
+  setUserEmail: (email: string) => {
+    store.userEmail = email
+  },
+  setIsSignedIn: (isSignedIn: boolean) => {
+    store.isSignedIn = isSignedIn
+  },
+  setAvatar: (avatar: string) => {
+    store.avatar = avatar
+  },
+  setPaysheets: (paysheets: PaysheetType[]) => {
+    store.paysheets = paysheets
+  },
+  setWeeks: (weeks: WeeksType[]) => {
+    store.weeks = weeks
+  },
+  setWeekData: (weekData: WeekDataType) => {
+    store.weekData = weekData
+  },
+  clear: () => {
+    store.userId = ''
+    store.userEmail = ''
+    store.isSignedIn = false
+    store.avatar = ''
+    store.paysheets = []
+    store.weeks = []
+    store.weekData = {
+      startDate: new Date(),
+      endDate: new Date(),
+      weekStartFormat: '',
+      weekEndFormat: '',
+    }
+  },
+}
+
+export { store, useStore, storeActions }
 
 export interface State {
   userId: string
@@ -53,4 +93,15 @@ export interface WeekDataType {
   endDate: Date | null
   weekStartFormat: string
   weekEndFormat: string
+}
+
+export interface StoreActionsType {
+  setUserId: (id: string) => void
+  setUserEmail: (email: string) => void
+  setIsSignedIn: (isSignedIn: boolean) => void
+  setAvatar: (avatar: string) => void
+  setPaysheets: (paysheets: PaysheetType[]) => void
+  setWeeks: (weeks: WeeksType[]) => void
+  setWeekData: (weekData: WeekDataType) => void
+  clear: () => void
 }

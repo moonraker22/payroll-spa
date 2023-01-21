@@ -1,15 +1,15 @@
 import {
   Box,
   Center,
-  Slide,
-  useDisclosure,
-  Text,
-  Link,
   Highlight,
+  Link,
+  Slide,
+  Text,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { useEffect } from 'react'
 
-export default function SlideEx({ isGoogle }) {
+export default function SlideEx({ isGoogle }: { isGoogle: boolean }) {
   const { isOpen, onToggle } = useDisclosure()
 
   useEffect(() => {

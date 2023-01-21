@@ -40,7 +40,7 @@ export const theme = extendTheme({
 
   components: {
     Modal: {
-      variants: ({ colorMode }) => ({
+      variants: ({ colorMode }: { colorMode: any }) => ({
         floating: {
           dialog: {
             bg: colorMode === 'dark' ? 'gray.900' : 'gray.50',
@@ -51,7 +51,7 @@ export const theme = extendTheme({
     },
     Form: {
       variants: {
-        floating: ({ colorMode }) => ({
+        floating: ({ colorMode }: { colorMode: any }) => ({
           container: {
             _focusWithin: {
               label: {
