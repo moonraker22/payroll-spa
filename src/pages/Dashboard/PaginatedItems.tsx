@@ -1,13 +1,7 @@
 import { usePaginateData } from '@/hooks/usePaginate'
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Center,
-  IconButton,
-  useColorModeValue,
-} from '@chakra-ui/react'
+import { Box, Button, ButtonGroup, Center, IconButton } from '@chakra-ui/react'
 import { motion as m } from 'framer-motion'
+import { useCallback } from 'react'
 import { TbArrowBigLeftLines, TbArrowBigRightLines } from 'react-icons/tb'
 import { WeekDisplay } from './WeekDisplay'
 
@@ -28,19 +22,22 @@ export default function PaginatedItems({
     pageSize: itemsPerPage,
   })
 
-  const shouldDisplay = (i: number) => {
-    if (i === 1 || i === pageCount) {
-      return true
-    }
-    if (i >= currentPage - 2 && i <= currentPage + 2) {
-      return true
-    }
-    if (i < currentPage - 2 || i > currentPage + 2) {
+  const shouldDisplay = useCallback(
+    (i: number) => {
+      if (i === 1 || i === pageCount) {
+        return true
+      }
+      if (i >= currentPage - 2 && i <= currentPage + 2) {
+        return true
+      }
+      if (i < currentPage - 2 || i > currentPage + 2) {
+        return false
+      }
       return false
-    }
-    return false
-  }
-  const hoverBg = useColorModeValue('cyan.600', 'cyan.400')
+    },
+    [currentPage, pageCount]
+  )
+
   return (
     <>
       {pageData.map((week, index) => (

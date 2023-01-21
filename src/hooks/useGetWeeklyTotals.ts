@@ -1,12 +1,11 @@
+import { db } from '@/firebase'
+import { COLLECTIONS } from '@/lib/constants'
 import { getWeeklyTotals } from '@/lib/utils'
 import { store } from '@/stores/store'
 import { collection, orderBy, query } from 'firebase/firestore'
-import { useEffect } from 'react'
-import { useSnapshot } from 'valtio'
-
-import { db } from '@/firebase'
-import { COLLECTIONS } from '@/lib/constants'
+import { useEffect, useMemo } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { useSnapshot } from 'valtio'
 
 export function useGetWeeklyTotals() {
   const snap = useSnapshot(store)
@@ -30,7 +29,9 @@ export function useGetWeeklyTotals() {
   useEffect(() => {
     if (!totalsLoading && snap?.isSignedIn) {
       store.paysheets = totals
-      weeks = getWeeklyTotals(totals)
+      // weeks = getWeeklyTotals(totals)
+
+      weeks = useMemo(() => getWeeklyTotals(totals), [totals])
 
       store.weeks = weeks
     }

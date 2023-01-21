@@ -1,18 +1,18 @@
+import { lazy } from 'react'
 import {
-  Route,
   createBrowserRouter,
   createRoutesFromElements,
+  Route,
 } from 'react-router-dom'
-import { lazy } from 'react'
 //Pages
-import Home from '@/pages/Home/HomePage'
-const DailyPage = lazy(() => import('@/pages/DailyPage/DailyPage'))
-const WeeklyPage = lazy(() => import('@/pages/WeeklyPage/WeeklyPage'))
-import Registration from '@/pages/Registration/RegistrationPage'
-import Login from '@/pages/Login/LoginPage'
-const Dashboard = lazy(() => import('@/pages/Dashboard/DashboardPage'))
 import ProtectedRoutes from '@/components/protected/Protected'
 import Layout from '@/layout/Layout'
+import Home from '@/pages/Home/HomePage'
+import Login from '@/pages/Login/LoginPage'
+import Registration from '@/pages/Registration/RegistrationPage'
+const DailyPage = lazy(() => import('@/pages/DailyPage/DailyPage'))
+const WeeklyPage = lazy(() => import('@/pages/WeeklyPage/WeeklyPage'))
+const Dashboard = lazy(() => import('@/pages/Dashboard/DashboardPage'))
 const ErrorPage = lazy(() => import('@/pages/Error/ErrorPage'))
 const PasswordReset = lazy(
   () => import('@/pages/PasswordReset/PasswordResetPage')
