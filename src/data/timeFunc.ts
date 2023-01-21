@@ -1,3 +1,5 @@
+//@ts-nocheck
+//@moonraker22
 export async function getWeeklyTotals(apiUrl) {
   // Fetch data from API
   const response = await fetch(apiUrl)
@@ -34,7 +36,7 @@ function getWeekNumber(date) {
 
 //--------------------
 
-import { getISOWeek, startOfISOWeek, addWeeks } from 'date-fns'
+import { getISOWeek } from 'date-fns'
 
 function sumTotalsByWeek(objects) {
   const totalsByWeek = {}

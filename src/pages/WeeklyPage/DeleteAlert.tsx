@@ -11,8 +11,16 @@ import {
 } from '@chakra-ui/react'
 import { useRef } from 'react'
 
-export default function DeleteAlert({ isOpen, onClose, handleDelete }) {
-  const cancelRef = useRef()
+export default function DeleteAlert({
+  isOpen,
+  onClose,
+  handleDelete,
+}: {
+  isOpen: boolean
+  onClose: () => void
+  handleDelete: () => void
+}) {
+  const cancelRef = useRef<any>()
 
   return (
     <>

@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { auth } from '@/firebase'
 import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
@@ -47,7 +48,7 @@ export const usePasswordReset = () => {
         variant: 'solid',
       })
       navigate(routes.LOGIN)
-    } catch (error) {
+    } catch (error: any) {
       setError(error.message)
       toast({
         title: 'Password reset failed',
@@ -117,7 +118,7 @@ export const usePasswordReset = () => {
         variant: 'solid',
       })
       navigate(routes.LOGIN)
-    } catch (error) {
+    } catch (error: any) {
       setError(error.message)
       toast({
         title: 'Password reset failed',

@@ -291,7 +291,7 @@ const DailyForm = () => {
             </Flex>
           </Form>
         </Box>
-        {import.meta.env.DEV && <DevTool />}
+        {import.meta.env.DEV && <DevTool control={control} />}
       </Box>
     </m.div>
   )

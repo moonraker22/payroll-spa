@@ -18,7 +18,7 @@ import { format } from 'date-fns'
 import { Link as RouterLink } from 'react-router-dom'
 
 interface WeekDisplayProps {
-  finalMiles: number
+  totalMiles: number
   totalPay: number
   backhaul: number
   weekStart: string
@@ -26,7 +26,7 @@ interface WeekDisplayProps {
 }
 
 export function WeekDisplay({
-  finalMiles,
+  totalMiles,
   totalPay,
   backhaul,
   weekStart,
@@ -81,7 +81,7 @@ export function WeekDisplay({
               </Thead>
               <Tbody>
                 <Tr>
-                  <Th isNumeric>{finalMiles}</Th>
+                  <Th isNumeric>{totalMiles}</Th>
                   <Th isNumeric>{currency(totalPay).format()}</Th>
                   <Th isNumeric>{currency(backhaul).format()}</Th>
                 </Tr>
