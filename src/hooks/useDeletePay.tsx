@@ -1,10 +1,10 @@
 import { db } from '@/firebase'
 import { COLLECTIONS } from '@/lib/constants'
-import { store, useSnapshot } from '@/stores/store'
+import { useStore } from '@/stores/store'
 import { deleteDoc, doc } from 'firebase/firestore'
 
 export const useDeletePay = () => {
-  const snap = useSnapshot(store)
+  const snap = useStore()
 
   const deletePay = async (docId: string) => {
     await deleteDoc(

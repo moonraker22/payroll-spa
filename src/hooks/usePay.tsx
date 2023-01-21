@@ -1,7 +1,7 @@
 import { db } from '@/firebase'
 import { COLLECTIONS } from '@/lib/constants'
 import { routes } from '@/lib/routes'
-import { store } from '@/stores/store'
+import { useStore } from '@/stores/store'
 import { useToast } from '@chakra-ui/react'
 import {
   addDoc,
@@ -14,7 +14,6 @@ import {
 } from 'firebase/firestore'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useSnapshot } from 'valtio'
 import { PaysheetInputs } from '../pages/DailyPage/DailyForm'
 
 export function useAddPay() {
@@ -22,8 +21,7 @@ export function useAddPay() {
   const [payError, setPayError] = useState(null)
   const toast = useToast()
   const navigate = useNavigate()
-  const snap = useSnapshot(store)
-
+  const snap = useStore()
   // type PaysheetsWithoutId = Omit<PaysheetType, 'uid'>
 
   async function addPay({
@@ -90,7 +88,7 @@ export function useAddPay() {
           variant: 'solid',
         })
         navigate(routes.DASHBOARD)
-      } catch (error) {
+      } catch (error: any) {
         toast({
           title: 'Updating pay failed',
           description: error.message,
@@ -133,7 +131,7 @@ export function useAddPay() {
           variant: 'solid',
         })
         navigate(routes.DASHBOARD)
-      } catch (error) {
+      } catch (error: any) {
         toast({
           title: 'Adding pay failed',
           description: error.message,

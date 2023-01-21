@@ -1,5 +1,5 @@
 import { DateFilterSchema, DateFilterType } from '@/data/paySchema'
-import { store, WeeksType } from '@/stores/store'
+import { useStore, WeeksType } from '@/stores/store'
 import {
   Button,
   Center,
@@ -17,11 +17,10 @@ import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { IoFilterSharp } from 'react-icons/io5'
 import { Form } from 'react-router-dom'
-import { useSnapshot } from 'valtio'
 import WeekModal from './WeekModal'
 
 export default function FilterField() {
-  const snap = useSnapshot(store)
+  const snap = useStore()
   const textColor = useColorModeValue('gray.800', 'gray')
   const [filterDate, setFilterDate] = useState<[] | WeeksType[]>([])
   const { isOpen, onOpen, onClose } = useDisclosure()

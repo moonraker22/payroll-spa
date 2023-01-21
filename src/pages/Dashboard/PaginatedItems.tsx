@@ -62,11 +62,11 @@ export default function PaginatedItems({
           }}
         >
           <WeekDisplay
-            totalMiles={week.finalMiles}
+            finalMiles={week.finalMiles}
             totalPay={week.totalPay}
-            totalBackHaulPay={week.backhaul}
-            weekStartDate={Date.parse(week?.weekStart).toString()}
-            weekEndDate={Date.parse(week?.weekEnd).toString()}
+            backhaul={week.backhaul}
+            weekStart={Date.parse(week?.weekStart).toString()}
+            weekEnd={Date.parse(week?.weekEnd).toString()}
           />
         </m.div>
       ))}

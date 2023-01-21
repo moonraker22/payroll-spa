@@ -2,7 +2,7 @@ import { Register } from '@/data/paySchema'
 import { useRegister } from '@/hooks/useAuth'
 import { useGoogleAuth } from '@/hooks/useGoogleAuth'
 import { routes } from '@/lib/routes'
-import { store } from '@/stores/store'
+import { useStore } from '@/stores/store'
 import {
   Box,
   Button,
@@ -22,7 +22,6 @@ import { motion as m } from 'framer-motion'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Form, Link as RouterLink, useNavigate } from 'react-router-dom'
-import { useSnapshot } from 'valtio'
 import { GoogleIcon } from '../Login/GoogleIcon'
 
 type RegistrationInputs = {
@@ -32,7 +31,7 @@ type RegistrationInputs = {
 }
 
 export default function Registration() {
-  const snap = useSnapshot(store)
+  const snap = useStore()
   const navigate = useNavigate()
 
   useEffect(() => {

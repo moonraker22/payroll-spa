@@ -1,3 +1,6 @@
+import { Paysheet } from '@/data/paySchema'
+import { useAddPay } from '@/hooks/usePay'
+import { ArrowForwardIcon } from '@chakra-ui/icons'
 import {
   Box,
   Button,
@@ -10,25 +13,25 @@ import {
   useColorModeValue,
   useConst,
 } from '@chakra-ui/react'
-import { useCallback, useEffect } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { Form, useLocation } from 'react-router-dom'
-// import { DevTool } from '@hookform/devtools'
-import { Paysheet } from '@/data/paySchema'
-import { useAddPay } from '@/hooks/usePay'
-import { ArrowForwardIcon } from '@chakra-ui/icons'
+import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
+import { DocumentData } from 'firebase/firestore'
 import { motion as m } from 'framer-motion'
+import { useCallback, useEffect } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { GiCancel } from 'react-icons/gi'
+import { Form, useLocation } from 'react-router-dom'
 
 const DailyForm = () => {
   const location = useLocation()
   const day = location?.state
+  const bg = useColorModeValue('white', ' gray.800')
+  const placeholderColor = useColorModeValue('gray.400', 'gray.500')
 
   const date = useConst(new Date().toISOString().slice(0, 10))
 
-  const defaultValuesFunc = (day) => {
+  const defaultValuesFunc = (day: DocumentData) => {
     if (day) {
       return {
         date: format(day.date, 'yyyy-MM-dd'),
@@ -88,9 +91,6 @@ const DailyForm = () => {
     setFocus('startingMiles')
   }, [])
 
-  const bg = useColorModeValue('white', ' gray.800')
-  const placeholderColor = useColorModeValue('gray.400', 'gray.500')
-
   const canSubmitFunc = useCallback(
     function () {
       if (day) {
@@ -104,10 +104,6 @@ const DailyForm = () => {
     [isDirty, isValid, isSubmitting, errors, day]
   )
   const canSubmit = canSubmitFunc()
-  // console.log(new Date(1673654400000), 'date')
-  // console.log(new Date(), 'today date')
-  // console.log(getValues('date'), 'date')
-  const textColor = useColorModeValue('gray.800', 'gray')
 
   return (
     <m.div
@@ -295,6 +291,7 @@ const DailyForm = () => {
             </Flex>
           </Form>
         </Box>
+        {import.meta.env.DEV && <DevTool />}
       </Box>
     </m.div>
   )

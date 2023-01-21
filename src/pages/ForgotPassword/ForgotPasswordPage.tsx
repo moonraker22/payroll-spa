@@ -1,7 +1,7 @@
 import { EmailSchema, EmailType } from '@/data/paySchema'
 import { usePasswordReset } from '@/hooks/usePasswordReset'
 import { routes } from '@/lib/routes'
-import { store } from '@/stores/store'
+import { useStore } from '@/stores/store'
 import {
   Box,
   Button,
@@ -19,10 +19,9 @@ import { motion as m } from 'framer-motion'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Form, useNavigate } from 'react-router-dom'
-import { useSnapshot } from 'valtio'
 
 export default function Login() {
-  const snap = useSnapshot(store)
+  const snap = useStore()
   const { passwordResetEmail } = usePasswordReset()
 
   const navigate = useNavigate()

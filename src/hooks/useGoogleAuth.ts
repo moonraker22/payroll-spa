@@ -1,10 +1,10 @@
+import { auth, db, googleProvider } from '@/firebase'
+import { routes } from '@/lib/routes'
+import { storeActions } from '@/stores/store'
 import { useToast } from '@chakra-ui/react'
+import { getRedirectResult, signInWithPopup } from 'firebase/auth'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { routes } from '@/lib/routes'
-import { db, googleProvider, auth } from '@/firebase'
-import { getRedirectResult, signInWithPopup } from 'firebase/auth'
-import { store } from '@/stores/store'
 
 import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
 
@@ -40,14 +40,13 @@ export function useGoogleAuth() {
           const userRef = doc(db, 'users', user?.uid)
           await setDoc(userRef, data)
 
-          store.avatar = user?.photoURL
-          store.isSignedIn = true
-          store.userEmail = user?.email
+          if (user?.photoURL) storeActions.setAvatar(user?.photoURL)
+          storeActions.setIsSignedIn(true)
+          if (user?.email) storeActions.setUserEmail(user?.email)
         } else {
-          store.avatar = snapshot.data()?.avatar
-          store.isSignedIn = true
-          store.userEmail = snapshot.data()?.email
-          store.avatar = snapshot.data()?.avatar
+          storeActions.setAvatar(snapshot.data()?.avatar)
+          storeActions.setIsSignedIn(true)
+          storeActions.setUserEmail(snapshot.data()?.email)
         }
       }
 
@@ -62,7 +61,7 @@ export function useGoogleAuth() {
       })
 
       navigate(`${routes.DASHBOARD}`)
-    } catch (error) {
+    } catch (error: any) {
       console.log('error', error)
       toast({
         title: 'Sign In failed',

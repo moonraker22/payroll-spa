@@ -1,6 +1,6 @@
 import { useDeletePay } from '@/hooks/useDeletePay'
 import { routes } from '@/lib/routes'
-import { store } from '@/stores/store'
+import { useStore } from '@/stores/store'
 import { Icon, Td, useDisclosure, useToast } from '@chakra-ui/react'
 import currency from 'currency.js'
 import { isSameDay } from 'date-fns'
@@ -10,7 +10,6 @@ import { useCallback, useMemo } from 'react'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { RiDeleteBin3Line } from 'react-icons/ri'
 import { Link as RouterLink } from 'react-router-dom'
-import { useSnapshot } from 'valtio'
 import DeleteAlert from './DeleteAlert'
 
 export default function Week({
@@ -21,7 +20,7 @@ export default function Week({
   index: number
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const snap = useSnapshot(store)
+  const snap = useStore()
 
   const [docId] = useMemo(
     () =>
@@ -121,11 +120,6 @@ export default function Week({
         </RouterLink>
       </Td>
       <Td isNumeric>
-        {/* <IconButton
-          aria-label="Delete"
-          icon={<RiDeleteBin3Line />}
-          color="red.600"
-        /> */}
         <Icon
           as={RiDeleteBin3Line}
           w={6}

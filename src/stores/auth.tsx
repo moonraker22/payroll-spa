@@ -1,6 +1,7 @@
 import { auth, db } from '@/firebase'
+import { COLLECTIONS } from '@/lib/constants'
 import { getWeeklyTotals } from '@/lib/utils'
-import { onAuthStateChanged, signOut as authSignOut } from 'firebase/auth'
+import { onAuthStateChanged, signOut as authSignOut, User } from 'firebase/auth'
 import {
   collection,
   doc,
@@ -10,51 +11,48 @@ import {
   query,
 } from 'firebase/firestore'
 import { createContext, useContext, useEffect, useState } from 'react'
-import { COLLECTIONS } from '../lib/constants'
-import { PaysheetType, store } from './store'
+import { PaysheetType, storeActions } from './store'
 
 export default function useFirebaseAuth() {
-  const [authUser, setAuthUser] = useState(null)
+  const [authUser, setAuthUser] = useState<{
+    uid: string
+    email: string
+  } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isSignedIn, setIsSignedIn] = useState(false) // Local signed-in state.
 
   const clear = () => {
     setAuthUser(null)
     setIsLoading(false)
-    // setError(null)
     setIsSignedIn(false)
-    store.userId = null
-    store.avatar = ''
-    store.userEmail = ''
-    store.isSignedIn = false
-    store.paysheets = []
-    store.weeks = []
-    store.weekData = {
-      startDate: new Date(),
-      endDate: new Date(),
-      weekStartFormat: '',
-      weekEndFormat: '',
-    }
+    storeActions.clear()
   }
 
-  const authStateChanged = async (user) => {
+  const authStateChanged: any = async (user: User) => {
     setIsLoading(true)
     if (!user) {
       clear()
       return
     }
-    setAuthUser({
-      uid: user.uid,
-      email: user.email,
-    })
+
+    if (user.isAnonymous) {
+      clear()
+      return
+    }
+
+    if (user.email)
+      setAuthUser({
+        uid: user.uid,
+        email: user.email,
+      })
 
     const ref = doc(db, 'users', `${user.uid}`)
     const docSnap = await getDoc(ref)
-    store.avatar = docSnap.data()?.avatar || user.photoURL
-    store.isSignedIn = true
-    store.userId = user.uid
-    store.userEmail = user.email
-    setIsSignedIn(user)
+    storeActions.setAvatar(docSnap.data()?.avatar || user.photoURL)
+    storeActions.setIsSignedIn(true)
+    storeActions.setUserId(user.uid)
+    if (user?.email) storeActions.setUserEmail(user.email)
+    setIsSignedIn(user !== null)
     setIsLoading(false)
   }
 
@@ -63,6 +61,7 @@ export default function useFirebaseAuth() {
    */
   useEffect(() => {
     if (!isSignedIn) return
+    if (authUser === null) return
     if (authUser.uid !== null) {
       const q = query(
         collection(
@@ -84,9 +83,9 @@ export default function useFirebaseAuth() {
           payMiles: doc.data().payMiles,
           backhaul: doc.data().backhaul,
         }))
-        store.paysheets = data
+        storeActions.setPaysheets(data)
         const weeks = getWeeklyTotals(data)
-        store.weeks = weeks
+        storeActions.setWeeks(weeks)
       })
       return () => unsubscribe()
     }
@@ -110,13 +109,13 @@ export default function useFirebaseAuth() {
 }
 
 const AuthUserContext = createContext({
-  authUser: null,
+  authUser: null as any,
   isLoading: true,
   isSignedIn: false,
   signOut: async () => {},
 })
 
-export function AuthUserProvider({ children }) {
+export function AuthUserProvider({ children }: { children: React.ReactNode }) {
   const auth = useFirebaseAuth()
   return (
     <AuthUserContext.Provider value={auth}>{children}</AuthUserContext.Provider>

@@ -1,6 +1,6 @@
 import SpinnerComp from '@/components/SpinnerComp'
 import { routes } from '@/lib/routes'
-import { store, useSnapshot } from '@/stores/store'
+import { useStore } from '@/stores/store'
 import {
   Avatar,
   AvatarBadge,
@@ -22,43 +22,16 @@ import {
 import { LayoutGroup, motion as m } from 'framer-motion'
 import { Suspense } from 'react'
 import { AiOutlineEdit } from 'react-icons/ai'
-import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { Link as RouterLink } from 'react-router-dom'
 import FilterField from './FilterField'
 import PaginatedItems from './PaginatedItems'
 
 export default function Dashboard() {
   // const { id } = useParams<{ id: string }>()
-  const snap = useSnapshot(store)
+  const snap = useStore()
 
   const bg = useColorModeValue('white', ' gray.800')
 
-  const container = {
-    hidden: { x: 0, opacity: 0, scale: 0.8 },
-    visible: {
-      x: 0,
-      opacity: 1,
-      scale: [0.8, 1, 1.2, 1.4, 1.2, 1],
-      transition: {
-        type: 'spring',
-        stiffness: 90,
-        delay: 0.2,
-        damping: 15,
-        delayChildren: 0.5,
-        staggerDirection: -1,
-        staggerChildren: 0.4,
-      },
-    },
-  }
-  const items = {
-    hidden: { opacity: 0 },
-    show: { opacity: 1 },
-  }
-
-  // const items = {
-  //   hidden: { opacity: 0 },
-  //   show: { opacity: 1 },
-  // }
-  const location = useLocation()
   return (
     <>
       <Suspense
@@ -193,7 +166,7 @@ export default function Dashboard() {
 
 // function PaginatedItems({ itemsPerPage }) {
 //   const [itemOffset, setItemOffset] = useState(0)
-//   const snap = useSnapshot(store)
+//   const snap = useStore(store)
 
 //   const endOffset = itemOffset + itemsPerPage
 //   const currentItems = snap.weeks.slice(itemOffset, endOffset)

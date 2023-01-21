@@ -1,42 +1,48 @@
 import { auth, db } from '@/firebase'
 import { firebaseErrorMap } from '@/lib/constants'
 import { routes } from '@/lib/routes'
-import { store } from '@/stores/store'
+import { store, storeActions, useStore } from '@/stores/store'
 import { useToast } from '@chakra-ui/react'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth'
-import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
+import {
+  doc,
+  DocumentData,
+  getDoc,
+  serverTimestamp,
+  setDoc,
+} from 'firebase/firestore'
 import { useEffect, useState } from 'react'
-import { useAuthState, useSignOut } from 'react-firebase-hooks/auth'
+import { useSignOut } from 'react-firebase-hooks/auth'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useSnapshot } from 'valtio'
 import { COLLECTIONS } from '../lib/constants'
 
 export function useAuth() {
-  const [authUser, authLoading, error] = useAuthState(auth)
+  // const [authUser, authLoading, error] = useAuthState(auth)
   const [isLoading, setLoading] = useState(true)
-  const [user, setUser] = useState(null)
-  const snap = useSnapshot(store)
+  const [user, setUser] = useState<DocumentData | undefined | null>(null)
+  const snap = useStore()
 
   useEffect(() => {
     async function fetchData() {
       setLoading(true)
-      const ref = doc(db, 'users', `${authUser.uid}`)
+      const ref = doc(db, 'users', `${snap ? snap.userId : ''}`)
       const docSnap = await getDoc(ref)
       setUser(docSnap.data())
       // store.avatar = docSnap.data()?.avatar
       setLoading(false)
     }
 
-    if (!authLoading) {
-      if (authUser) fetchData()
-      else setLoading(false) // Not signed in
+    if (snap) {
+      fetchData()
+    } else {
+      setLoading(false)
     }
-  }, [authLoading])
+  }, [snap])
 
-  return { user, isLoading, error }
+  return { user, isLoading }
 }
 
 export function useLogin() {
@@ -74,7 +80,7 @@ export function useLogin() {
         variant: 'solid',
       })
       navigate(from || redirectTo, { replace: true })
-    } catch (error) {
+    } catch (error: any) {
       const errorMessage = firebaseErrorMap.get(`${error.code.toString()}`)
       console.log(error.code.toString())
 
@@ -123,9 +129,9 @@ export function useRegister() {
       const res = await createUserWithEmailAndPassword(auth, email, password)
       const ref = doc(db, COLLECTIONS.USERS, `${res.user.uid}`)
       const docSnap = await getDoc(ref)
-      store.avatar = docSnap.data()?.avatar || ''
-      store.userId = res.user.uid
-      store.userEmail = res.user.email
+      storeActions.setAvatar(docSnap.data()?.avatar || '')
+      if (res.user.uid) storeActions.setUserId(res.user.uid)
+      if (res.user.email) storeActions.setUserEmail(res.user.email)
       store.isSignedIn = true
 
       await setDoc(doc(db, COLLECTIONS.USERS, res.user.uid), {
@@ -151,7 +157,7 @@ export function useRegister() {
       })
 
       navigate(from || redirectTo, { replace: true })
-    } catch (error) {
+    } catch (error: any) {
       const errorMessage = firebaseErrorMap.get(`${error.code.toString()}`)
 
       toast({

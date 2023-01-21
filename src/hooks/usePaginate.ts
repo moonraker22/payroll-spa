@@ -1,19 +1,20 @@
+import { useStore, WeeksType } from '@/stores/store'
 import { useEffect, useState } from 'react'
-import { useSnapshot } from 'valtio'
-import { store, WeeksType } from '../stores/store'
 
 export const usePaginateData = ({ pageSize }: { pageSize: number }) => {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [pageData, setPageData] = useState<WeeksType[]>([])
 
-  const snap = useSnapshot(store)
+  const snap = useStore()
 
   const pageCount = Math.ceil(snap.weeks.length / pageSize)
 
   const maxPage = Math.ceil(snap.weeks.length / pageSize)
   const mapArray: number[] = Array.from(Array(pageCount).keys())
 
-  const handlePageClick = (e) => {
+  const handlePageClick = (
+    e: React.MouseEventHandler<HTMLButtonElement> | undefined | any
+  ) => {
     const selectedPage = e.selected
     setCurrentPage(selectedPage + 1)
   }

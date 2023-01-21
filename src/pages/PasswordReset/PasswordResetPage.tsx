@@ -1,6 +1,6 @@
 import { PasswordResetSchema, PasswordResetType } from '@/data/paySchema'
 import { auth } from '@/firebase'
-import { store } from '@/stores/store'
+import { useStore } from '@/stores/store'
 import {
   Box,
   Button,
@@ -20,7 +20,6 @@ import { motion as m } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Form, Link as RouterLink } from 'react-router-dom'
-import { useSnapshot } from 'valtio'
 
 import { usePasswordReset } from '@/hooks/usePasswordReset'
 import { routes } from '@/lib/routes'
@@ -28,7 +27,7 @@ import SlideIn from '@/pages/PasswordReset/SlideIn'
 
 export default function PasswordReset() {
   const [isGoogle, setIsGoogle] = useState(false)
-  const user = useSnapshot(store)
+  const user = useStore()
   const {
     register,
     handleSubmit,
