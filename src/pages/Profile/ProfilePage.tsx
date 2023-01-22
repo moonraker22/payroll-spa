@@ -12,9 +12,11 @@ import {
   FormLabel,
   Heading,
   HStack,
+  Icon,
   Image,
   Input,
   Stack,
+  Text,
   useColorModeValue,
   VisuallyHidden,
   VStack,
@@ -31,6 +33,7 @@ import { motion as m } from 'framer-motion'
 import { AiOutlineMail } from 'react-icons/ai'
 import { RiLockPasswordLine } from 'react-icons/ri'
 import { RxUpdate } from 'react-icons/rx'
+import { TiLightbulb } from 'react-icons/ti'
 
 export default function Profile() {
   const defaultValues = {}
@@ -168,6 +171,10 @@ export default function Profile() {
                     <FormErrorMessage>
                       {errors.avatar && errors.avatar?.message}
                     </FormErrorMessage>
+                    <Text fontSize="sm" fontWeight="extrabold" ml="20px">
+                      <Icon as={TiLightbulb} w={4} h={4} /> You can use any
+                      image link
+                    </Text>
                   </Center>
                 </FormControl>
               </Form>

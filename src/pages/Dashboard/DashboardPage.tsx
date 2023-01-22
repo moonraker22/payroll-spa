@@ -11,6 +11,7 @@ import {
   Divider,
   GridItem,
   Heading,
+  Icon,
   Image,
   Link,
   SimpleGrid,
@@ -22,6 +23,7 @@ import {
 import { LayoutGroup, motion as m } from 'framer-motion'
 import { Suspense } from 'react'
 import { AiOutlineEdit } from 'react-icons/ai'
+import { TiLightbulb } from 'react-icons/ti'
 import { Link as RouterLink } from 'react-router-dom'
 import FilterField from './FilterField'
 import PaginatedItems from './PaginatedItems'
@@ -65,8 +67,9 @@ export default function Dashboard() {
                 {snap.weeks.length === 0 ? (
                   <Container mt="30px">
                     <Text fontSize="lg" fontWeight="extrabold" ml="20px">
-                      Here is where you will see your weekly totals. To get
-                      started click the DailyForm button on top or go{' '}
+                      <Icon as={TiLightbulb} w={4} h={4} /> Here is where you
+                      will see your weekly totals. To get started click the
+                      DailyForm button on top or go{' '}
                       <Link as={RouterLink} to={routes.DAILY} color="cyan.600">
                         here
                       </Link>

@@ -7,7 +7,9 @@ import {
   Flex,
   FormControl,
   FormErrorMessage,
+  FormHelperText,
   FormLabel,
+  Icon,
   Input,
   Spacer,
   useColorModeValue,
@@ -20,6 +22,7 @@ import { motion as m } from 'framer-motion'
 import { useCallback, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { GiCancel } from 'react-icons/gi'
+import { TiLightbulb } from 'react-icons/ti'
 import { Form, useLocation } from 'react-router-dom'
 
 const DailyForm = () => {
@@ -211,6 +214,10 @@ const DailyForm = () => {
                 <FormErrorMessage>
                   {errors.totalMiles && errors.totalMiles.message}
                 </FormErrorMessage>
+                <FormHelperText ml="10">
+                  <Icon as={TiLightbulb} w={3} h={3} /> Total miles are
+                  automatically calculated
+                </FormHelperText>
               </FormControl>
             </Box>
             <Box my="3">
