@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app'
 import { connectAuthEmulator, getAuth, GoogleAuthProvider } from 'firebase/auth'
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 
-const devConfig = {
+const config = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY || '',
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || '',
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || '',
@@ -11,7 +11,7 @@ const devConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID || '',
 }
 
-const config = {
+const devConfig = {
   apiKey: import.meta.env.VITE_PROD_FIREBASE_API_KEY || '',
   authDomain: import.meta.env.VITE_PROD_FIREBASE_AUTH_DOMAIN || '',
   projectId: import.meta.env.VITE_PROD_FIREBASE_PROJECT_ID || '',
