@@ -5,18 +5,52 @@ service cloud.firestore {
     //match /{document=**} {
       //allow read, write: if
           //request.time < timestamp.date(2023, 1, 25);
+          function notDDOS() {
+          return request.time >= resource.data.createdAt + 5 && request.time >= resource.data.updatedAt + 5
+          }
           
-          //function authed(data) {
-          //return request.auth.uid != null
-         // }
-          //function matchUser() {
-          //return request.auth.uid == data.userId
-          //}
+          function authed() {
+          let isAuth = request.auth != null && request.auth.uid == userId;
+          return isAuth 
+         }
+          function matchUser() {
+          return request.auth.uid == data.id && request.auth.token.email == data.email
+          }
+
+          function hasAllFields(data) {
+            return request.resource.data.keys().hasAll(['id', 'email', 'createdAt', 'updatedAt', 'isAdmin', 'role'])
           
-          // Allow only authenticated content owners access
-    match /users/{userId}/{documents=**} {
-      allow read, write: if request.auth != null && request.auth.uid == userId
-    }
-   
+          }
+
+          // function updateHasCorrectFields(data) {
+          //   if request.resource.data.diff(resource.data).unchangedKeys().hasAll(['id', 'email', 'createdAt', 'isAdmin', 'role'])
+          // }
+
+          function verifyFields(required, optional) {
+            let allAllowedFields = required.concat(optional);
+            return request.resource.data.keys().hasAll(required) &&
+              request.resource.data.keys().hasOnly(allAllowedFields);
+          }
+          //! Allow only authenticated users to read and write to their own documents
+          match /users/{userId} {
+              allow read: if request.auth != null && request.auth.uid == userId
+              allow create: if request.auth != null && request.auth.uid == userId && request.resource.data.keys().hasAll(['id', 'email', 'createdAt', 'updatedAt', 'isAdmin', 'role'])
+              allow update: if request.auth != null && request.auth.uid == userId && request.resource.data.keys().hasAll(['id', 'email', 'createdAt', 'updatedAt', 'isAdmin', 'role'])
+              allow delete: if request.auth != null && request.auth.uid == userId
+          }
+ 
+          match /users/{userId}/paysheets/{documents=**} {
+              allow read: if request.auth != null && request.auth.uid == userId
+              allow create: if request.auth != null && request.auth.uid == userId 
+              allow update: if request.auth != null && request.auth.uid == userId 
+              allow delete: if request.auth != null && request.auth.uid == userId
+          }
   }
 }
+
+         // match /users/{userId}/{documents=**} {
+          //     allow read: if request.auth != null && request.auth.uid == userId
+          //     allow create: if request.auth != null && request.auth.uid == userId 
+          //     allow update: if request.auth != null && request.auth.uid == userId 
+          //     allow delete: if request.auth != null && request.auth.uid == userId
+          // }

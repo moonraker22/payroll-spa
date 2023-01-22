@@ -17,16 +17,18 @@ import {
   Stack,
   useColorModeValue,
   VisuallyHidden,
+  VStack,
 } from '@chakra-ui/react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Form, Link as RouterLink } from 'react-router-dom'
 // import { DevTool } from '@hookform/devtools'
 import { AvatarSchema, AvatarType } from '@/data/paySchema'
 import { useSetAvatar } from '@/hooks/useSetAvatar'
-import { routes } from '@/lib/routes'
+import { routes } from '@/layout/routes'
 import { useStore } from '@/stores/store'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
+import { AiOutlineMail } from 'react-icons/ai'
 import { RiLockPasswordLine } from 'react-icons/ri'
 import { RxUpdate } from 'react-icons/rx'
 
@@ -170,21 +172,41 @@ export default function Profile() {
                 </FormControl>
               </Form>
             </Center>
-            <Center mt="20px">
-              <Button
-                colorScheme="cyan"
-                variant="outline"
-                as={RouterLink}
-                to={routes.PASSWORD_RESET}
-                _hover={{
-                  bg: 'cyan.600',
-                  color: 'white',
-                  scale: 1.1,
-                }}
-                rightIcon={<RiLockPasswordLine />}
-              >
-                Change Password
-              </Button>
+            <Center>
+              <VStack mt="10px" w="330px" my="auto" spacing={5}>
+                <Button
+                  w="full"
+                  colorScheme="cyan"
+                  variant="outline"
+                  as={RouterLink}
+                  to={routes.CHANGE_EMAIL}
+                  _hover={{
+                    bg: 'cyan.600',
+                    color: 'white',
+                    scale: 1.1,
+                  }}
+                  rightIcon={<AiOutlineMail />}
+                >
+                  Change Email
+                </Button>
+
+                <Button
+                  mt="10px"
+                  w="full"
+                  colorScheme="cyan"
+                  variant="outline"
+                  as={RouterLink}
+                  to={routes.PASSWORD_RESET}
+                  _hover={{
+                    bg: 'cyan.600',
+                    color: 'white',
+                    scale: 1.1,
+                  }}
+                  rightIcon={<RiLockPasswordLine />}
+                >
+                  Change Password
+                </Button>
+              </VStack>
             </Center>
           </Stack>
         </Center>

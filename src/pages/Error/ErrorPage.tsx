@@ -1,38 +1,69 @@
+import { routes } from '@/layout/routes'
+import { Box, Center, Heading, Link, Text } from '@chakra-ui/react'
 import {
   isRouteErrorResponse,
-  useLocation,
-  useNavigate,
+  Link as RouterLink,
   useRouteError,
 } from 'react-router-dom'
 
 export default function RootBoundary() {
   const error = useRouteError()
-  const navigate = useNavigate()
-  const location = useLocation()
-  console.log(error)
+
+  console.trace(`error: ${error}`)
 
   if (isRouteErrorResponse(error)) {
     if (error.status === 404) {
-      return <div>This page doesn't exist!</div>
+      return (
+        <Heading as={'h1'} size={'2xl'}>
+          This page doesn't exist!
+        </Heading>
+      )
     }
 
     if (error.status === 401) {
-      return <div>You aren't authorized to see this</div>
+      return (
+        <Heading as={'h1'} size={'2xl'}>
+          You aren't authorized to see this
+        </Heading>
+      )
     }
 
     if (error.status === 503) {
-      return <div>Looks like our API is down</div>
+      return (
+        <Heading as={'h1'} size={'2xl'}>
+          Looks like our API is down
+        </Heading>
+      )
     }
 
     if (error.status === 418) {
-      return <div>🫖</div>
+      return (
+        <Heading as={'h1'} size={'2xl'}>
+          🫖
+        </Heading>
+      )
     }
   }
 
   return (
     <>
-      <div>Something went wrong</div>
-      <div>{JSON.stringify(error)}</div>
+      <Heading as={'h1'} size={'2xl'}>
+        Whoops something went wrong
+      </Heading>
+      <Center>
+        <Box>
+          <Text size={'xl'}>
+            Go back to{' '}
+            <Link as={RouterLink} to={routes.DASHBOARD}>
+              Dashboard
+            </Link>{' '}
+            or{' '}
+            <Link as={RouterLink} to={routes.HOME}>
+              Home
+            </Link>
+          </Text>{' '}
+        </Box>
+      </Center>
     </>
   )
 }

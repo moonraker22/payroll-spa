@@ -1,4 +1,4 @@
-import { routes } from '@/lib/routes'
+import { routes } from '@/layout/routes'
 import { ArrowForwardIcon } from '@chakra-ui/icons'
 import {
   Box,
@@ -85,6 +85,7 @@ export default function Home() {
           >
             <Stack>
               <Heading
+                as={'h1'}
                 // bgGradient="linear(to-b, #42047e, #07f49e)"
                 bgGradient={headingColor}
                 bgClip="text"

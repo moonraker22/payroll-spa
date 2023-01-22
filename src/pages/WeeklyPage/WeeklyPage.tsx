@@ -1,5 +1,5 @@
 import { useGetWeekData } from '@/hooks/useGetWeekData'
-import { routes } from '@/lib/routes'
+import { routes } from '@/layout/routes'
 import { storeActions, useStore } from '@/stores/store'
 import {
   Box,

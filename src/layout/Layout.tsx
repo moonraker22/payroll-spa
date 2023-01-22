@@ -1,9 +1,9 @@
-import { ColorModeSwitcher } from '@/ColorModeSwitcher'
+import { ColorModeSwitcher } from '@/components/ColorModeSwitcher'
 import SpinnerComp from '@/components/SpinnerComp'
 import { useLogout } from '@/hooks/useAuth'
-import { routes } from '@/lib/routes'
+import { routes } from '@/layout/routes'
+import theme from '@/layout/theme'
 import { useStore } from '@/stores/store'
-import theme from '@/theme'
 import {
   Avatar,
   AvatarBadge,

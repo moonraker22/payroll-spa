@@ -31,8 +31,8 @@ export default function SlideEx({ isGoogle }: { isGoogle: boolean }) {
         >
           <Center>
             <Text fontSize="xl" color="gray.200">
-              You are currently logged in with Google. To change your password
-              go{' '}
+              You are currently logged in with Google. To change your email or
+              password go{' '}
               <Link color="cyan.300" href={'https://google.com/account'}>
                 <Highlight
                   query="here"

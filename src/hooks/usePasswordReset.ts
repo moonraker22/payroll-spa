@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { auth } from '@/firebase'
 import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
@@ -11,7 +10,7 @@ import {
   sendPasswordResetEmail,
   updatePassword,
 } from 'firebase/auth'
-import { routes } from '../lib/routes'
+import { routes } from '../layout/routes'
 
 export const usePasswordReset = () => {
   const [error, setError] = useState('')
@@ -136,6 +135,7 @@ export const usePasswordReset = () => {
 
   const updatePass = async (newPassword: string, currentPassword: string) => {
     setLoading(true)
+    const user = auth.currentUser
 
     if (!newPassword) {
       setError('Please enter your new password')
@@ -163,41 +163,39 @@ export const usePasswordReset = () => {
       })
       return
     }
-    try {
+    if (user?.email) {
       const credential = EmailAuthProvider.credential(
-        auth.currentUser.email,
+        user.email,
         currentPassword
       )
-
-      await reauthenticateWithCredential(auth.currentUser, credential)
-      // const auth = getAuth()
-      const res = await updatePassword(auth.currentUser, newPassword)
-      console.log(res)
-      toast({
-        title: 'Password reset successful',
-        status: 'success',
-        isClosable: true,
-        position: 'top',
-        duration: 5000,
-        colorScheme: 'cyan',
-        variant: 'solid',
-      })
-      navigate('/login')
-    } catch (error) {
-      setError(error.message)
-      toast({
-        title: 'Password reset failed',
-        description: error.message,
-        status: 'error',
-        isClosable: true,
-        position: 'top',
-        duration: 5000,
-        variant: 'solid',
-      })
-    } finally {
-      setLoading(false)
+      try {
+        await reauthenticateWithCredential(user, credential)
+        await updatePassword(user, newPassword)
+        toast({
+          title: 'Password reset successful',
+          status: 'success',
+          isClosable: true,
+          position: 'top',
+          duration: 5000,
+          colorScheme: 'cyan',
+          variant: 'solid',
+        })
+        navigate(routes.LOGIN)
+      } catch (error: any) {
+        setError(error.message)
+        toast({
+          title: 'Password reset failed',
+          description: error.message,
+          status: 'error',
+          isClosable: true,
+          position: 'top',
+          duration: 5000,
+          variant: 'solid',
+        })
+      } finally {
+        setLoading(false)
+      }
     }
   }
-
   return { error, loading, passwordResetEmail, confirmPassReset, updatePass }
 }

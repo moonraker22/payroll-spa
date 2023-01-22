@@ -1,5 +1,5 @@
 import { auth, db, googleProvider } from '@/firebase'
-import { routes } from '@/lib/routes'
+import { routes } from '@/layout/routes'
 import { storeActions } from '@/stores/store'
 import { useToast } from '@chakra-ui/react'
 import { getRedirectResult, signInWithPopup } from 'firebase/auth'
@@ -34,6 +34,7 @@ export function useGoogleAuth() {
             email: user?.email,
             avatar: user?.photoURL,
             createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp(),
             role: 'user',
             isAdmin: false,
           }

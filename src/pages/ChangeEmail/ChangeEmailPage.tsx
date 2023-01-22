@@ -1,6 +1,6 @@
-import { PasswordResetSchema, PasswordResetType } from '@/data/paySchema'
+import { ChangeEmailSchema, ChangeEmailType } from '@/data/paySchema'
 import { auth } from '@/firebase'
-import { useStore } from '@/stores/store'
+import { useChangeEmail } from '@/hooks/useChangeEmail'
 import {
   Box,
   Button,
@@ -17,17 +17,18 @@ import {
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Form, Link as RouterLink } from 'react-router-dom'
 
 import SlideIn from '@/components/isGoogleSlideIn'
-import { usePasswordReset } from '@/hooks/usePasswordReset'
 import { routes } from '@/layout/routes'
 
 export default function PasswordReset() {
   const [isGoogle, setIsGoogle] = useState(false)
-  const user = useStore()
+  // const user = useStore()
+  const { changeEmail, error } = useChangeEmail()
+
   const {
     register,
     handleSubmit,
@@ -36,16 +37,19 @@ export default function PasswordReset() {
     clearErrors,
     setFocus,
     formState: { errors, isDirty, isSubmitting, isValid, touchedFields },
-  } = useForm<PasswordResetType>({
-    resolver: zodResolver(PasswordResetSchema),
+  } = useForm<ChangeEmailType>({
+    resolver: zodResolver(ChangeEmailSchema),
   })
 
-  const { updatePass, error } = usePasswordReset()
-
-  const onSubmit: SubmitHandler<PasswordResetType> = async (data) => {
+  const onSubmit: SubmitHandler<ChangeEmailType> = async (data) => {
     try {
-      await updatePass(data.password, data.currentPassword)
-    } catch (error) {
+      console.log(data)
+      await changeEmail({
+        email: data.email,
+        password: data.password,
+        newEmail: data.newEmail,
+      })
+    } catch (error: any) {
       console.log(error)
     }
   }
@@ -54,23 +58,6 @@ export default function PasswordReset() {
   }, [])
 
   const bg = useColorModeValue('white', ' gray.800')
-
-  const password = watch('password')
-  const passwordConfirmation = watch('passwordConfirmation')
-
-  const passwordMatch = (value: string) => {
-    if (password !== value) {
-      setError('passwordConfirmation', {
-        type: 'manual',
-        message: 'Passwords should match!',
-      })
-    } else {
-      clearErrors('passwordConfirmation')
-    }
-  }
-  useEffect(() => {
-    passwordMatch(passwordConfirmation)
-  }, [password, passwordConfirmation])
 
   const isAuthenticatedWithGoogle = () => {
     const user = auth?.currentUser
@@ -82,26 +69,14 @@ export default function PasswordReset() {
     return false
   }
 
-  const canSubmit =
-    !isAuthenticatedWithGoogle() &&
-    isDirty &&
-    isValid &&
-    password === passwordConfirmation
+  const canSubmit = isDirty && isValid && !isSubmitting && !isGoogle
 
   useEffect(() => {
     setIsGoogle(isAuthenticatedWithGoogle())
   }, [])
 
-  // hidden email input for password managers
-  const usernameRef = useRef<HTMLInputElement>(null)
-  useEffect(() => {
-    if (usernameRef.current) {
-      usernameRef.current.value = user.userEmail
-    }
-  }, [user.userEmail])
-
   return (
-    <Container maxW="container.xl" centerContent mt={10}>
+    <Container maxW={{ base: '100%', sm: '95%' }} mt={8}>
       <Center>
         <Heading
           mt="10"
@@ -114,7 +89,7 @@ export default function PasswordReset() {
           fontSize={['3xl', '3xl', '4xl']}
           fontWeight="extrabold"
         >
-          Update Password
+          Update Email
         </Heading>
       </Center>
       <m.div
@@ -140,16 +115,31 @@ export default function PasswordReset() {
           w="50vw"
           maxW="500px"
           minW="350px"
+          mx="auto"
         >
           <Box p="3">
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Box my={2}>
-                <Input
-                  type="hidden"
-                  autoComplete="email"
-                  ref={usernameRef}
-                  placeholder="username"
-                />
+                <FormControl
+                  isInvalid={errors.password ? true : false}
+                  isRequired
+                  variant="floating"
+                >
+                  <Input
+                    {...register('email')}
+                    id="email"
+                    type="email"
+                    placeholder="Email"
+                    autoComplete="email"
+                    mb="4"
+                  />
+                  <FormLabel htmlFor="email">Current Email</FormLabel>
+                  <FormErrorMessage>
+                    {errors.email && errors.email.message}
+                  </FormErrorMessage>
+                </FormControl>
+              </Box>
+              <Box my={2}>
                 <FormControl
                   isInvalid={errors.password ? true : false}
                   isRequired
@@ -159,11 +149,11 @@ export default function PasswordReset() {
                     {...register('password')}
                     id="password"
                     type="password"
-                    placeholder="Password"
+                    placeholder="Password "
                     autoComplete="new-password"
-                    mb="3"
+                    mb="4"
                   />
-                  <FormLabel htmlFor="password">Password:</FormLabel>
+                  <FormLabel htmlFor="password">Password</FormLabel>
                   <FormErrorMessage>
                     {errors.password && errors.password.message}
                   </FormErrorMessage>
@@ -171,46 +161,21 @@ export default function PasswordReset() {
               </Box>
               <Box my={2}>
                 <FormControl
-                  isInvalid={errors.passwordConfirmation ? true : false}
+                  isInvalid={errors.newEmail ? true : false}
                   isRequired
                   variant="floating"
                 >
                   <Input
-                    {...register('passwordConfirmation')}
-                    id="passwordConfirmation"
-                    type="password"
-                    placeholder="Password Confirmation"
-                    autoComplete="new-password"
-                    mb="3"
+                    {...register('newEmail')}
+                    id="newEmail"
+                    type="email"
+                    placeholder="New Email"
+                    autoComplete="email"
+                    // mb="1"
                   />
-                  <FormLabel htmlFor="passwordConfirmation">
-                    Password Confirmation:
-                  </FormLabel>
+                  <FormLabel htmlFor="newEmail">New Email</FormLabel>
                   <FormErrorMessage>
-                    {errors.passwordConfirmation &&
-                      errors.passwordConfirmation.message}
-                  </FormErrorMessage>
-                </FormControl>
-              </Box>
-              <Box my={2}>
-                <FormControl
-                  isInvalid={errors.currentPassword ? true : false}
-                  isRequired
-                  variant="floating"
-                >
-                  <Input
-                    {...register('currentPassword')}
-                    id="currentPassword"
-                    type="password"
-                    placeholder="Current Password"
-                    autoComplete="new-password"
-                    mb="1"
-                  />
-                  <FormLabel htmlFor="currentPassword">
-                    Current Password:
-                  </FormLabel>
-                  <FormErrorMessage>
-                    {errors.currentPassword && errors.currentPassword.message}
+                    {errors.newEmail && errors.newEmail.message}
                   </FormErrorMessage>
                 </FormControl>
               </Box>

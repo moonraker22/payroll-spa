@@ -33,6 +33,14 @@ export const usePaginateData = ({ pageSize }: { pageSize: number }) => {
     setCurrentPage((page) => Math.min(page + 1, maxPage))
   }
 
+  const getFirstPage = () => {
+    setCurrentPage(1)
+  }
+
+  const getLastPage = () => {
+    setCurrentPage(maxPage)
+  }
+
   return {
     currentPage,
     pageData,
@@ -41,6 +49,8 @@ export const usePaginateData = ({ pageSize }: { pageSize: number }) => {
     mapArray,
     handlePageClick,
     pageCount,
+    getFirstPage,
+    getLastPage,
   }
 }
 

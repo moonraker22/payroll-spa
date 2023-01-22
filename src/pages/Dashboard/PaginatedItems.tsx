@@ -2,7 +2,12 @@ import { usePaginateData } from '@/hooks/usePaginate'
 import { Box, Button, ButtonGroup, Center, IconButton } from '@chakra-ui/react'
 import { motion as m } from 'framer-motion'
 import { useCallback } from 'react'
-import { TbArrowBigLeftLines, TbArrowBigRightLines } from 'react-icons/tb'
+import {
+  TbArrowBigLeft,
+  TbArrowBigLeftLines,
+  TbArrowBigRight,
+  TbArrowBigRightLines,
+} from 'react-icons/tb'
 import { WeekDisplay } from './WeekDisplay'
 
 export default function PaginatedItems({
@@ -18,6 +23,8 @@ export default function PaginatedItems({
     mapArray,
     handlePageClick,
     pageCount,
+    getFirstPage,
+    getLastPage,
   } = usePaginateData({
     pageSize: itemsPerPage,
   })
@@ -78,20 +85,36 @@ export default function PaginatedItems({
       <Center>
         <ButtonGroup isAttached>
           {mapArray.length > 0 && currentPage > 1 ? (
-            <IconButton
-              icon={<TbArrowBigLeftLines />}
-              variant="outline"
-              colorScheme="cyan"
-              onClick={getPreviousPage}
-              _hover={{
-                bg: 'cyan.600',
-                color: 'white',
-                scale: 1.1,
-              }}
-              boxShadow="lg"
-              disabled={currentPage === 1}
-              aria-label="Previous Page"
-            />
+            <>
+              <IconButton
+                icon={<TbArrowBigLeftLines />}
+                variant="outline"
+                colorScheme="cyan"
+                onClick={getFirstPage}
+                _hover={{
+                  bg: 'cyan.600',
+                  color: 'white',
+                  scale: 1.1,
+                }}
+                boxShadow="lg"
+                disabled={currentPage === 1}
+                aria-label="First Page"
+              />
+              <IconButton
+                icon={<TbArrowBigLeft />}
+                variant="outline"
+                colorScheme="cyan"
+                onClick={getPreviousPage}
+                _hover={{
+                  bg: 'cyan.600',
+                  color: 'white',
+                  scale: 1.1,
+                }}
+                boxShadow="lg"
+                disabled={currentPage === 1}
+                aria-label="Previous Page"
+              />
+            </>
           ) : null}
           {mapArray.map((_, i) => {
             return (
@@ -113,20 +136,36 @@ export default function PaginatedItems({
             )
           })}
           {mapArray.length > 0 && currentPage < pageCount ? (
-            <IconButton
-              icon={<TbArrowBigRightLines />}
-              variant="outline"
-              colorScheme="cyan"
-              onClick={getNextPage}
-              _hover={{
-                bg: 'cyan.600',
-                color: 'white',
-                scale: 1.1,
-              }}
-              boxShadow="lg"
-              disabled={currentPage === pageCount}
-              aria-label="Next Page"
-            />
+            <>
+              <IconButton
+                icon={<TbArrowBigRight />}
+                variant="outline"
+                colorScheme="cyan"
+                onClick={getNextPage}
+                _hover={{
+                  bg: 'cyan.600',
+                  color: 'white',
+                  scale: 1.1,
+                }}
+                boxShadow="lg"
+                disabled={currentPage === pageCount}
+                aria-label="Next Page"
+              />
+              <IconButton
+                icon={<TbArrowBigRightLines />}
+                variant="outline"
+                colorScheme="cyan"
+                onClick={getLastPage}
+                _hover={{
+                  bg: 'cyan.600',
+                  color: 'white',
+                  scale: 1.1,
+                }}
+                boxShadow="lg"
+                disabled={currentPage === pageCount}
+                aria-label="First Page"
+              />
+            </>
           ) : null}
         </ButtonGroup>
       </Center>

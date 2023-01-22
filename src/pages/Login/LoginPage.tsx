@@ -1,7 +1,7 @@
 import { Login as LoginResolver, LoginType } from '@/data/paySchema'
 import { useLogin } from '@/hooks/useAuth'
 import { useGoogleAuth } from '@/hooks/useGoogleAuth'
-import { routes } from '@/lib/routes'
+import { routes } from '@/layout/routes'
 import { useStore } from '@/stores/store'
 import {
   Box,

@@ -6,19 +6,6 @@ const config: ThemeConfig = {
   useSystemColorMode: false,
 }
 
-// const extendedTheme = {
-//   brand: {
-//     primary: ' #07f49e',
-//     secondary: '#42047e',
-//     800: '#153e75',
-//     700: '#2a69ac',
-//   },
-//   fonts: {
-//     heading: `'Montserrat', sans-serif`,
-//     body: `'Roboto', sans-serif`,
-//   },
-// }
-
 const activeLabelStyles = {
   transform: 'scale(0.85) translateY(-24px)',
 }

@@ -1,7 +1,12 @@
 import { auth, db } from '@/firebase'
 import { COLLECTIONS } from '@/lib/constants'
 import { getWeeklyTotals } from '@/lib/utils'
-import { onAuthStateChanged, signOut as authSignOut, User } from 'firebase/auth'
+import {
+  NextOrObserver,
+  onAuthStateChanged,
+  signOut as authSignOut,
+  User,
+} from 'firebase/auth'
 import {
   collection,
   doc,
@@ -28,7 +33,7 @@ export default function useFirebaseAuth() {
     storeActions.clear()
   }
 
-  const authStateChanged: any = async (user: User) => {
+  const authStateChanged: NextOrObserver<User> | null = async (user) => {
     setIsLoading(true)
     if (!user) {
       clear()
@@ -40,19 +45,20 @@ export default function useFirebaseAuth() {
       return
     }
 
-    if (user.email)
+    if (user.email) {
       setAuthUser({
         uid: user.uid,
         email: user.email,
       })
+      storeActions.setUserEmail(user.email)
+    }
 
     const ref = doc(db, 'users', `${user.uid}`)
     const docSnap = await getDoc(ref)
     storeActions.setAvatar(docSnap.data()?.avatar || user.photoURL)
     storeActions.setIsSignedIn(true)
     storeActions.setUserId(user.uid)
-    if (user?.email) storeActions.setUserEmail(user.email)
-    setIsSignedIn(user !== null)
+    if (user?.email) setIsSignedIn(user !== null)
     setIsLoading(false)
   }
 

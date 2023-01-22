@@ -13,7 +13,6 @@ import {
   useColorModeValue,
   useConst,
 } from '@chakra-ui/react'
-import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { DocumentData } from 'firebase/firestore'
@@ -291,7 +290,7 @@ const DailyForm = () => {
             </Flex>
           </Form>
         </Box>
-        {import.meta.env.DEV && <DevTool control={control} />}
+        {/* {import.meta.env.DEV && <DevTool control={control} />} */}
       </Box>
     </m.div>
   )

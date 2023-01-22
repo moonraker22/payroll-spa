@@ -1,6 +1,6 @@
 import { auth, db } from '@/firebase'
-import { firebaseErrorMap } from '@/lib/constants'
-import { routes } from '@/lib/routes'
+import { routes } from '@/layout/routes'
+import { COLLECTIONS, firebaseErrorMap } from '@/lib/constants'
 import { store, storeActions, useStore } from '@/stores/store'
 import { useToast } from '@chakra-ui/react'
 import {
@@ -17,7 +17,6 @@ import {
 import { useEffect, useState } from 'react'
 import { useSignOut } from 'react-firebase-hooks/auth'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { COLLECTIONS } from '../lib/constants'
 
 export function useAuth() {
   // const [authUser, authLoading, error] = useAuthState(auth)
@@ -52,7 +51,7 @@ export function useLogin() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const from = location.state?.from?.pathname || '/'
+  const from = location.state?.from?.pathname || routes.DASHBOARD
 
   type LoginProps = {
     email: string
@@ -110,7 +109,7 @@ export function useRegister() {
   const navigate = useNavigate()
   const location = useLocation()
 
-  const from = location.state?.from?.pathname || '/'
+  const from = location.state?.from?.pathname || routes.DASHBOARD
 
   type RegisterProps = {
     email: string
@@ -221,4 +220,16 @@ export function useLogout() {
 //     const errorCode = error.code
 //     const errorMessage = error.message
 //     // ..
+//   })
+
+// import { getAuth, updateEmail } from 'firebase/auth'
+// const auth = getAuth()
+// updateEmail(auth.currentUser, 'user@example.com')
+//   .then(() => {
+//     // Email updated!
+//     // ...
+//   })
+//   .catch((error) => {
+//     // An error occurred
+//     // ...
 //   })
