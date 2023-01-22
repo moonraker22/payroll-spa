@@ -24,7 +24,9 @@ This project is used by the following companies:
 
 ## Screenshots
 
-![App Screenshot](/payroll/public/PayrollTracker_screenshot.png 'Payroll Tracker')
+<!-- ![App Screenshot](/payroll/public/PayrollTracker_screenshot.png 'Payroll Tracker') -->
+
+<a href="/payroll/public/PayrollTracker_screenshot.png"><img src="/payroll/public/PayrollTracker_screenshot.png" alt="Payroll Tracker Screenshot" /></a>
 
 ## Demo
 
