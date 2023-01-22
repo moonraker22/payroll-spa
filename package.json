@@ -10,6 +10,7 @@
     "deploy": "tsc && vite build && firebase deploy --only hosting",
     "emulate": "firebase emulators:start ",
     "lint": "eslint .",
+    "tsc": "tsc",
     "test": "vitest",
     "coverage": "vitest run --coverage",
     "cypress:open": "cypress open"

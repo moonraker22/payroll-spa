@@ -1,13 +1,15 @@
 Issues
 
-pageData not updating after add pay-fixed
+>pageData not updating after add pay-fixed
 
 total miles in week Display on Dashboard not showing greater of pay and ran miles-fixed
 
-colormode switcher not showing on full screen
+>colormode switcher not showing on full screen
 
-gradient too large on full screen
+>gradient too large on full screen
 
-need some margin on home screen box on mobile
+>need some margin on home screen box on mobile
 
-home screen box needs to be lower
+>home screen box needs to be lower
+
+change email not showing in firestore and success message says you are logged in

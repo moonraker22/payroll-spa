@@ -1,5 +1,5 @@
 import { useDeletePay } from '@/hooks/useDeletePay'
-import { routes } from '@/lib/routes'
+import { routes } from '@/layout/routes'
 import { useStore } from '@/stores/store'
 import { Icon, Td, useDisclosure, useToast } from '@chakra-ui/react'
 import currency from 'currency.js'
@@ -9,7 +9,7 @@ import { motion as m } from 'framer-motion'
 import { useCallback, useMemo } from 'react'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { RiDeleteBin3Line } from 'react-icons/ri'
-import { Link as RouterLink } from 'react-router-dom'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import DeleteAlert from './DeleteAlert'
 
 export default function Week({
@@ -21,6 +21,7 @@ export default function Week({
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const snap = useStore()
+  const navigate = useNavigate()
 
   const [docId] = useMemo(
     () =>
@@ -45,6 +46,7 @@ export default function Week({
         position: 'top',
       })
       onClose()
+      navigate(routes.DASHBOARD)
     } catch (error) {
       toast({
         title: 'Error deleting pay',

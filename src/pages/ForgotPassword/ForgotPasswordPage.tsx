@@ -1,12 +1,11 @@
 import { EmailSchema, EmailType } from '@/data/paySchema'
 import { usePasswordReset } from '@/hooks/usePasswordReset'
-import { routes } from '@/lib/routes'
+import { routes } from '@/layout/routes'
 import { useStore } from '@/stores/store'
 import {
   Box,
   Button,
   Center,
-  Container,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -56,7 +55,7 @@ export default function Login() {
   }, [])
 
   return (
-    <Container maxW="container.xl" centerContent mt={8}>
+    <Center maxW={{ base: '100%', sm: '95%' }} mt={8}>
       <m.div
         initial={{ opacity: 0, y: 80 }}
         animate={{ opacity: 1, y: 0 }}
@@ -137,6 +136,6 @@ export default function Login() {
           </Box>
         </Box>
       </m.div>
-    </Container>
+    </Center>
   )
 }

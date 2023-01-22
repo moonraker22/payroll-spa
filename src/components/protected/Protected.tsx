@@ -1,5 +1,5 @@
 import SpinnerComp from '@/components/SpinnerComp'
-import { routes } from '@/lib/routes'
+import { routes } from '@/layout/routes'
 import { useStore } from '@/stores/store'
 import { Suspense } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'

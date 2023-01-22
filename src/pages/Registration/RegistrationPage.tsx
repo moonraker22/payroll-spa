@@ -1,13 +1,12 @@
 import { Register } from '@/data/paySchema'
 import { useRegister } from '@/hooks/useAuth'
 import { useGoogleAuth } from '@/hooks/useGoogleAuth'
-import { routes } from '@/lib/routes'
+import { routes } from '@/layout/routes'
 import { useStore } from '@/stores/store'
 import {
   Box,
   Button,
   Center,
-  Container,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -104,7 +103,7 @@ export default function Registration() {
   }
 
   return (
-    <Container maxW="container.xl" centerContent mt={5}>
+    <Center maxW={{ base: '100%', sm: '95%' }} mt={8}>
       <m.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -278,6 +277,6 @@ export default function Registration() {
           </Box>
         </m.div>
       </m.div>
-    </Container>
+    </Center>
   )
 }

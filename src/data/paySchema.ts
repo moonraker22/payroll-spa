@@ -1,5 +1,5 @@
-import { z } from 'zod'
 import { parseISO } from 'date-fns'
+import { z } from 'zod'
 
 //DailyPaySheet Schema
 export const Paysheet = z.object({
@@ -88,3 +88,11 @@ export const DateFilterSchema = z.object({
 })
 
 export type DateFilterType = z.infer<typeof DateFilterSchema>
+
+export const ChangeEmailSchema = z.object({
+  email: z.string().email({ message: 'Invalid email address' }),
+  password: z.string().min(6),
+  newEmail: z.string().email({ message: 'Invalid email address' }),
+})
+
+export type ChangeEmailType = z.infer<typeof ChangeEmailSchema>

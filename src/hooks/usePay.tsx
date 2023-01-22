@@ -1,6 +1,6 @@
 import { db } from '@/firebase'
+import { routes } from '@/layout/routes'
 import { COLLECTIONS } from '@/lib/constants'
-import { routes } from '@/lib/routes'
 import { useStore } from '@/stores/store'
 import { useToast } from '@chakra-ui/react'
 import {

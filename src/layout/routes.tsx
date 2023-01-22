@@ -23,6 +23,7 @@ const ProfilePage = lazy(() => import('@/pages/Profile/ProfilePage'))
 const ForgotPassword = lazy(
   () => import('@/pages/ForgotPassword/ForgotPasswordPage')
 )
+const ChangeEmail = lazy(() => import('@/pages/ChangeEmail/ChangeEmailPage'))
 
 // ROUTE CONSTANTS
 export const routes = {
@@ -35,6 +36,7 @@ export const routes = {
   DAILY: '/daily',
   PASSWORD_RESET: '/password-reset',
   FORGOT_PASSWORD: '/forgot-password',
+  CHANGE_EMAIL: '/change-email',
 }
 
 export const PROTECTED = '/protected'
@@ -62,6 +64,7 @@ const router = createBrowserRouter(
           <Route path={routes.WEEKLY} element={<WeeklyPage />} />
           <Route path={routes.PROFILE} element={<ProfilePage />} />
           <Route path={routes.PASSWORD_RESET} element={<PasswordReset />} />
+          <Route path={routes.CHANGE_EMAIL} element={<ChangeEmail />} />
         </Route>
       </Route>
     </>
