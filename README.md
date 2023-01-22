@@ -24,8 +24,12 @@ This project is used by the following companies:
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](/payroll/public/PayrollTracker_screenshot.png 'Payroll Tracker')
 
 ## Demo
 
-https://youtu.be/pX1SL0ZxDRM
+![Demo](https://youtu.be/pX1SL0ZxDRM)
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=YOUTUBE_VIDEO_ID_HERE
+" target="_blank"><img src="https://i9.ytimg.com/vi/pX1SL0ZxDRM/mqdefault.jpg?sqp=CJDXtZ4G-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAClAWKAgwIABABGEQgWShyMA8=&rs=AOn4CLDhI7tXAyHSgY53FOom1vrqlBM9Yg" 
+alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>

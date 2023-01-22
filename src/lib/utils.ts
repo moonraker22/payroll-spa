@@ -2,22 +2,6 @@ import { PaysheetType, WeeksType } from '@/stores/store'
 import currency from 'currency.js'
 import { endOfWeek, isEqual, startOfWeek, toDate } from 'date-fns'
 
-// export interface WeekType {
-//   backhaul: number
-//   date: number
-//   endingMiles: number
-//   payMiles: number
-//   startingMiles: number
-//   totalMiles: number
-//   uid: string
-// }
-
-// export interface WeeklyTotalsType extends WeekType {
-//   weekStart: number
-//   weekEnd: number
-//   totalPay: number
-// }
-
 function getWeeklyTotals(array: PaysheetType[]): WeeksType[] {
   const weeklyTotals: any = []
   array.forEach((object) => {
@@ -68,9 +52,6 @@ function getWeeklyTotals(array: PaysheetType[]): WeeksType[] {
       })
     }
   })
-
-  // sortWeeklyTotals(weeklyTotals)
-
   return weeklyTotals
 }
 
