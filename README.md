@@ -26,9 +26,9 @@ This project is used by the following companies:
 
 <!-- ![App Screenshot](/payroll/public/PayrollTracker_screenshot.png 'Payroll Tracker') -->
 
-<a href="/payroll/public/PayrollTracker_screenshot.png"><img src="/payroll/public/PayrollTracker_screenshot.png" alt="Payroll Tracker Screenshot" /></a>
+<a href="https://github.com/moonraker22/payroll-spa/raw/main/public/PayrollTracker_screenshot.png"><img src="https://github.com/moonraker22/payroll-spa/raw/main/public/PayrollTracker_screenshot.png"  width="240" height="180" border="10"/></a>
 
-<a href="/payroll/public/PayrollTracker_screenshot.png"><img src="[/payroll/public/PayrollTracker_screenshot.png](https://github.com/moonraker22/payroll-spa/blob/main/public/PayrollTracker_screenshot.png?raw=true)" alt="Payroll Tracker Screenshot" width="240" height="180" border="10" /></a>## Demo
+## Demo
 
 ![Demo](https://youtu.be/pX1SL0ZxDRM)
 
