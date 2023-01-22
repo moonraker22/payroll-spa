@@ -3,6 +3,8 @@ import { useToast } from '@chakra-ui/react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { routes } from '@/layout/routes'
+import { firebaseErrorMap } from '@/lib/constants'
 import {
   confirmPasswordReset,
   EmailAuthProvider,
@@ -10,7 +12,6 @@ import {
   sendPasswordResetEmail,
   updatePassword,
 } from 'firebase/auth'
-import { routes } from '../layout/routes'
 
 export const usePasswordReset = () => {
   const [error, setError] = useState('')
@@ -48,10 +49,11 @@ export const usePasswordReset = () => {
       })
       navigate(routes.LOGIN)
     } catch (error: any) {
-      setError(error.message)
+      const errorMessage = firebaseErrorMap.get(error.code)
+      setError(errorMessage || error.message)
       toast({
         title: 'Password reset failed',
-        description: error.message,
+        description: errorMessage || error.message,
         status: 'error',
         isClosable: true,
         position: 'top',
@@ -118,10 +120,11 @@ export const usePasswordReset = () => {
       })
       navigate(routes.LOGIN)
     } catch (error: any) {
-      setError(error.message)
+      const errorMessage = firebaseErrorMap.get(error.code)
+      setError(errorMessage || error.message)
       toast({
         title: 'Password reset failed',
-        description: error.message,
+        description: errorMessage || error.message,
         status: 'error',
         isClosable: true,
         position: 'top',
@@ -182,10 +185,11 @@ export const usePasswordReset = () => {
         })
         navigate(routes.LOGIN)
       } catch (error: any) {
-        setError(error.message)
+        const errorMessage = firebaseErrorMap.get(error.code)
+        setError(errorMessage || error.message)
         toast({
           title: 'Password reset failed',
-          description: error.message,
+          description: errorMessage || error.message,
           status: 'error',
           isClosable: true,
           position: 'top',

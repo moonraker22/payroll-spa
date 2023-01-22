@@ -63,7 +63,6 @@ export function useGoogleAuth() {
 
       navigate(`${routes.DASHBOARD}`)
     } catch (error: any) {
-      console.log('error', error)
       toast({
         title: 'Sign In failed',
         description: error.message,

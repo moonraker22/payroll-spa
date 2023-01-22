@@ -2,7 +2,7 @@ Issues
 
 >pageData not updating after add pay-fixed
 
-total miles in week Display on Dashboard not showing greater of pay and ran miles-fixed
+>total miles in week Display on Dashboard not showing greater of pay and ran miles-fixed
 
 >colormode switcher not showing on full screen
 
@@ -12,4 +12,4 @@ total miles in week Display on Dashboard not showing greater of pay and ran mile
 
 >home screen box needs to be lower
 
-change email not showing in firestore and success message says you are logged in
+>change email not showing in firestore and success message says you are logged in
