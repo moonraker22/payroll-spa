@@ -1,0 +1,88 @@
+import { PTOType } from '@/data/paySchema'
+import { db } from '@/firebase'
+import { COLLECTIONS } from '@/lib/constants'
+import { storeActions, useStore } from '@/stores/store'
+import { useToast } from '@chakra-ui/react'
+import { doc, getDoc, updateDoc } from 'firebase/firestore'
+import { useState } from 'react'
+
+export const usePTO = () => {
+  const toast = useToast()
+  const snap = useStore()
+  const [isPTOLoading, setLoading] = useState(false)
+  const [ptoError, setPtoError] = useState(null)
+
+  async function addPTO(numberOfDays: PTOType) {
+    const { days } = numberOfDays
+    setLoading(true)
+    if (!snap?.userId) {
+      toast({
+        title: 'You must be logged in to add PTO',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+        duration: 5000,
+        colorScheme: 'teal',
+        variant: 'solid',
+      })
+      return false
+    }
+    if (days < 0) {
+      toast({
+        title: 'You must enter a positive number',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+        duration: 5000,
+        colorScheme: 'teal',
+        variant: 'solid',
+      })
+      return false
+    }
+    if (days) {
+      try {
+        const docRef = doc(db, COLLECTIONS.USERS, `${snap?.userId}`)
+        const docSnap = await getDoc(docRef)
+        const pto = docSnap.data()?.pto
+        const newPto = pto + days
+
+        if (pto !== undefined) {
+          await updateDoc(doc(db, COLLECTIONS.USERS, `${snap?.userId}`), {
+            pto: newPto,
+          })
+          storeActions.setPto(newPto)
+          toast({
+            title: 'PTO added',
+            status: 'success',
+            isClosable: true,
+            position: 'top',
+            duration: 5000,
+            colorScheme: 'teal',
+            variant: 'solid',
+          })
+        }
+        return true
+      } catch (error: any) {
+        setPtoError(error.message)
+        toast({
+          title: 'Error adding PTO',
+          status: 'error',
+          isClosable: true,
+          position: 'top',
+          duration: 5000,
+          colorScheme: 'teal',
+          variant: 'solid',
+        })
+        return false
+      } finally {
+        setLoading(false)
+      }
+    }
+  }
+
+  return {
+    addPTO,
+    isPTOLoading,
+    ptoError,
+  }
+}

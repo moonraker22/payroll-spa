@@ -1,7 +1,6 @@
 {
   "projects": {
-    "default": "payroll-spa",
-    "prod": "pay-tracker-83988"
+    "default": "payroll-spa"
   },
   "targets": {},
   "etags": {}

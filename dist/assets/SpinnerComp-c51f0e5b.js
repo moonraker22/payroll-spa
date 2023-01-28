@@ -1,0 +1,2 @@
+import{j as i}from"./index.esm-5bedf466.js";import{m as o}from"./motion-91c60b2e.js";import{C as r}from"./index.esm-80b5a022.js";import{S as e}from"./index.esm-3d7316f0.js";function p(){return i(o.div,{initial:{y:window.innerHeight/2,opacity:0,scale:.5},animate:{opacity:1,scale:1.5},children:i(r,{children:i(e,{thickness:"6px",speed:"0.65s",emptyColor:"gray.200",color:"cyan.500",size:"xl"})})})}export{p as S};
+//# sourceMappingURL=SpinnerComp-c51f0e5b.js.map

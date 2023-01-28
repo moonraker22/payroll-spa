@@ -194,7 +194,7 @@ export default function Layout() {
                       onClick={() => navigate(routes.REGISTER)}
                     >
                       <NavLink
-                        to="/registration"
+                        to={routes.REGISTER}
                         style={({ isActive }) =>
                           isActive ? activeStyle : color
                         }
@@ -281,20 +281,6 @@ export default function Layout() {
                     <>
                       <Button
                         variant="ghost"
-                        onClick={() => navigate(routes.HOME)}
-                        color="cyan.500"
-                      >
-                        <NavLink
-                          to={routes.HOME}
-                          style={({ isActive }) =>
-                            isActive ? activeStyle : undefined
-                          }
-                        >
-                          Home
-                        </NavLink>
-                      </Button>
-                      <Button
-                        variant="ghost"
                         onClick={() => navigate(routes.DAILY)}
                         color="cyan.500"
                       >
@@ -332,6 +318,20 @@ export default function Layout() {
                     </>
                   ) : (
                     <>
+                      <Button
+                        variant="ghost"
+                        onClick={() => navigate(routes.HOME)}
+                        color="cyan.500"
+                      >
+                        <NavLink
+                          to={routes.HOME}
+                          style={({ isActive }) =>
+                            isActive ? activeStyle : undefined
+                          }
+                        >
+                          Home
+                        </NavLink>
+                      </Button>
                       <Button
                         variant="ghost"
                         onClick={() => navigate(routes.REGISTER)}

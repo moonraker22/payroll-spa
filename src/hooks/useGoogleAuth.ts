@@ -37,6 +37,7 @@ export function useGoogleAuth() {
             updatedAt: serverTimestamp(),
             role: 'user',
             isAdmin: false,
+            pto: 0,
           }
           const userRef = doc(db, 'users', user?.uid)
           await setDoc(userRef, data)

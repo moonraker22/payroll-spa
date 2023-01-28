@@ -27,6 +27,7 @@ import { TiLightbulb } from 'react-icons/ti'
 import { Link as RouterLink } from 'react-router-dom'
 import FilterField from './FilterField'
 import PaginatedItems from './PaginatedItems'
+import PTOCount from './PTOCount'
 
 export default function Dashboard() {
   // const { id } = useParams<{ id: string }>()
@@ -75,11 +76,24 @@ export default function Dashboard() {
                       </Link>
                     </Text>
                   </Container>
-                ) : null}
+                ) : (
+                  <Text
+                    fontSize={['sm', 'lg', 'lg']}
+                    textAlign={'center'}
+                    color="gray.400"
+                  >
+                    <Icon
+                      as={TiLightbulb}
+                      w={{ base: 3, md: 4 }}
+                      h={{ base: 3, md: 4 }}
+                    />{' '}
+                    Click a box to see a breakdown of the week
+                  </Text>
+                )}
                 <PaginatedItems itemsPerPage={4} />
               </Box>
             </GridItem>
-            <GridItem w="100%" h="500px" bg={bg}>
+            <GridItem w="100%" h="100%" bg={bg}>
               <m.div
                 initial={{ opacity: 0, y: 100, scale: 0.8 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -99,11 +113,12 @@ export default function Dashboard() {
                       size="2xl"
                       my="auto"
                       mx="200px"
-                      name={snap.userEmail}
+                      name={snap.displayName || snap.userEmail}
                       src={snap.avatar}
                     >
                       <AvatarBadge boxSize="1.25em" bg="cyan.700" />
                     </Avatar>
+
                     <VisuallyHidden>
                       <Image
                         src={snap.avatar}
@@ -115,7 +130,7 @@ export default function Dashboard() {
                   <Divider orientation="horizontal" />
                   <Center mt="20px" overflow={'hidden'}>
                     <Heading as="h3" fontSize="xl" fontWeight="extrabold">
-                      {snap.userEmail}
+                      {snap.displayName || snap.userEmail}
                     </Heading>
                   </Center>
                   <Center mt="20px">
@@ -135,6 +150,11 @@ export default function Dashboard() {
                       Edit Profile
                     </Button>
                   </Center>
+                  <Box mt="20px" p="10px">
+                    <Center mt="20px">
+                      <PTOCount />
+                    </Center>
+                  </Box>
                 </Stack>
               </m.div>
             </GridItem>

@@ -52,12 +52,14 @@ export default function useFirebaseAuth() {
       })
       storeActions.setUserEmail(user.email)
     }
+    if (user.displayName) storeActions.setDisplayName(user.displayName)
 
     const ref = doc(db, 'users', `${user.uid}`)
     const docSnap = await getDoc(ref)
     storeActions.setAvatar(docSnap.data()?.avatar || user.photoURL)
     storeActions.setIsSignedIn(true)
     storeActions.setUserId(user.uid)
+    storeActions.setPto(docSnap.data()?.pto || 0)
     if (user?.email) setIsSignedIn(user !== null)
     setIsLoading(false)
   }
