@@ -26,12 +26,16 @@ This project is used by the following companies:
 
 <!-- ![App Screenshot](/payroll/public/PayrollTracker_screenshot.png 'Payroll Tracker') -->
 
-<a href="https://github.com/moonraker22/payroll-spa/raw/main/public/PayrollTracker_screenshot.png"><img src="https://github.com/moonraker22/payroll-spa/raw/main/public/PayrollTracker_screenshot.png"  width="240" height="180" border="10"/></a>
+<!-- <a href="https://github.com/moonraker22/payroll-spa/raw/main/public/PayrollTracker_screenshot.png"><img src="https://github.com/moonraker22/payroll-spa/raw/main/public/PayrollTracker_screenshot.png"  width="240" height="180" border="10"/></a> -->
+
+![App Screenshot](/payroll/public/PayrollTracker_screenshot.png 'Payroll Tracker')
 
 ## Demo
 
-![Demo](https://youtu.be/pX1SL0ZxDRM)
+<!-- ![Demo](https://youtu.be/pX1SL0ZxDRM) -->
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=pX1SL0ZxDRM
-" target="_blank"><img src="https://i.ytimg.com/an_webp/pX1SL0ZxDRM/mqdefault_6s.webp?du=3000&sqp=COWbtZ4G&rs=AOn4CLBfblXHXRPxgcIJGW7YelOQdnXpXA" 
-alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
+<!-- <a href="http://www.youtube.com/watch?feature=player_embedded&v=pX1SL0ZxDRM
+" target="_blank"><img src="https://i.ytimg.com/an_webp/pX1SL0ZxDRM/mqdefault_6s.webp?du=3000&sqp=COWbtZ4G&rs=AOn4CLBfblXHXRPxgcIJGW7YelOQdnXpXA"
+alt="Payroll Tracker" width="240" height="180" border="10" /></a> -->
+
+![Demo](https://youtu.be/pX1SL0ZxDRM)

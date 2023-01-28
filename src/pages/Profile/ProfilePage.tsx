@@ -38,7 +38,7 @@ import { TiLightbulb } from 'react-icons/ti'
 export default function Profile() {
   const defaultValues = {}
 
-  const user = useStore()
+  const snap = useStore()
 
   const {
     register,
@@ -106,22 +106,22 @@ export default function Profile() {
             <Center mt="50px">
               <VisuallyHidden>
                 <Image
-                  src={user.avatar}
+                  src={snap.avatar}
                   referrerPolicy="no-referrer"
                   alt="avatar"
                 />
               </VisuallyHidden>
               <Avatar
                 size="xl"
-                name={user.userEmail}
-                src={user.avatar}
+                name={snap.displayName || snap.userEmail}
+                src={snap.avatar}
                 referrerPolicy="no-referrer"
               >
                 <AvatarBadge boxSize="1.25em" bg="cyan.700" />
               </Avatar>
             </Center>
             <Divider orientation="horizontal" />
-            <Center mt="20px">
+            <VStack mt="20px">
               <Heading
                 as="h3"
                 fontSize="2xl"
@@ -129,9 +129,14 @@ export default function Profile() {
                 // color={'black'}
                 color={color}
               >
-                {user.userEmail}
+                {snap.displayName || snap.userEmail}
               </Heading>
-            </Center>
+              <Box>
+                <Text textAlign={'center'} my="10px">
+                  PTO used this year: {snap.pto}
+                </Text>
+              </Box>
+            </VStack>
             <Center mt="20px">
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormControl
@@ -140,7 +145,11 @@ export default function Profile() {
                 >
                   <HStack spacing="10px" mt="5">
                     <Box>
-                      <Input {...register('avatar')} placeholder="Avatar" />
+                      <Input
+                        {...register('avatar')}
+                        type="url"
+                        placeholder="Avatar"
+                      />
                       <FormLabel
                         htmlFor="avatar"
                         placeholder="Avatar URL"

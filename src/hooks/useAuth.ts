@@ -142,6 +142,7 @@ export function useRegister() {
         displayName: '',
         role: 'user',
         isAdmin: false,
+        pto: 0,
       })
 
       toast({

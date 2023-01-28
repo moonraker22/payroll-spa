@@ -8,7 +8,10 @@ export const Paysheet = z.object({
   endingMiles: z.string().transform((value) => Number(value)),
   totalMiles: z.number().transform((value) => Number(value)),
   payMiles: z.string().transform((value) => Number(value)),
-  backhaul: z.string().transform((value) => Number(value)),
+  backhaul: z
+    .string()
+    .optional()
+    .transform((value) => Number(value)),
 })
 
 export type PaysheetType = z.infer<typeof Paysheet>
@@ -19,7 +22,10 @@ export const WeeklyPaysheet = z.object({
   weekStartingDate: z.string(),
   totalMiles: z.string().transform((value) => Number(value)),
   payMiles: z.string().transform((value) => Number(value)),
-  backhaul: z.string().transform((value) => Number(value)),
+  backhaul: z
+    .string()
+    .optional()
+    .transform((value) => Number(value)),
   totalPay: z.string().transform((value) => Number(value)),
 })
 
@@ -96,3 +102,9 @@ export const ChangeEmailSchema = z.object({
 })
 
 export type ChangeEmailType = z.infer<typeof ChangeEmailSchema>
+
+export const PTOSchema = z.object({
+  days: z.string().transform((value) => Number(value)),
+})
+
+export type PTOType = z.infer<typeof PTOSchema>

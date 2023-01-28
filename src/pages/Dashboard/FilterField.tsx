@@ -14,7 +14,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { isWithinInterval } from 'date-fns'
 import { useCallback, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { IoFilterSharp } from 'react-icons/io5'
 import { Form } from 'react-router-dom'
 import WeekModal from './WeekModal'
@@ -34,7 +34,7 @@ export default function FilterField() {
     resolver: zodResolver(DateFilterSchema),
   })
 
-  function onSubmit(data: DateFilterType) {
+  const onSubmit: SubmitHandler<DateFilterType> = async (data) => {
     findDate(data.date)
     onOpen()
   }

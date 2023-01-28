@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "payroll-spa"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }

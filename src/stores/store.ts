@@ -4,6 +4,7 @@ import { devtools } from 'valtio/utils'
 const state: State = {
   userId: '',
   userEmail: '',
+  displayName: '',
   isSignedIn: false,
   avatar: '',
   paysheets: [],
@@ -14,6 +15,7 @@ const state: State = {
     weekStartFormat: '',
     weekEndFormat: '',
   },
+  pto: 0,
 }
 const store = proxy(state)
 
@@ -27,6 +29,9 @@ const storeActions: StoreActionsType = {
   },
   setUserEmail: (email: string) => {
     store.userEmail = email
+  },
+  setDisplayName: (displayName: string) => {
+    store.displayName = displayName
   },
   setIsSignedIn: (isSignedIn: boolean) => {
     store.isSignedIn = isSignedIn
@@ -43,6 +48,9 @@ const storeActions: StoreActionsType = {
   setWeekData: (weekData: WeekDataType) => {
     store.weekData = weekData
   },
+  setPto: (pto: number) => {
+    store.pto = pto
+  },
   clear: () => {
     store.userId = ''
     store.userEmail = ''
@@ -56,6 +64,7 @@ const storeActions: StoreActionsType = {
       weekStartFormat: '',
       weekEndFormat: '',
     }
+    store.pto = 0
   },
 }
 
@@ -64,11 +73,13 @@ export { store, useStore, storeActions }
 export interface State {
   userId: string
   userEmail: string
+  displayName: string
   isSignedIn: boolean
   avatar: string
   paysheets: PaysheetType[]
   weeks: WeeksType[]
   weekData: WeekDataType
+  pto: number
 }
 
 export interface WeeksType extends PaysheetType {
@@ -98,10 +109,12 @@ export interface WeekDataType {
 export interface StoreActionsType {
   setUserId: (id: string) => void
   setUserEmail: (email: string) => void
+  setDisplayName: (displayName: string) => void
   setIsSignedIn: (isSignedIn: boolean) => void
   setAvatar: (avatar: string) => void
   setPaysheets: (paysheets: PaysheetType[]) => void
   setWeeks: (weeks: WeeksType[]) => void
   setWeekData: (weekData: WeekDataType) => void
+  setPto: (pto: number) => void
   clear: () => void
 }
