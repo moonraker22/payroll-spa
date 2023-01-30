@@ -15,6 +15,8 @@ describe('getWeeklyTotals', () => {
       startingMiles: 100,
       totalMiles: 11,
       uid: '123',
+      delayHours: 1,
+      delayPay: 0,
     },
     {
       backhaul: 0,
@@ -24,6 +26,8 @@ describe('getWeeklyTotals', () => {
       startingMiles: 0,
       totalMiles: 10,
       uid: '123',
+      delayHours: 0,
+      delayPay: 0,
     },
   ]
   it('should return an array', () => {
@@ -39,6 +43,8 @@ describe('getWeeklyTotals', () => {
     expect(result[0]).toHaveProperty('totalMiles')
     expect(result[0]).toHaveProperty('totalPay')
     expect(result[0]).toHaveProperty('finalMiles')
+    expect(result[0]).toHaveProperty('delayHours')
+    expect(result[0]).toHaveProperty('delayPay')
   })
 
   it('should calculate the correct total pay', () => {
@@ -51,6 +57,8 @@ describe('getWeeklyTotals', () => {
     expect(result[0].backhaul).toBe(12.5)
     expect(result[0].totalPay).toBe(23.83)
     expect(currency(result[0].totalPay).format()).toBe('$23.83')
+    expect(result[0].delayHours).toBe(1)
+    expect(result[0].delayPay).toBe(13.25)
   })
 })
 
