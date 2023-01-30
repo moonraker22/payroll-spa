@@ -16,7 +16,6 @@ import {
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
-import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import {
   MdOutlineArrowCircleDown,
@@ -55,9 +54,9 @@ export default function PTOCount() {
     }
   }
 
-  useEffect(() => {
-    setFocus('days')
-  }, [])
+  // useEffect(() => {
+  //   setFocus('days')
+  // }, [])
 
   return (
     <m.div
