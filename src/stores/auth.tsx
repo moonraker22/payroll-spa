@@ -90,6 +90,8 @@ export default function useFirebaseAuth() {
           totalMiles: doc.data().totalMiles,
           payMiles: doc.data().payMiles,
           backhaul: doc.data().backhaul,
+          delayHours: doc.data().delayHours,
+          delayPay: doc.data().delayPay,
         }))
         storeActions.setPaysheets(data)
         const weeks = getWeeklyTotals(data)

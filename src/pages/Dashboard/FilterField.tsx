@@ -39,20 +39,6 @@ export default function FilterField() {
     onOpen()
   }
 
-  // function findDate(date: number) {
-  //   const found = snap.weeks.filter((week) => {
-  //     if (
-  //       isWithinInterval(new Date(date), {
-  //         start: new Date(week.weekStart),
-  //         end: new Date(week.weekEnd),
-  //       })
-  //     ) {
-  //       return week
-  //     }
-  //   })
-  //   setFilterDate(found)
-  // }
-
   const findDate = useCallback(
     (date: number) => {
       const found = snap.weeks.filter((week) => {
@@ -105,6 +91,9 @@ export default function FilterField() {
                 bg: 'cyan.600',
                 color: 'white',
                 scale: 1.1,
+              }}
+              _disabled={{
+                color: 'cyan.300',
               }}
               boxShadow="lg"
               rightIcon={<IoFilterSharp />}

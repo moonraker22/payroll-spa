@@ -1,4 +1,5 @@
 import {
+  Badge,
   Card,
   CardBody,
   Center,
@@ -63,8 +64,22 @@ export function WeekDisplay({
         >
           <CardBody>
             <Center>
-              <Heading size="xs">
-                Dates: {weekStartFormat} - {weekEndFormat}
+              <Heading size={['xs', 'sm', 'sm']}>
+                <Badge
+                  variant={'outline'}
+                  fontSize={['md', 'lg', 'xl']}
+                  colorScheme="cyan"
+                >
+                  {weekStartFormat}
+                </Badge>{' '}
+                to{' '}
+                <Badge
+                  variant={'outline'}
+                  fontSize={['md', 'lg', 'xl']}
+                  colorScheme="cyan"
+                >
+                  {weekEndFormat}
+                </Badge>
               </Heading>
             </Center>
             <Table

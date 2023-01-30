@@ -24,6 +24,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
 import { useEffect, useRef } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { AiOutlineLogin } from 'react-icons/ai'
 import { HiEye, HiEyeOff } from 'react-icons/hi'
 import {
   Form,
@@ -218,6 +219,10 @@ export default function Login() {
                       color: 'white',
                       scale: 1.1,
                     }}
+                    _disabled={{
+                      color: 'cyan.300',
+                    }}
+                    rightIcon={<AiOutlineLogin />}
                   >
                     Submit
                   </Button>

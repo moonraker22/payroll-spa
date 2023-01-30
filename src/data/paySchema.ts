@@ -4,32 +4,70 @@ import { z } from 'zod'
 //DailyPaySheet Schema
 export const Paysheet = z.object({
   date: z.string().transform((value) => parseISO(value).getTime()),
-  startingMiles: z.string().transform((value) => Number(value)),
-  endingMiles: z.string().transform((value) => Number(value)),
-  totalMiles: z.number().transform((value) => Number(value)),
-  payMiles: z.string().transform((value) => Number(value)),
+  startingMiles: z
+    .string()
+    .transform((value) => Number(value))
+    .or(z.number().nonnegative()),
+  endingMiles: z
+    .string()
+    .transform((value) => Number(value.replace(/-|^0+/g, '')))
+    .or(z.number().nonnegative()),
+  totalMiles: z
+    .number()
+    .transform((value) => Number(value))
+    .or(z.number().nonnegative()),
+  payMiles: z
+    .string()
+    .transform((value) => Number(value.replace(/-|^0+/g, '')))
+    .or(z.number().nonnegative()),
   backhaul: z
     .string()
-    .optional()
-    .transform((value) => Number(value)),
+    .transform((value) => Number(value.replace(/-|^0+/g, '')))
+    .or(z.number().nonnegative()),
+  delayHours: z
+    .string()
+    .transform((value) => Number(value.replace(/-|^0+/g, '')))
+    .or(z.number().nonnegative()),
 })
 
 export type PaysheetType = z.infer<typeof Paysheet>
 
-// WeeklyPaySheet Schema
-export const WeeklyPaysheet = z.object({
-  uid: z.string(),
-  weekStartingDate: z.string(),
-  totalMiles: z.string().transform((value) => Number(value)),
-  payMiles: z.string().transform((value) => Number(value)),
-  backhaul: z
-    .string()
-    .optional()
-    .transform((value) => Number(value)),
-  totalPay: z.string().transform((value) => Number(value)),
-})
+// regex for string to number to remove - and leading 0
+// .transform((value) => Number(value.replace(/-|0/g, '')))
 
-export type WeeklyPaysheetType = z.infer<typeof WeeklyPaysheet>
+//regex to remove leading 0
+// .transform((value) => Number(value.replace(/^0+/, '')))
+
+// export const Paysheet = z.object({
+//   date: z.string().transform((value) => parseISO(value).getTime()),
+//   startingMiles: z.string().or(z.number().nonnegative()),
+//   endingMiles: z.number(),
+//   totalMiles: z.number(),
+//   payMiles: z.number(),
+//   backhaul: z.number(),
+//   delayHours: z.number(),
+// })
+
+// export type PaysheetType = z.infer<typeof Paysheet>
+
+// // WeeklyPaySheet Schema
+// export const WeeklyPaysheet = z.object({
+//   uid: z.string(),
+//   weekStartingDate: z.string(),
+//   totalMiles: z.string().transform((value) => Number(value)),
+//   payMiles: z.string().transform((value) => Number(value)),
+//   backhaul: z
+//     .string()
+//     .optional()
+//     .transform((value) => Number(value)),
+//   totalPay: z.string().transform((value) => Number(value)),
+//   delayHours: z
+//     .string()
+//     .optional()
+//     .transform((value) => Number(value)),
+// })
+
+// export type WeeklyPaysheetType = z.infer<typeof WeeklyPaysheet>
 
 // Auth Register Schema
 export const Register = z.object({
@@ -54,6 +92,9 @@ export const UserSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
   avatar: z.string(),
   date: z.string().transform((value) => Date.parse(value)),
+  isAdmin: z.boolean(),
+  role: z.string(),
+  displayName: z.string(),
 })
 
 export type UserType = z.infer<typeof UserSchema>

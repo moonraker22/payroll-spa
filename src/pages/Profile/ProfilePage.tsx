@@ -54,8 +54,8 @@ export default function Profile() {
   }
 
   const bg = useColorModeValue('white', ' gray.800')
-  const color = useColorModeValue('gray.800', 'white')
-  const placeholderColor = useColorModeValue('gray.400', 'gray.500')
+  const color = useColorModeValue('gray.800', 'cyan.600')
+  const placeholderColor = useColorModeValue('gray.500', 'gray.400')
 
   return (
     <Container p="10px" color="gray.300">
@@ -132,7 +132,7 @@ export default function Profile() {
                 {snap.displayName || snap.userEmail}
               </Heading>
               <Box>
-                <Text textAlign={'center'} my="10px">
+                <Text textAlign={'center'} my="10px" color={placeholderColor}>
                   PTO used this year: {snap.pto}
                 </Text>
               </Box>
@@ -154,7 +154,7 @@ export default function Profile() {
                         htmlFor="avatar"
                         placeholder="Avatar URL"
                         // sx={{ color: color }}
-                        _placeholder={{ color: placeholderColor }}
+                        // _placeholder={{ color: placeholderColor }}
                       >
                         Avatar URL
                       </FormLabel>
@@ -180,7 +180,12 @@ export default function Profile() {
                     <FormErrorMessage>
                       {errors.avatar && errors.avatar?.message}
                     </FormErrorMessage>
-                    <Text fontSize="sm" fontWeight="extrabold" ml="20px">
+                    <Text
+                      fontSize="sm"
+                      fontWeight="extrabold"
+                      ml="20px"
+                      color={placeholderColor}
+                    >
                       <Icon as={TiLightbulb} w={4} h={4} /> You can use any
                       image link
                     </Text>

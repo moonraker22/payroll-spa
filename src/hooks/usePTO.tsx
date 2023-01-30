@@ -22,7 +22,7 @@ export const usePTO = () => {
         isClosable: true,
         position: 'top',
         duration: 5000,
-        colorScheme: 'teal',
+        colorScheme: 'red',
         variant: 'solid',
       })
       return false
@@ -34,7 +34,7 @@ export const usePTO = () => {
         isClosable: true,
         position: 'top',
         duration: 5000,
-        colorScheme: 'teal',
+        colorScheme: 'red',
         variant: 'solid',
       })
       return false
@@ -70,7 +70,75 @@ export const usePTO = () => {
           isClosable: true,
           position: 'top',
           duration: 5000,
-          colorScheme: 'teal',
+          colorScheme: 'red',
+          variant: 'solid',
+        })
+        return false
+      } finally {
+        setLoading(false)
+      }
+    }
+  }
+
+  async function subtractPTO(numberOfDays: PTOType) {
+    const { days } = numberOfDays
+    setLoading(true)
+    if (!snap?.userId) {
+      toast({
+        title: 'You must be logged in to subtract PTO',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+        duration: 5000,
+        colorScheme: 'red',
+        variant: 'solid',
+      })
+      return false
+    }
+    if (days < 0) {
+      toast({
+        title: 'You must enter a positive number',
+        status: 'error',
+        isClosable: true,
+        position: 'top',
+        duration: 5000,
+        colorScheme: 'red',
+        variant: 'solid',
+      })
+      return false
+    }
+    if (days) {
+      try {
+        const docRef = doc(db, COLLECTIONS.USERS, `${snap?.userId}`)
+        const docSnap = await getDoc(docRef)
+        const pto = docSnap.data()?.pto
+        const newPto = pto - days < 0 ? 0 : pto - days
+
+        if (pto !== undefined) {
+          await updateDoc(doc(db, COLLECTIONS.USERS, `${snap?.userId}`), {
+            pto: newPto,
+          })
+          storeActions.setPto(newPto)
+          toast({
+            title: 'PTO subtracted',
+            status: 'success',
+            isClosable: true,
+            position: 'top',
+            duration: 5000,
+            colorScheme: 'teal',
+            variant: 'solid',
+          })
+        }
+        return true
+      } catch (error: any) {
+        setPtoError(error.message)
+        toast({
+          title: 'Error subtracting PTO',
+          status: 'error',
+          isClosable: true,
+          position: 'top',
+          duration: 5000,
+          colorScheme: 'red',
           variant: 'solid',
         })
         return false
@@ -82,6 +150,7 @@ export const usePTO = () => {
 
   return {
     addPTO,
+    subtractPTO,
     isPTOLoading,
     ptoError,
   }

@@ -20,6 +20,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { Form, Link as RouterLink, useNavigate } from 'react-router-dom'
 import { GoogleIcon } from '../Login/GoogleIcon'
 
@@ -233,8 +234,12 @@ export default function Registration() {
                       color: 'white',
                       scale: 1.1,
                     }}
+                    _disabled={{
+                      color: 'cyan.300',
+                    }}
+                    rightIcon={<HiOutlinePencilAlt />}
                   >
-                    Submit
+                    Register
                   </Button>
                 </Center>
                 <Center mb="8px">

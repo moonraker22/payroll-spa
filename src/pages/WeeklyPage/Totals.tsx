@@ -1,3 +1,4 @@
+import { computeDelayPay } from '@/lib/utils'
 import { Icon, Td } from '@chakra-ui/react'
 import currency from 'currency.js'
 import { DocumentData } from 'firebase/firestore'
@@ -50,6 +51,24 @@ const Totals = ({ weekData }: { weekData: DocumentData }) => {
     [weekData]
   )
 
+  const delayPay = useMemo(
+    () =>
+      weekData?.reduce((acc: number | currency, item: DocumentData) => {
+        const delayHours = item?.delayHours
+        return currency(computeDelayPay(delayHours)).add(acc)
+      }, 0),
+    [weekData]
+  )
+
+  const delayHours = useMemo(
+    () =>
+      weekData?.reduce(
+        (acc: number, item: DocumentData) => acc + item?.delayHours,
+        0
+      ),
+    [weekData]
+  )
+
   if (weekData?.length > 0) {
     return (
       <m.tr
@@ -78,7 +97,16 @@ const Totals = ({ weekData }: { weekData: DocumentData }) => {
           {backhaul && backhaul?.format()}
         </Td>
         <Td isNumeric fontWeight="bold" color={'cyan.400'}>
+          {delayHours}
+        </Td>
+        <Td isNumeric fontWeight="bold" color={'cyan.400'}>
+          {delayPay && delayPay?.format()}
+        </Td>
+        <Td isNumeric fontWeight="bold" color={'cyan.400'}>
           {totalPay && totalPay?.format()}
+        </Td>
+        <Td isNumeric fontWeight="bold" color={'cyan.400'}>
+          {totalPay && delayPay && currency(totalPay).add(delayPay).format()}
         </Td>
         <Td isNumeric fontWeight="bold" color={'cyan.400'}>
           <Icon as={GiReceiveMoney} w={6} h={6} color="cyan.400'" />

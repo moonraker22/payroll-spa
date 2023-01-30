@@ -9,6 +9,7 @@ import {
   FormHelperText,
   FormLabel,
   Heading,
+  HStack,
   Input,
   Text,
   VStack,
@@ -17,10 +18,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import {
+  MdOutlineArrowCircleDown,
+  MdOutlineArrowCircleUp,
+} from 'react-icons/md'
 import { Form } from 'react-router-dom'
 
 export default function PTOCount() {
-  const { addPTO } = usePTO()
+  const { addPTO, subtractPTO } = usePTO()
   const snap = useStore()
 
   const {
@@ -33,9 +38,17 @@ export default function PTOCount() {
     resolver: zodResolver(PTOSchema),
   })
 
-  const onSubmit: SubmitHandler<PTOType> = (data) => {
+  const onAdd: SubmitHandler<PTOType> = (data) => {
     try {
       addPTO(data)
+      reset()
+    } catch (error: any) {
+      console.log(error)
+    }
+  }
+  const onSubtract: SubmitHandler<PTOType> = (data) => {
+    try {
+      subtractPTO(data)
       reset()
     } catch (error: any) {
       console.log(error)
@@ -61,7 +74,13 @@ export default function PTOCount() {
       <VStack border="1px" borderColor={'gray.500'} p="15px" rounded={'lg'}>
         <Box>
           {/* !Value is hardcoded */}
-          <Heading as="h3" size="lg" textAlign={'center'}>
+          <Heading
+            as="h3"
+            size="lg"
+            textAlign={'center'}
+            bgGradient="linear(to-b, #42047e, #07f49e)"
+            bgClip="text"
+          >
             Paid Time Off
           </Heading>
           <Text color="gray.400" my="5px">
@@ -73,8 +92,11 @@ export default function PTOCount() {
           </Text>
         </Box>
         <Box>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <FormControl variant="floating">
+          <Form>
+            <FormControl
+              variant="floating"
+              isInvalid={errors?.days ? true : false}
+            >
               <FormLabel htmlFor="pto">Enter days used</FormLabel>
               <Input
                 {...register('days')}
@@ -87,30 +109,68 @@ export default function PTOCount() {
                 Enter the number of days used
               </FormHelperText>
             </FormControl>
-            <Button
-              mt="5px"
-              w="full"
-              colorScheme="cyan"
-              isLoading={isSubmitting}
-              type="submit"
-              size="full"
-              py="10px"
-              disabled={
-                !isDirty ||
-                !isValid ||
-                isSubmitting ||
-                Object.keys(errors).length > 0
-              }
-              loadingText="Logging In"
-              variant={'outline'}
-              _hover={{
-                bg: 'cyan.600',
-                color: 'white',
-                scale: 1.1,
-              }}
-            >
-              Submit
-            </Button>
+            <HStack spacing="10px" mt="10px" justifyContent="center">
+              <Button
+                // mt="5px"
+                w="full"
+                colorScheme="cyan"
+                isLoading={isSubmitting}
+                type="submit"
+                size="full"
+                py="10px"
+                disabled={
+                  isSubmitting ||
+                  !isDirty ||
+                  !isValid ||
+                  Object.keys(errors).length > 0
+                }
+                loadingText="Logging In"
+                variant={'outline'}
+                _hover={{
+                  bg: 'cyan.600',
+                  color: 'white',
+                  scale: 1.1,
+                }}
+                boxShadow="lg"
+                _disabled={{
+                  color: 'cyan.300',
+                }}
+                onClick={handleSubmit(onAdd)}
+                rightIcon={<MdOutlineArrowCircleUp />}
+              >
+                Add
+              </Button>
+              <Button
+                // mt="5px"
+                w="full"
+                colorScheme="red"
+                isLoading={isSubmitting}
+                type="submit"
+                size="full"
+                py="10px"
+                disabled={
+                  !isDirty ||
+                  !isValid ||
+                  isSubmitting ||
+                  Object.keys(errors).length > 0
+                }
+                loadingText="Logging In"
+                variant={'outline'}
+                _hover={{
+                  bg: 'red.400',
+                  color: 'white',
+                  scale: 1.1,
+                }}
+                _disabled={{
+                  color: 'red.300',
+                }}
+                boxShadow="lg"
+                onClick={handleSubmit(onSubtract)}
+                rightIcon={<MdOutlineArrowCircleDown />}
+              >
+                Sub
+              </Button>
+            </HStack>
           </Form>
         </Box>
       </VStack>

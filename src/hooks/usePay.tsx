@@ -14,7 +14,7 @@ import {
 } from 'firebase/firestore'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { PaysheetInputs } from '../pages/DailyPage/DailyForm'
+import { PaysheetType } from '../data/paySchema'
 
 export function useAddPay() {
   const [isPayLoading, setLoading] = useState(false)
@@ -22,7 +22,6 @@ export function useAddPay() {
   const toast = useToast()
   const navigate = useNavigate()
   const snap = useStore()
-  // type PaysheetsWithoutId = Omit<PaysheetType, 'uid'>
 
   async function addPay({
     date,
@@ -31,10 +30,10 @@ export function useAddPay() {
     totalMiles,
     payMiles,
     backhaul,
-  }: PaysheetInputs) {
+    delayHours,
+  }: PaysheetType) {
     setLoading(true)
 
-    // if (!isLoading && !user) {
     if (!snap?.userId) {
       toast({
         title: 'You must be logged in to add pay',
@@ -77,6 +76,7 @@ export function useAddPay() {
           totalMiles,
           payMiles,
           backhaul,
+          delayHours,
         })
         toast({
           title: 'Pay updated',
@@ -119,6 +119,7 @@ export function useAddPay() {
             totalMiles,
             payMiles,
             backhaul,
+            delayHours,
           }
         )
         toast({

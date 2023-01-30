@@ -40,7 +40,7 @@ export default function WeeklyPage() {
 
   if (weekData) {
     return (
-      <Container maxW={{ base: '100%', sm: '95%', lg: '75%' }}>
+      <Container maxW={{ base: '100%', sm: '95%', lg: '85%' }}>
         <TableContainer
           my="40"
           border="1px"
@@ -75,7 +75,10 @@ export default function WeeklyPage() {
                 <Th isNumeric>Pay Miles</Th>
                 <Th isNumeric>Actual Miles</Th>
                 <Th isNumeric>Backhaul</Th>
+                <Th isNumeric>Delay Hrs</Th>
+                <Th isNumeric>Delay Pay</Th>
                 <Th isNumeric>Total Pay</Th>
+                <Th isNumeric>Pay + Delay</Th>
                 <Th isNumeric>Edit</Th>
                 <Th isNumeric>Delete</Th>
               </Tr>
@@ -99,7 +102,10 @@ export default function WeeklyPage() {
                 <Th isNumeric>Pay Miles</Th>
                 <Th isNumeric>Actual Miles</Th>
                 <Th isNumeric>Backhaul</Th>
+                <Th isNumeric>Delay Hrs</Th>
+                <Th isNumeric>Delay Pay</Th>
                 <Th isNumeric>Total Pay</Th>
+                <Th isNumeric>Pay + Delay</Th>
                 <Th isNumeric>Edit</Th>
                 <Th isNumeric>Delete</Th>
               </Tr>
