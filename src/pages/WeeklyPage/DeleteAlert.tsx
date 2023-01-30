@@ -59,7 +59,7 @@ export default function DeleteAlert({
               colorScheme="red"
               variant="outline"
               _hover={{
-                bg: 'red.600',
+                bg: 'red.400',
                 color: 'white',
                 scale: 1.1,
               }}

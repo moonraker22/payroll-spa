@@ -97,6 +97,8 @@ export interface PaysheetType {
   payMiles: number
   totalMiles: number
   backhaul: number
+  delayHours: number
+  delayPay: number
 }
 
 export interface WeekDataType {

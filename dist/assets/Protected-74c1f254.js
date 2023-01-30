@@ -1,2 +1,0 @@
-import{t as r,j as t,r as s,O as a,N as i,v as n}from"./index.esm-5bedf466.js";import{S as p}from"./SpinnerComp-c51f0e5b.js";import{u as m}from"./store-105db165.js";import"./motion-91c60b2e.js";import"./index.esm-80b5a022.js";import"./index.esm-3d7316f0.js";const x=()=>{const o=m(),e=r();return o.isSignedIn?t(s.exports.Suspense,{fallback:t(p,{}),children:t(a,{})}):t(i,{to:n.HOME,state:{from:e},replace:!0})};export{x as default};
-//# sourceMappingURL=Protected-74c1f254.js.map

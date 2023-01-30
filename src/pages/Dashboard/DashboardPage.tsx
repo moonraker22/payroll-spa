@@ -34,6 +34,7 @@ export default function Dashboard() {
   const snap = useStore()
 
   const bg = useColorModeValue('white', ' gray.800')
+  const color = useColorModeValue('gray.800', 'cyan.600')
 
   return (
     <>
@@ -118,7 +119,6 @@ export default function Dashboard() {
                     >
                       <AvatarBadge boxSize="1.25em" bg="cyan.700" />
                     </Avatar>
-
                     <VisuallyHidden>
                       <Image
                         src={snap.avatar}
@@ -129,7 +129,12 @@ export default function Dashboard() {
                   </Center>
                   <Divider orientation="horizontal" />
                   <Center mt="20px" overflow={'hidden'}>
-                    <Heading as="h3" fontSize="xl" fontWeight="extrabold">
+                    <Heading
+                      as="h3"
+                      fontSize="xl"
+                      fontWeight="extrabold"
+                      color={color}
+                    >
                       {snap.displayName || snap.userEmail}
                     </Heading>
                   </Center>

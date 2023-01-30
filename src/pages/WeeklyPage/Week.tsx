@@ -1,5 +1,6 @@
 import { useDeletePay } from '@/hooks/useDeletePay'
 import { routes } from '@/layout/routes'
+import { computeDelayPay } from '@/lib/utils'
 import { useStore } from '@/stores/store'
 import { Icon, Td, useDisclosure, useToast } from '@chakra-ui/react'
 import currency from 'currency.js'
@@ -90,6 +91,11 @@ export default function Week({
     [day?.backhaul, miles]
   )
 
+  const delayPay = useMemo(
+    () => currency(computeDelayPay(day.delayHours)),
+    [day.delayHours]
+  )
+
   return (
     // <AnimatePresence>
     <m.tr
@@ -115,7 +121,10 @@ export default function Week({
       <Td isNumeric>{day.payMiles}</Td>
       <Td isNumeric>{day.totalMiles}</Td>
       <Td isNumeric>{currency(day.backhaul).format()}</Td>
+      <Td isNumeric>{day.delayHours}</Td>
+      <Td isNumeric>{delayPay.format()}</Td>
       <Td isNumeric>{totalPay}</Td>
+      <Td isNumeric>{currency(totalPay).add(delayPay).format()}</Td>
       <Td isNumeric>
         <RouterLink to={routes.DAILY} state={day}>
           <Icon as={AiOutlineEdit} w={6} h={6} color="cyan.600" />
