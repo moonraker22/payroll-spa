@@ -9,7 +9,7 @@ import {
   updateEmail,
 } from 'firebase/auth'
 import { doc, serverTimestamp, updateDoc } from 'firebase/firestore'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export function useChangeEmail() {
@@ -18,7 +18,7 @@ export function useChangeEmail() {
   const toast = useToast()
   const navigate = useNavigate()
 
-  async function changeEmail({
+  const changeEmail = useCallback(async function ({
     email,
     password,
     newEmail,
@@ -109,6 +109,7 @@ export function useChangeEmail() {
         setLoading(false)
       }
     }
-  }
+  },
+  [])
   return { changeEmail, isLoading, error }
 }

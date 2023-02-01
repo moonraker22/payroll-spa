@@ -1,5 +1,5 @@
 import { useStore, WeeksType } from '@/stores/store'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export const usePaginateData = ({ pageSize }: { pageSize: number }) => {
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -12,12 +12,13 @@ export const usePaginateData = ({ pageSize }: { pageSize: number }) => {
   const maxPage = Math.ceil(snap.weeks.length / pageSize)
   const mapArray: number[] = Array.from(Array(pageCount).keys())
 
-  const handlePageClick = (
-    e: React.MouseEventHandler<HTMLButtonElement> | undefined | any
-  ) => {
-    const selectedPage = e.selected
-    setCurrentPage(selectedPage + 1)
-  }
+  const handlePageClick = useCallback(
+    (e: React.MouseEventHandler<HTMLButtonElement> | undefined | any) => {
+      const selectedPage = e.selected
+      setCurrentPage(selectedPage + 1)
+    },
+    []
+  )
 
   useEffect(() => {
     const startIndex = (currentPage - 1) * pageSize
@@ -25,21 +26,21 @@ export const usePaginateData = ({ pageSize }: { pageSize: number }) => {
     setPageData(newPageData)
   }, [snap.weeks, currentPage, pageSize])
 
-  const getPreviousPage = () => {
+  const getPreviousPage = useCallback(() => {
     setCurrentPage((page) => Math.max(page - 1, 1))
-  }
+  }, [])
 
-  const getNextPage = () => {
+  const getNextPage = useCallback(() => {
     setCurrentPage((page) => Math.min(page + 1, maxPage))
-  }
+  }, [])
 
-  const getFirstPage = () => {
+  const getFirstPage = useCallback(() => {
     setCurrentPage(1)
-  }
+  }, [])
 
-  const getLastPage = () => {
+  const getLastPage = useCallback(() => {
     setCurrentPage(maxPage)
-  }
+  }, [])
 
   return {
     currentPage,

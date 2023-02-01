@@ -276,6 +276,7 @@ const DailyForm = () => {
                   placeholder="BackHaul"
                   mb="3"
                   type={'number'}
+                  step=".01"
                   defaultValue={
                     day?.backhaul ? Number(day?.backhaul) : undefined
                   }
