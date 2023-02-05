@@ -1,6 +1,6 @@
 import { useGetWeekData } from '@/hooks/useGetWeekData'
 import { routes } from '@/layout/routes'
-import { storeActions, useStore } from '@/stores/store'
+import { PaysheetType, storeActions, useStore } from '@/stores/store'
 import {
   Box,
   Container,
@@ -16,8 +16,9 @@ import {
   Tr,
   useColorModeValue,
 } from '@chakra-ui/react'
+import { DocumentData } from 'firebase/firestore'
 import { AnimatePresence, LayoutGroup, motion as m } from 'framer-motion'
-import { Fragment, useEffect } from 'react'
+import { Fragment, useCallback, useEffect } from 'react'
 import { Link as RouterLink, useLocation } from 'react-router-dom'
 import Totals from './Totals'
 import Week from './Week'
@@ -35,10 +36,45 @@ export default function WeeklyPage() {
   const weekStartFormat =
     state?.weekStartFormat || snap.weekData.weekStartFormat
   const weekEndFormat = state?.weekEndFormat || snap.weekData.weekEndFormat
+
   const { weekData, loading } = useGetWeekData()
   const colorScheme = useColorModeValue('gray', 'cyan.600')
 
-  if (weekData) {
+  // function to convert a DocumentData to a PaysheetType
+  const convertDocToPaysheet = useCallback(
+    (doc: DocumentData): PaysheetType => {
+      const {
+        uid,
+        date,
+        startingMiles,
+        endingMiles,
+        payMiles,
+        totalMiles,
+        backhaul,
+        delayHours,
+        delayPay,
+      } = doc || {}
+      return {
+        uid,
+        date,
+        startingMiles,
+        endingMiles,
+        payMiles,
+        totalMiles,
+        backhaul,
+        delayHours,
+        delayPay,
+      }
+    },
+    []
+  )
+
+  const week = weekData?.map((doc: DocumentData) => {
+    const paysheet = convertDocToPaysheet(doc)
+    return paysheet
+  })
+
+  if (week) {
     return (
       <Container maxW={{ base: '100%', sm: '95%', lg: '85%' }}>
         <TableContainer
@@ -87,12 +123,12 @@ export default function WeeklyPage() {
               <LayoutGroup>
                 <AnimatePresence>
                   {!loading &&
-                    weekData?.map((day, i) => (
+                    week?.map((day, i) => (
                       <Fragment key={day?.date}>
                         <Week day={day} index={i} />
                       </Fragment>
                     ))}
-                  <Totals weekData={weekData} />
+                  <Totals weekData={week} />
                 </AnimatePresence>
               </LayoutGroup>
             </Tbody>

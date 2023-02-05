@@ -7,42 +7,46 @@ import { useMemo } from 'react'
 import { GiMoneyStack, GiReceiveMoney } from 'react-icons/gi'
 import { PaysheetType } from '../../stores/store'
 
-type WeekDataType<T extends PaysheetType | DocumentData> =
-  T extends PaysheetType ? T : T extends DocumentData ? T : never
+type WeekDataType<T> = T extends PaysheetType ? PaysheetType : DocumentData
 
 const Totals = ({ weekData }: { weekData: WeekDataType<DocumentData> }) => {
-  const payMiles = useMemo(
+  const payMiles: number = useMemo(
     () =>
       weekData?.reduce(
-        (acc: number, item: WeekDataType<DocumentData>) => acc + item?.payMiles,
+        (acc: number, item: PaysheetType) => acc + item?.payMiles,
         0
       ),
     [weekData]
   )
 
-  const totalMiles = useMemo(
+  const totalMiles: number = useMemo(
     () =>
       weekData?.reduce(
-        (acc: number, item: WeekDataType<DocumentData>) =>
-          acc + item?.totalMiles,
+        (acc: number, item: PaysheetType) => acc + item?.totalMiles,
         0
       ),
     [weekData]
   )
 
-  const backhaul = useMemo(
+  const backhaul: currency = useMemo(
     () =>
-      weekData?.reduce((acc: number, item: WeekDataType<DocumentData>) => {
-        return currency(item?.backhaul ?? 0).add(acc)
-      }, 0),
+      weekData?.reduce(
+        (acc: number, item: WeekDataType<DocumentData> | PaysheetType) => {
+          return currency(item?.backhaul ?? 0).add(acc)
+        },
+        0
+      ),
     [weekData]
   )
 
   const totalPay: currency = useMemo(
     () =>
       weekData?.reduce(
-        (acc: number | currency, item: WeekDataType<DocumentData>) => {
-          const miles = (item: WeekDataType<DocumentData>) => {
+        (
+          acc: number | currency,
+          item: WeekDataType<DocumentData> | PaysheetType
+        ) => {
+          const miles = (item: WeekDataType<DocumentData> | PaysheetType) => {
             if (item?.payMiles > item?.totalMiles) {
               return item?.payMiles
             } else {
@@ -59,10 +63,13 @@ const Totals = ({ weekData }: { weekData: WeekDataType<DocumentData> }) => {
     [weekData]
   )
 
-  const delayPay = useMemo(
+  const delayPay: currency = useMemo(
     () =>
       weekData?.reduce(
-        (acc: number | currency, item: WeekDataType<DocumentData>) => {
+        (
+          acc: number | currency,
+          item: WeekDataType<DocumentData> | PaysheetType
+        ) => {
           const delayHours = item?.delayHours ?? 0
           return currency(computeDelayPay(delayHours)).add(acc)
         },
@@ -71,11 +78,10 @@ const Totals = ({ weekData }: { weekData: WeekDataType<DocumentData> }) => {
     [weekData]
   )
 
-  const delayHours = useMemo(
+  const delayHours: number = useMemo(
     () =>
       weekData?.reduce(
-        (acc: number, item: WeekDataType<DocumentData>) =>
-          acc + (item?.delayHours ?? 0),
+        (acc: number, item: PaysheetType) => acc + (item?.delayHours ?? 0),
         0
       ),
     [weekData]
