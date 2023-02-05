@@ -40,8 +40,7 @@ export default function PasswordPrompt({
   })
 
   const onSubmit: SubmitHandler<PasswordPromptType> = (data) => {
-    console.log(data)
-    setPass(data.currentPassword)
+    setPass(data?.currentPassword)
   }
 
   return (

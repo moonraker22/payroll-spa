@@ -40,13 +40,15 @@ export default function PasswordReset() {
     resolver: zodResolver(PasswordResetSchema),
   })
 
-  const { updatePass, error } = usePasswordReset()
+  const { updatePass, error: passwordError } = usePasswordReset()
 
   const onSubmit: SubmitHandler<PasswordResetType> = async (data) => {
     try {
       await updatePass(data.password, data.currentPassword)
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      console.error(error.message)
+      console.error(error)
+      console.error(passwordError)
     }
   }
   useEffect(() => {

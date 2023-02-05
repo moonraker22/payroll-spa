@@ -52,14 +52,20 @@ export default function Registration() {
     resolver: zodResolver(Register),
   })
 
-  const { register: registerUser, isLoading } = useRegister()
+  const {
+    register: registerUser,
+    isLoading,
+    error: registerError,
+  } = useRegister()
 
   const onSubmit: SubmitHandler<RegisterType> = async (data) => {
     try {
       registerUser({ email: data.email, password: data.password })
       // navigate('/')
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      console.error(error.message)
+      console.error(error)
+      console.error(registerError)
     }
   }
   useEffect(() => {
@@ -98,8 +104,10 @@ export default function Registration() {
   const googleSubmit = async () => {
     try {
       googleLogin()
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      console.error(error.message)
+      console.error(error)
+      console.error(googleError)
     }
   }
 

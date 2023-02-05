@@ -33,7 +33,7 @@ const auth = getAuth(app)
 const db = getFirestore(app)
 
 if (import.meta.env.DEV) {
-  console.log('dev mode!!!!')
+  console.warn('dev mode!!!!')
   connectFirestoreEmulator(db, 'localhost', 8080)
   connectAuthEmulator(auth, 'http://localhost:9099')
 }

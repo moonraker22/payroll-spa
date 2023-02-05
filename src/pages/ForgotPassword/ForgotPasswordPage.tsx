@@ -21,7 +21,7 @@ import { Form, useNavigate } from 'react-router-dom'
 
 export default function Login() {
   const snap = useStore()
-  const { passwordResetEmail } = usePasswordReset()
+  const { passwordResetEmail, error: passwordResetError } = usePasswordReset()
 
   const navigate = useNavigate()
 
@@ -46,8 +46,10 @@ export default function Login() {
   const onSubmit: SubmitHandler<EmailType> = async (data) => {
     try {
       passwordResetEmail(data.email)
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      console.error(error.message)
+      console.error(error)
+      console.error(passwordResetError)
     }
   }
   useEffect(() => {

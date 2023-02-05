@@ -27,7 +27,7 @@ import {
 import { Form } from 'react-router-dom'
 
 export default function PTOCount() {
-  const { addPTO, subtractPTO } = usePTO()
+  const { addPTO, subtractPTO, ptoError } = usePTO()
   const snap = useStore()
   const countColor = useColorModeValue('cyan.800', 'cyan.300')
 
@@ -46,7 +46,9 @@ export default function PTOCount() {
       addPTO(data)
       reset()
     } catch (error: any) {
-      console.log(error)
+      console.error(error.message)
+      console.error(error)
+      console.error(ptoError)
     }
   }, [])
   const onSubtract: SubmitHandler<PTOType> = useCallback((data) => {
@@ -54,7 +56,7 @@ export default function PTOCount() {
       subtractPTO(data)
       reset()
     } catch (error: any) {
-      console.log(error)
+      console.error(error)
     }
   }, [])
 

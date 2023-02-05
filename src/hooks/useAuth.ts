@@ -81,7 +81,7 @@ export function useLogin() {
         navigate(from || redirectTo, { replace: true })
       } catch (error: any) {
         const errorMessage = firebaseErrorMap.get(`${error.code.toString()}`)
-        console.log(error.code.toString())
+        console.error(error.code.toString())
 
         toast({
           title: 'Logging in failed',

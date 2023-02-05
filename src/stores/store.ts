@@ -19,7 +19,7 @@ const state: State = {
 }
 const store = proxy(state)
 
-if (import.meta.env.DEV) devtools(store, 'Payroll')
+if (import.meta.env.DEV) devtools(store, { name: 'Payroll Tracker' })
 
 const useStore = () => useSnapshot(store)
 
@@ -83,8 +83,8 @@ export interface State {
 }
 
 interface WeekTypeWithId extends PaysheetType {
-  weekStart: string | Date
-  weekEnd: string | Date
+  weekStart: string
+  weekEnd: string
   finalMiles: number
   totalPay: number
 }

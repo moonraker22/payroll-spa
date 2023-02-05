@@ -1,6 +1,6 @@
 import { PaysheetType, WeeksType } from '@/stores/store'
 import currency from 'currency.js'
-import { endOfWeek, isEqual, startOfWeek, toDate } from 'date-fns'
+import { endOfWeek, isEqual, parseISO, startOfWeek, toDate } from 'date-fns'
 
 /**
  * function to get the weekly totals from an array of paysheets
@@ -20,7 +20,8 @@ function getWeeklyTotals(array: PaysheetType[]): WeeksType[] {
 
     const existingTotal = weeklyTotals.find(
       (total: any) =>
-        isEqual(total.weekStart, weekStart) && isEqual(total.weekEnd, weekEnd)
+        isEqual(parseISO(total.weekStart), weekStart) &&
+        isEqual(parseISO(total.weekEnd), weekEnd)
     )
 
     if (existingTotal) {
@@ -44,8 +45,8 @@ function getWeeklyTotals(array: PaysheetType[]): WeeksType[] {
       )
     } else {
       weeklyTotals.push({
-        weekStart: weekStart,
-        weekEnd: weekEnd,
+        weekStart: weekStart.toISOString(),
+        weekEnd: weekEnd.toISOString(),
         backhaul: object?.backhaul || 0,
         endingMiles: object?.endingMiles || 0,
         payMiles: object?.payMiles || 0,

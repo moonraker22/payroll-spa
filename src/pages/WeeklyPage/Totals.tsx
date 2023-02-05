@@ -11,8 +11,6 @@ type WeekDataType<T extends PaysheetType | DocumentData> =
   T extends PaysheetType ? T : T extends DocumentData ? T : never
 
 const Totals = ({ weekData }: { weekData: WeekDataType<DocumentData> }) => {
-  console.log(weekData)
-
   const payMiles = useMemo(
     () =>
       weekData?.reduce(

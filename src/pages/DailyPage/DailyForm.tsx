@@ -51,7 +51,7 @@ const DailyForm = () => {
   //   }
   // }
 
-  const { addPay } = useAddPay()
+  const { addPay, payError } = useAddPay()
 
   const {
     register,
@@ -70,8 +70,10 @@ const DailyForm = () => {
     try {
       addPay({ ...data })
       reset()
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      console.error(error.message)
+      console.error(error)
+      console.error(payError)
     }
   }
 

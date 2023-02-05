@@ -1,5 +1,6 @@
 import { usePaginateData } from '@/hooks/usePaginate'
 import { Box, Button, ButtonGroup, Center, IconButton } from '@chakra-ui/react'
+import { uuidv4 } from '@firebase/util'
 import { motion as m } from 'framer-motion'
 import { useCallback } from 'react'
 import {
@@ -50,7 +51,7 @@ export default function PaginatedItems({
       {pageData.map((week, index) => (
         <m.div
           // as={m.div}
-          key={week.weekStart}
+          key={uuidv4()}
           initial={{ opacity: 0, scale: 0 }}
           animate={{
             opacity: 0.9,
@@ -119,7 +120,7 @@ export default function PaginatedItems({
           {mapArray.map((_, i) => {
             return (
               <Button
-                key={_}
+                key={uuidv4()}
                 colorScheme="cyan"
                 variant={currentPage === i + 1 ? 'ghost' : 'outline'}
                 _hover={{

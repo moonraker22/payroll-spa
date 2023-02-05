@@ -27,14 +27,11 @@ import { routes } from '@/layout/routes'
 export default function PasswordReset() {
   const [isGoogle, setIsGoogle] = useState(false)
   // const user = useStore()
-  const { changeEmail, error } = useChangeEmail()
+  const { changeEmail, error: changeEmailError } = useChangeEmail()
 
   const {
     register,
     handleSubmit,
-    watch,
-    setError,
-    clearErrors,
     setFocus,
     formState: { errors, isDirty, isSubmitting, isValid, touchedFields },
   } = useForm<ChangeEmailType>({
@@ -43,14 +40,15 @@ export default function PasswordReset() {
 
   const onSubmit: SubmitHandler<ChangeEmailType> = async (data) => {
     try {
-      console.log(data)
       await changeEmail({
         email: data.email,
         password: data.password,
         newEmail: data.newEmail,
       })
     } catch (error: any) {
-      console.log(error)
+      console.error(error.message)
+      console.error(error)
+      console.error(changeEmailError)
     }
   }
   useEffect(() => {

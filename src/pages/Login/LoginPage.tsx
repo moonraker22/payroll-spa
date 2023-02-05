@@ -62,13 +62,15 @@ export default function Login() {
   const password = watch('password')
   const email = watch('email')
   const canSubmit = isDirty && isValid && password && email
-  const { login, isLoading, error } = useLogin()
+  const { login, isLoading, error: loginError } = useLogin()
 
   const onSubmit: SubmitHandler<LoginType> = async (data) => {
     try {
       login({ email: data.email, password: data.password })
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      console.error(error.message)
+      console.error(error)
+      console.error(loginError)
     }
   }
   useEffect(() => {
@@ -93,8 +95,10 @@ export default function Login() {
   const googleSubmit = async () => {
     try {
       googleLogin()
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      console.error(error.message)
+      console.error(googleError)
+      console.error(error)
     }
   }
 
