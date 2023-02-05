@@ -28,7 +28,7 @@ import { AnimatePresence } from 'framer-motion'
 import { Suspense } from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { ImCoinDollar } from 'react-icons/im'
-import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import Footer from './Footer'
 
 export default function Layout() {
@@ -60,7 +60,6 @@ export default function Layout() {
   }
 
   const snap = useStore()
-  const location = useLocation()
 
   if (!snap) {
     return <SpinnerComp />
@@ -224,7 +223,7 @@ export default function Layout() {
                         as={NavLink}
                         to={routes.PROFILE}
                         size="sm"
-                        name={snap.userEmail}
+                        name={snap.displayName || snap.userEmail}
                         src={snap.avatar}
                       >
                         <AvatarBadge boxSize="1em" bg="cyan.600" />
@@ -378,18 +377,3 @@ export default function Layout() {
     </>
   )
 }
-
-// const AnimatedOutlet: React.FC = () => {
-//   const o = useOutlet()
-//   const [outlet] = useState(o)
-
-//   return <>{outlet}</>
-// }
-
-// export async function loader({ request, params }) {
-//   // async function getInitialAuthState() {
-//   let user = store.userId
-//   if (user) {
-//     return { user }
-//   }
-// }

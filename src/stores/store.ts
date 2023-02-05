@@ -82,12 +82,13 @@ export interface State {
   pto: number
 }
 
-export interface WeeksType extends PaysheetType {
-  weekStart: string
-  weekEnd: string
+interface WeekTypeWithId extends PaysheetType {
+  weekStart: string | Date
+  weekEnd: string | Date
   finalMiles: number
   totalPay: number
 }
+export type WeeksType = Omit<WeekTypeWithId, 'uid' | 'date'>
 
 export interface PaysheetType {
   uid: string

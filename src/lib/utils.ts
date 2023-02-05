@@ -9,7 +9,7 @@ import { endOfWeek, isEqual, startOfWeek, toDate } from 'date-fns'
  */
 
 function getWeeklyTotals(array: PaysheetType[]): WeeksType[] {
-  const weeklyTotals: any = []
+  const weeklyTotals: WeeksType[] = []
 
   if (array.length === 0) {
     return []
@@ -123,7 +123,11 @@ const promiseWrapper = (fn: (...args: any) => any) => {
     new Promise(async (resolve, reject) => {
       try {
         const response = await fn(...args)
-        resolve(response)
+        if (response) {
+          resolve(response)
+        } else {
+          reject(new Error('No response'))
+        }
       } catch (error) {
         reject(error)
       }
@@ -139,6 +143,11 @@ export {
   promiseWrapper,
 }
 
+/**
+ * Compute the delay pay for a given delay in days
+ * @param delay - Number of days of delay
+ * @returns - The delay pay for the given delay
+ */
 export const computeDelayPay = (delay: number): number => {
   if (delay <= 0) {
     return 0

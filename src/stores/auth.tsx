@@ -15,8 +15,14 @@ import {
   orderBy,
   query,
 } from 'firebase/firestore'
-import { createContext, useContext, useEffect, useState } from 'react'
-import { PaysheetType, storeActions } from './store'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import { PaysheetType, storeActions, WeeksType } from './store'
 
 export default function useFirebaseAuth() {
   const [authUser, setAuthUser] = useState<{
@@ -33,36 +39,39 @@ export default function useFirebaseAuth() {
     storeActions.clear()
   }
 
-  const authStateChanged: NextOrObserver<User> | null = async (user) => {
-    setIsLoading(true)
-    if (!user) {
-      clear()
-      return
-    }
+  const authStateChanged: NextOrObserver<User> | null = useCallback(
+    async (user: User | null) => {
+      setIsLoading(true)
+      if (!user) {
+        clear()
+        return
+      }
 
-    if (user.isAnonymous) {
-      clear()
-      return
-    }
+      if (user.isAnonymous) {
+        clear()
+        return
+      }
 
-    if (user.email) {
-      setAuthUser({
-        uid: user.uid,
-        email: user.email,
-      })
-      storeActions.setUserEmail(user.email)
-    }
-    if (user.displayName) storeActions.setDisplayName(user.displayName)
+      if (user.email) {
+        setAuthUser({
+          uid: user.uid,
+          email: user.email,
+        })
+        storeActions.setUserEmail(user.email)
+      }
+      if (user.displayName) storeActions.setDisplayName(user.displayName)
 
-    const ref = doc(db, 'users', `${user.uid}`)
-    const docSnap = await getDoc(ref)
-    storeActions.setAvatar(docSnap.data()?.avatar || user.photoURL)
-    storeActions.setIsSignedIn(true)
-    storeActions.setUserId(user.uid)
-    storeActions.setPto(docSnap.data()?.pto || 0)
-    if (user?.email) setIsSignedIn(user !== null)
-    setIsLoading(false)
-  }
+      const ref = doc(db, 'users', `${user.uid}`)
+      const docSnap = await getDoc(ref)
+      storeActions.setAvatar(docSnap.data()?.avatar || user.photoURL)
+      storeActions.setIsSignedIn(true)
+      storeActions.setUserId(user.uid)
+      storeActions.setPto(docSnap.data()?.pto || 0)
+      if (user?.email) setIsSignedIn(user !== null)
+      setIsLoading(false)
+    },
+    []
+  )
 
   /**
    * Get paysheets from firestore and put into global store
@@ -83,18 +92,18 @@ export default function useFirebaseAuth() {
 
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const data: PaysheetType[] = querySnapshot.docs.map((doc) => ({
-          uid: doc.id,
-          startingMiles: doc.data().startingMiles,
-          endingMiles: doc.data().endingMiles,
-          date: doc.data().date,
-          totalMiles: doc.data().totalMiles,
-          payMiles: doc.data().payMiles,
-          backhaul: doc.data().backhaul,
-          delayHours: doc.data().delayHours,
-          delayPay: doc.data().delayPay,
+          uid: doc?.id,
+          startingMiles: doc.data()?.startingMiles,
+          endingMiles: doc.data()?.endingMiles,
+          date: doc.data()?.date,
+          totalMiles: doc.data()?.totalMiles,
+          payMiles: doc.data()?.payMiles,
+          backhaul: doc.data()?.backhaul,
+          delayHours: doc.data()?.delayHours,
+          delayPay: doc.data()?.delayPay,
         }))
         storeActions.setPaysheets(data)
-        const weeks = getWeeklyTotals(data)
+        const weeks: WeeksType[] = getWeeklyTotals(data)
         storeActions.setWeeks(weeks)
       })
       return () => unsubscribe()
@@ -102,7 +111,7 @@ export default function useFirebaseAuth() {
   }, [isSignedIn, authUser])
 
   // Sign out
-  const signOut = () => authSignOut(auth).then(clear)
+  const signOut = useCallback(() => authSignOut(auth).then(clear), [])
 
   // Listen for Firebase Auth state change
   useEffect(() => {

@@ -43,6 +43,7 @@ export default function Profile() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<AvatarType>({
     defaultValues,
@@ -50,7 +51,8 @@ export default function Profile() {
   })
   const { setAvatar, isLoading, error } = useSetAvatar()
   const onSubmit: SubmitHandler<AvatarType> = (data) => {
-    setAvatar({ avatarUrl: data.avatar })
+    setAvatar(data.avatar)
+    reset()
   }
 
   const bg = useColorModeValue('white', ' gray.800')

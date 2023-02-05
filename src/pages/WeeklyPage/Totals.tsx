@@ -5,12 +5,18 @@ import { DocumentData } from 'firebase/firestore'
 import { motion as m } from 'framer-motion'
 import { useMemo } from 'react'
 import { GiMoneyStack, GiReceiveMoney } from 'react-icons/gi'
+import { PaysheetType } from '../../stores/store'
 
-const Totals = ({ weekData }: { weekData: DocumentData }) => {
+type WeekDataType<T extends PaysheetType | DocumentData> =
+  T extends PaysheetType ? T : T extends DocumentData ? T : never
+
+const Totals = ({ weekData }: { weekData: WeekDataType<DocumentData> }) => {
+  console.log(weekData)
+
   const payMiles = useMemo(
     () =>
       weekData?.reduce(
-        (acc: number, item: DocumentData) => acc + item?.payMiles,
+        (acc: number, item: WeekDataType<DocumentData>) => acc + item?.payMiles,
         0
       ),
     [weekData]
@@ -19,7 +25,8 @@ const Totals = ({ weekData }: { weekData: DocumentData }) => {
   const totalMiles = useMemo(
     () =>
       weekData?.reduce(
-        (acc: number, item: DocumentData) => acc + item?.totalMiles,
+        (acc: number, item: WeekDataType<DocumentData>) =>
+          acc + item?.totalMiles,
         0
       ),
     [weekData]
@@ -27,7 +34,7 @@ const Totals = ({ weekData }: { weekData: DocumentData }) => {
 
   const backhaul = useMemo(
     () =>
-      weekData?.reduce((acc: number, item: DocumentData) => {
+      weekData?.reduce((acc: number, item: WeekDataType<DocumentData>) => {
         return currency(item?.backhaul ?? 0).add(acc)
       }, 0),
     [weekData]
@@ -35,35 +42,42 @@ const Totals = ({ weekData }: { weekData: DocumentData }) => {
 
   const totalPay: currency = useMemo(
     () =>
-      weekData?.reduce((acc: number | currency, item: DocumentData) => {
-        const miles = (item: DocumentData) => {
-          if (item?.payMiles > item?.totalMiles) {
-            return item?.payMiles
-          } else {
-            return item?.totalMiles
+      weekData?.reduce(
+        (acc: number | currency, item: WeekDataType<DocumentData>) => {
+          const miles = (item: WeekDataType<DocumentData>) => {
+            if (item?.payMiles > item?.totalMiles) {
+              return item?.payMiles
+            } else {
+              return item?.totalMiles
+            }
           }
-        }
-        return currency(miles(item), { precision: 2 })
-          .multiply(0.515)
-          .add(item?.backhaul)
-          .add(acc)
-      }, 0),
+          return currency(miles(item), { precision: 2 })
+            .multiply(0.515)
+            .add(item?.backhaul)
+            .add(acc)
+        },
+        0
+      ),
     [weekData]
   )
 
   const delayPay = useMemo(
     () =>
-      weekData?.reduce((acc: number | currency, item: DocumentData) => {
-        const delayHours = item?.delayHours ?? 0
-        return currency(computeDelayPay(delayHours)).add(acc)
-      }, 0),
+      weekData?.reduce(
+        (acc: number | currency, item: WeekDataType<DocumentData>) => {
+          const delayHours = item?.delayHours ?? 0
+          return currency(computeDelayPay(delayHours)).add(acc)
+        },
+        0
+      ),
     [weekData]
   )
 
   const delayHours = useMemo(
     () =>
       weekData?.reduce(
-        (acc: number, item: DocumentData) => acc + (item?.delayHours ?? 0),
+        (acc: number, item: WeekDataType<DocumentData>) =>
+          acc + (item?.delayHours ?? 0),
         0
       ),
     [weekData]
