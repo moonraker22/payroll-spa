@@ -18,7 +18,6 @@ import {
 // import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
-import { DocumentData } from 'firebase/firestore'
 import { motion as m } from 'framer-motion'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -34,33 +33,16 @@ const DailyForm = () => {
 
   const date = useConst(new Date().toISOString().slice(0, 10))
 
-  const defaultValuesFunc = (day: DocumentData) => {
-    if (day) {
-      return {
-        date: format(day.date, 'yyyy-MM-dd'),
-        startingMiles: day.startingMiles,
-        endingMiles: day.endingMiles,
-        totalMiles: day.totalMiles,
-        payMiles: day.payMiles,
-        backhaul: day.backhaul,
-        delayHours: day.delayHours,
-      }
-    } else {
-      return {
-        date: date,
-      }
-    }
-  }
   // const defaultValuesFunc = (day: DocumentData) => {
   //   if (day) {
   //     return {
   //       date: format(day.date, 'yyyy-MM-dd'),
-  //       startingMiles: `${day.startingMiles}`,
-  //       endingMiles: `${day.endingMiles}`,
+  //       startingMiles: day.startingMiles,
+  //       endingMiles: day.endingMiles,
   //       totalMiles: day.totalMiles,
-  //       payMiles: `${day.payMiles}`,
-  //       backhaul: `${day.backhaul}`,
-  //       delayHours: `${day.delayHours}`,
+  //       payMiles: day.payMiles,
+  //       backhaul: day.backhaul,
+  //       delayHours: day.delayHours,
   //     }
   //   } else {
   //     return {
@@ -68,8 +50,6 @@ const DailyForm = () => {
   //     }
   //   }
   // }
-
-  // const defaultValues = defaultValuesFunc(day)
 
   const { addPay } = useAddPay()
 

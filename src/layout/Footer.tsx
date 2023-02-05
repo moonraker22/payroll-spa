@@ -1,9 +1,9 @@
 import {
-  Container,
-  Center,
-  Stack,
   ButtonGroup,
+  Center,
+  Container,
   IconButton,
+  Stack,
   Text,
 } from '@chakra-ui/react'
 import { AiOutlineMail } from 'react-icons/ai'
@@ -21,7 +21,7 @@ export default function Footer() {
                 <IconButton
                   as="a"
                   href="mailto:knzkustomz@gmail.com"
-                  aria-label="LinkedIn"
+                  aria-label="Email"
                   icon={<AiOutlineMail fontSize="1.25rem" />}
                 />
                 <IconButton

@@ -20,13 +20,17 @@ placeholder color in dailyForm could be removed ✅
 
 add helper text on dashboard to explain click through to week breakdown ✅
 
-add step to add delete pto days
+add step to add delete pto days ✅
 
 ## add delay
 
 -changed schema to have a delay field ✅
 -change form to have a delay field ✅
--change dashboard to show delay
--change week breakdown to show delay
--change usePay to calc delay
--change utils to calc delay
+-change dashboard to show delay ✅
+-change week breakdown to show delay ✅
+-change usePay to calc delay ✅
+-change utils to calc delay ✅
+
+NaN on totals when for delayHours when no data
+
+Add pto intermitently wont submit

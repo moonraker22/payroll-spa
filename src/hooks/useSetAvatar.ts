@@ -2,7 +2,7 @@ import { db } from '@/firebase'
 import { storeActions, useStore } from '@/stores/store'
 import { useToast } from '@chakra-ui/react'
 import { doc, serverTimestamp, updateDoc } from 'firebase/firestore'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 export function useSetAvatar() {
   const [isLoading, setLoading] = useState(true)
@@ -10,7 +10,7 @@ export function useSetAvatar() {
   const snap = useStore()
   const toast = useToast()
 
-  async function setAvatar({ avatarUrl }: { avatarUrl: string }) {
+  const setAvatar = useCallback(async (avatarUrl: string) => {
     setLoading(true)
 
     if (!snap?.isSignedIn) {
@@ -47,6 +47,7 @@ export function useSetAvatar() {
       setError(error)
       setLoading(false)
     }
-  }
+  }, [])
+
   return { setAvatar, isLoading, error }
 }

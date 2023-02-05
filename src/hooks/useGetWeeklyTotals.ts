@@ -1,7 +1,7 @@
 import { db } from '@/firebase'
 import { COLLECTIONS } from '@/lib/constants'
 import { getWeeklyTotals } from '@/lib/utils'
-import { storeActions, useStore, WeeksType } from '@/stores/store'
+import { PaysheetType, storeActions, useStore, WeeksType } from '@/stores/store'
 import { collection, orderBy, query } from 'firebase/firestore'
 import { useEffect, useMemo } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
@@ -22,17 +22,20 @@ export function useGetWeeklyTotals() {
     )
   }
 
-  const [totals, totalsLoading, totalsError]: any = useCollectionData(q)
+  const [totals, totalsLoading, totalsError]: PaysheetType[] | any =
+    useCollectionData(q)
 
   let weeks: WeeksType[] = []
   useEffect(() => {
     if (!totalsLoading && snap?.isSignedIn) {
-      storeActions.setPaysheets(totals)
-      // weeks = getWeeklyTotals(totals)
+      if (!!totals) {
+        storeActions.setPaysheets(totals)
+        // weeks = getWeeklyTotals(totals)
 
-      weeks = useMemo(() => getWeeklyTotals(totals), [totals])
+        weeks = useMemo(() => getWeeklyTotals(totals), [totals])
 
-      storeActions.setWeeks(weeks)
+        storeActions.setWeeks(weeks)
+      }
     }
   }, [totalsLoading])
 

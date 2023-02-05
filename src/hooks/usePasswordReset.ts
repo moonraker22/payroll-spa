@@ -1,10 +1,7 @@
 import { auth } from '@/firebase'
-import { useToast } from '@chakra-ui/react'
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-
 import { routes } from '@/layout/routes'
 import { firebaseErrorMap } from '@/lib/constants'
+import { useToast } from '@chakra-ui/react'
 import {
   confirmPasswordReset,
   EmailAuthProvider,
@@ -12,6 +9,8 @@ import {
   sendPasswordResetEmail,
   updatePassword,
 } from 'firebase/auth'
+import { useCallback, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export const usePasswordReset = () => {
   const [error, setError] = useState('')
@@ -20,7 +19,7 @@ export const usePasswordReset = () => {
   const navigate = useNavigate()
   const toast = useToast()
 
-  const passwordResetEmail = async (email: string) => {
+  const passwordResetEmail = useCallback(async (email: string) => {
     setLoading(true)
     if (!email) {
       setError('Please enter your email')
@@ -63,117 +62,53 @@ export const usePasswordReset = () => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
-  const confirmPassReset = async (code: string, newPassword: string) => {
-    setLoading(true)
-    if (!code) {
-      setError('Please enter your code')
-      toast({
-        title: 'Password reset failed',
-        description: 'Please enter your code',
-        status: 'error',
-        isClosable: true,
-        position: 'top',
-        duration: 5000,
-        variant: 'solid',
-      })
-      return
-    }
-    if (!newPassword) {
-      setError('Please enter your new password')
-      toast({
-        title: 'Password reset failed',
-        description: 'Please enter your new password',
-        status: 'error',
-        isClosable: true,
-        position: 'top',
-        duration: 5000,
-        variant: 'solid',
-      })
-      return
-    }
-    if (newPassword.length < 6) {
-      setError('Password must be at least 6 characters')
-      toast({
-        title: 'Password reset failed',
-        description: 'Password must be at least 6 characters',
-        status: 'error',
-        isClosable: true,
-        position: 'top',
-        duration: 5000,
-        variant: 'solid',
-      })
-      return
-    }
-    try {
-      // const auth = getAuth()
-      await confirmPasswordReset(auth, code, newPassword)
-      toast({
-        title: 'Password reset successful',
-        status: 'success',
-        isClosable: true,
-        position: 'top',
-        duration: 5000,
-        colorScheme: 'cyan',
-        variant: 'solid',
-      })
-      navigate(routes.LOGIN)
-    } catch (error: any) {
-      const errorMessage = firebaseErrorMap.get(error.code)
-      setError(errorMessage || error.message)
-      toast({
-        title: 'Password reset failed',
-        description: errorMessage || error.message,
-        status: 'error',
-        isClosable: true,
-        position: 'top',
-        duration: 5000,
-        variant: 'solid',
-      })
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const updatePass = async (newPassword: string, currentPassword: string) => {
-    setLoading(true)
-    const user = auth.currentUser
-
-    if (!newPassword) {
-      setError('Please enter your new password')
-      toast({
-        title: 'Password reset failed',
-        description: 'Please enter your new password',
-        status: 'error',
-        isClosable: true,
-        position: 'top',
-        duration: 5000,
-        variant: 'solid',
-      })
-      return
-    }
-    if (!currentPassword) {
-      setError('Password must be at least 6 characters')
-      toast({
-        title: 'Password reset failed',
-        description: 'Password must be at least 6 characters',
-        status: 'error',
-        isClosable: true,
-        position: 'top',
-        duration: 5000,
-        variant: 'solid',
-      })
-      return
-    }
-    if (user?.email) {
-      const credential = EmailAuthProvider.credential(
-        user.email,
-        currentPassword
-      )
+  const confirmPassReset = useCallback(
+    async (code: string, newPassword: string) => {
+      setLoading(true)
+      if (!code) {
+        setError('Please enter your code')
+        toast({
+          title: 'Password reset failed',
+          description: 'Please enter your code',
+          status: 'error',
+          isClosable: true,
+          position: 'top',
+          duration: 5000,
+          variant: 'solid',
+        })
+        return
+      }
+      if (!newPassword) {
+        setError('Please enter your new password')
+        toast({
+          title: 'Password reset failed',
+          description: 'Please enter your new password',
+          status: 'error',
+          isClosable: true,
+          position: 'top',
+          duration: 5000,
+          variant: 'solid',
+        })
+        return
+      }
+      if (newPassword.length < 6) {
+        setError('Password must be at least 6 characters')
+        toast({
+          title: 'Password reset failed',
+          description: 'Password must be at least 6 characters',
+          status: 'error',
+          isClosable: true,
+          position: 'top',
+          duration: 5000,
+          variant: 'solid',
+        })
+        return
+      }
       try {
-        await reauthenticateWithCredential(user, credential)
-        await updatePassword(user, newPassword)
+        // const auth = getAuth()
+        await confirmPasswordReset(auth, code, newPassword)
         toast({
           title: 'Password reset successful',
           status: 'success',
@@ -199,7 +134,77 @@ export const usePasswordReset = () => {
       } finally {
         setLoading(false)
       }
-    }
-  }
+    },
+    []
+  )
+
+  const updatePass = useCallback(
+    async (newPassword: string, currentPassword: string) => {
+      setLoading(true)
+      const user = auth.currentUser
+
+      if (!newPassword) {
+        setError('Please enter your new password')
+        toast({
+          title: 'Password reset failed',
+          description: 'Please enter your new password',
+          status: 'error',
+          isClosable: true,
+          position: 'top',
+          duration: 5000,
+          variant: 'solid',
+        })
+        return
+      }
+      if (!currentPassword) {
+        setError('Password must be at least 6 characters')
+        toast({
+          title: 'Password reset failed',
+          description: 'Password must be at least 6 characters',
+          status: 'error',
+          isClosable: true,
+          position: 'top',
+          duration: 5000,
+          variant: 'solid',
+        })
+        return
+      }
+      if (user?.email) {
+        const credential = EmailAuthProvider.credential(
+          user.email,
+          currentPassword
+        )
+        try {
+          await reauthenticateWithCredential(user, credential)
+          await updatePassword(user, newPassword)
+          toast({
+            title: 'Password reset successful',
+            status: 'success',
+            isClosable: true,
+            position: 'top',
+            duration: 5000,
+            colorScheme: 'cyan',
+            variant: 'solid',
+          })
+          navigate(routes.LOGIN)
+        } catch (error: any) {
+          const errorMessage = firebaseErrorMap.get(error.code)
+          setError(errorMessage || error.message)
+          toast({
+            title: 'Password reset failed',
+            description: errorMessage || error.message,
+            status: 'error',
+            isClosable: true,
+            position: 'top',
+            duration: 5000,
+            variant: 'solid',
+          })
+        } finally {
+          setLoading(false)
+        }
+      }
+    },
+    []
+  )
   return { error, loading, passwordResetEmail, confirmPassReset, updatePass }
 }

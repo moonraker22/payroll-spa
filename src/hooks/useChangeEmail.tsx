@@ -18,15 +18,17 @@ export function useChangeEmail() {
   const toast = useToast()
   const navigate = useNavigate()
 
+  type ChangeEmailProps = {
+    email: string
+    password: string
+    newEmail: string
+  }
+
   const changeEmail = useCallback(async function ({
     email,
     password,
     newEmail,
-  }: {
-    email: string
-    password: string
-    newEmail: string
-  }) {
+  }: ChangeEmailProps) {
     const user = auth.currentUser
     setLoading(true)
 

@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom'
 
 //Pages
-const ProtectedRoutes = lazy(() => import('@/components/protected/Protected'))
+const ProtectedRoutes = lazy(() => import('@/layout/protected/Protected'))
 const Layout = lazy(() => import('@/layout/Layout'))
 const Home = lazy(() => import('@/pages/Home/HomePage'))
 const Login = lazy(() => import('@/pages/Login/LoginPage'))

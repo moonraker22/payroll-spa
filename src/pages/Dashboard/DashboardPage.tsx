@@ -27,6 +27,8 @@ import { TiLightbulb } from 'react-icons/ti'
 import { Link as RouterLink } from 'react-router-dom'
 import FilterField from './FilterField'
 import PaginatedItems from './PaginatedItems'
+import PeoplenetLogin from './PeoplenetLogin'
+import PepsiLinks from './PepsiLinks'
 import PTOCount from './PTOCount'
 
 export default function Dashboard() {
@@ -45,7 +47,7 @@ export default function Dashboard() {
           </div>
         }
       >
-        <SimpleGrid columns={[1, null, 3]} spacing="10px">
+        <SimpleGrid columns={[1, null, 3]} spacing="10px" p="5px">
           <LayoutGroup>
             <GridItem w="100%" h="100%" bg={bg} colSpan={2} p={'5'}>
               <Heading
@@ -91,7 +93,7 @@ export default function Dashboard() {
                     Click a box to see a breakdown of the week
                   </Text>
                 )}
-                <PaginatedItems itemsPerPage={4} />
+                <PaginatedItems itemsPerPage={5} />
               </Box>
             </GridItem>
             <GridItem w="100%" h="100%" bg={bg}>
@@ -160,6 +162,8 @@ export default function Dashboard() {
                       <PTOCount />
                     </Center>
                   </Box>
+                  <PeoplenetLogin />
+                  <PepsiLinks />
                 </Stack>
               </m.div>
             </GridItem>

@@ -1,4 +1,4 @@
-import { Register } from '@/data/paySchema'
+import { Register, RegisterType } from '@/data/paySchema'
 import { useRegister } from '@/hooks/useAuth'
 import { useGoogleAuth } from '@/hooks/useGoogleAuth'
 import { routes } from '@/layout/routes'
@@ -24,11 +24,11 @@ import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { Form, Link as RouterLink, useNavigate } from 'react-router-dom'
 import { GoogleIcon } from '../Login/GoogleIcon'
 
-type RegistrationInputs = {
-  email: string
-  password: string
-  passwordConfirmation: string
-}
+// type RegistrationInputs = {
+//   email: string
+//   password: string
+//   passwordConfirmation: string
+// }
 
 export default function Registration() {
   const snap = useStore()
@@ -48,13 +48,13 @@ export default function Registration() {
     clearErrors,
     setFocus,
     formState: { errors, isDirty, isSubmitting, isValid, touchedFields },
-  } = useForm<RegistrationInputs>({
+  } = useForm<RegisterType>({
     resolver: zodResolver(Register),
   })
 
   const { register: registerUser, isLoading } = useRegister()
 
-  const onSubmit: SubmitHandler<RegistrationInputs> = async (data) => {
+  const onSubmit: SubmitHandler<RegisterType> = async (data) => {
     try {
       registerUser({ email: data.email, password: data.password })
       // navigate('/')

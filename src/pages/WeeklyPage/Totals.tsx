@@ -28,7 +28,7 @@ const Totals = ({ weekData }: { weekData: DocumentData }) => {
   const backhaul = useMemo(
     () =>
       weekData?.reduce((acc: number, item: DocumentData) => {
-        return currency(item?.backhaul).add(acc)
+        return currency(item?.backhaul ?? 0).add(acc)
       }, 0),
     [weekData]
   )
@@ -54,7 +54,7 @@ const Totals = ({ weekData }: { weekData: DocumentData }) => {
   const delayPay = useMemo(
     () =>
       weekData?.reduce((acc: number | currency, item: DocumentData) => {
-        const delayHours = item?.delayHours
+        const delayHours = item?.delayHours ?? 0
         return currency(computeDelayPay(delayHours)).add(acc)
       }, 0),
     [weekData]
@@ -63,7 +63,7 @@ const Totals = ({ weekData }: { weekData: DocumentData }) => {
   const delayHours = useMemo(
     () =>
       weekData?.reduce(
-        (acc: number, item: DocumentData) => acc + item?.delayHours,
+        (acc: number, item: DocumentData) => acc + (item?.delayHours ?? 0),
         0
       ),
     [weekData]

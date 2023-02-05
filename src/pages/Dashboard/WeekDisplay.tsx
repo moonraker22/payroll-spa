@@ -42,6 +42,8 @@ export function WeekDisplay({
   const weekEndFormat = format(endDate, 'MM/dd/yyyy')
 
   const colorScheme = useColorModeValue('gray', 'cyan.600')
+  const headingColor = useColorModeValue('gray', 'cyan.400')
+  const badgeColor = useColorModeValue('gray', 'cyan')
   const tableColorScheme = useColorModeValue('blackAlpha', 'cyan')
   return (
     <LinkBox>
@@ -64,19 +66,19 @@ export function WeekDisplay({
         >
           <CardBody>
             <Center>
-              <Heading size={['xs', 'sm', 'sm']}>
+              <Heading size={['xs', 'sm', 'sm']} color={headingColor}>
                 <Badge
                   variant={'outline'}
                   fontSize={['md', 'lg', 'xl']}
-                  colorScheme="cyan"
+                  colorScheme={badgeColor}
                 >
                   {weekStartFormat}
                 </Badge>{' '}
-                to{' '}
+                -{' '}
                 <Badge
                   variant={'outline'}
                   fontSize={['md', 'lg', 'xl']}
-                  colorScheme="cyan"
+                  colorScheme={badgeColor}
                 >
                   {weekEndFormat}
                 </Badge>

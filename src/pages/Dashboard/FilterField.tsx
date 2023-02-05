@@ -7,7 +7,10 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Hide,
+  IconButton,
   Input,
+  Show,
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
@@ -79,27 +82,51 @@ export default function FilterField() {
                 {errors.date && errors.date?.message}
               </FormErrorMessage>
             </FormControl>
-            <Button
-              ml="5"
-              colorScheme="cyan"
-              isLoading={isSubmitting}
-              type="submit"
-              disabled={!isDirty || !isValid}
-              loadingText={'Submitting'}
-              variant="outline"
-              _hover={{
-                bg: 'cyan.600',
-                color: 'white',
-                scale: 1.1,
-              }}
-              _disabled={{
-                color: 'cyan.300',
-              }}
-              boxShadow="lg"
-              rightIcon={<IoFilterSharp />}
-            >
-              Filter
-            </Button>
+            <Hide below="md">
+              <Button
+                ml="5"
+                colorScheme="cyan"
+                isLoading={isSubmitting}
+                type="submit"
+                disabled={!isDirty || !isValid}
+                loadingText={'Submitting'}
+                variant="outline"
+                _hover={{
+                  bg: 'cyan.600',
+                  color: 'white',
+                  scale: 1.1,
+                }}
+                _disabled={{
+                  color: 'cyan.300',
+                }}
+                boxShadow="lg"
+                rightIcon={<IoFilterSharp />}
+              >
+                Filter
+              </Button>
+            </Hide>
+            <Show below="md">
+              <IconButton
+                ml="5"
+                colorScheme="cyan"
+                isLoading={isSubmitting}
+                type="submit"
+                disabled={!isDirty || !isValid}
+                aria-label="Filter"
+                // loadingText={'Submitting'}
+                variant="outline"
+                _hover={{
+                  bg: 'cyan.600',
+                  color: 'white',
+                  scale: 1.1,
+                }}
+                _disabled={{
+                  color: 'cyan.300',
+                }}
+                boxShadow="lg"
+                icon={<IoFilterSharp fontSize="1.25rem" />}
+              ></IconButton>
+            </Show>
           </Flex>
         </Center>
       </Form>

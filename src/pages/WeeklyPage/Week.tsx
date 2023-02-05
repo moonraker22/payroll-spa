@@ -11,13 +11,16 @@ import { useCallback, useMemo } from 'react'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { RiDeleteBin3Line } from 'react-icons/ri'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { PaysheetType } from '../../data/paySchema'
 import DeleteAlert from './DeleteAlert'
+
+type DayType<T> = T extends PaysheetType ? PaysheetType : DocumentData
 
 export default function Week({
   day,
   index,
 }: {
-  day: DocumentData
+  day: DayType<PaysheetType>
   index: number
 }) {
   const { isOpen, onOpen, onClose } = useDisclosure()

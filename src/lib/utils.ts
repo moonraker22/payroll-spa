@@ -11,6 +11,9 @@ import { endOfWeek, isEqual, startOfWeek, toDate } from 'date-fns'
 function getWeeklyTotals(array: PaysheetType[]): WeeksType[] {
   const weeklyTotals: any = []
 
+  if (array.length === 0) {
+    return []
+  }
   array.forEach((object) => {
     const weekStart = startOfWeek(toDate(object.date))
     const weekEnd = endOfWeek(toDate(object.date))
@@ -21,16 +24,16 @@ function getWeeklyTotals(array: PaysheetType[]): WeeksType[] {
     )
 
     if (existingTotal) {
-      existingTotal.backhaul += object.backhaul
-      existingTotal.endingMiles += object.endingMiles
-      existingTotal.payMiles += object.payMiles
-      existingTotal.startingMiles += object.startingMiles
-      existingTotal.totalMiles += object.totalMiles
-      existingTotal.delayHours += object.delayHours
-      existingTotal.delayPay += computeDelayPay(object.delayHours)
+      existingTotal.backhaul += object?.backhaul
+      existingTotal.endingMiles += object?.endingMiles
+      existingTotal.payMiles += object?.payMiles
+      existingTotal.startingMiles += object?.startingMiles
+      existingTotal.totalMiles += object?.totalMiles
+      existingTotal.delayHours += object?.delayHours
+      existingTotal.delayPay += computeDelayPay(object?.delayHours || 0)
       existingTotal.finalMiles += computeFinalMiles({
-        totalMiles: object.totalMiles,
-        payMiles: object.payMiles,
+        totalMiles: object?.totalMiles,
+        payMiles: object?.payMiles,
       })
       existingTotal.totalPay += Number(
         computePay({
@@ -43,22 +46,22 @@ function getWeeklyTotals(array: PaysheetType[]): WeeksType[] {
       weeklyTotals.push({
         weekStart: weekStart,
         weekEnd: weekEnd,
-        backhaul: object.backhaul,
-        endingMiles: object.endingMiles,
-        payMiles: object.payMiles,
-        startingMiles: object.startingMiles,
-        totalMiles: object.totalMiles,
-        delayHours: object.delayHours,
-        delayPay: computeDelayPay(object.delayHours),
+        backhaul: object?.backhaul || 0,
+        endingMiles: object?.endingMiles || 0,
+        payMiles: object?.payMiles || 0,
+        startingMiles: object?.startingMiles || 0,
+        totalMiles: object?.totalMiles || 0,
+        delayHours: object?.delayHours || 0,
+        delayPay: computeDelayPay(object?.delayHours || 0),
         finalMiles: computeFinalMiles({
-          totalMiles: object.totalMiles,
-          payMiles: object.payMiles,
+          totalMiles: object?.totalMiles || 0,
+          payMiles: object?.payMiles || 0,
         }),
         totalPay: Number(
           computePay({
-            totalMiles: object.totalMiles,
-            payMiles: object.payMiles,
-            backhaul: object.backhaul,
+            totalMiles: object?.totalMiles,
+            payMiles: object?.payMiles,
+            backhaul: object?.backhaul,
           })
         ),
       })
@@ -68,15 +71,17 @@ function getWeeklyTotals(array: PaysheetType[]): WeeksType[] {
   return weeklyTotals
 }
 
+type ComputePayProps = {
+  totalMiles: number
+  payMiles: number
+  backhaul?: number
+}
+
 export function computePay({
   totalMiles,
   payMiles,
   backhaul = 0,
-}: {
-  totalMiles: number
-  payMiles: number
-  backhaul?: number
-}): currency {
+}: ComputePayProps): currency {
   if (totalMiles > payMiles) {
     return currency(totalMiles, { precision: 2 }).multiply(0.515).add(backhaul)
   } else {
@@ -90,13 +95,16 @@ export function computePay({
  * @param payMiles The pay miles
  * @returns The total miles or pay miles, whichever is greater.
  */
+
+type ComputeFinalMilesProps = {
+  totalMiles: number
+  payMiles: number
+}
+
 export function computeFinalMiles({
   totalMiles,
   payMiles,
-}: {
-  totalMiles: number
-  payMiles: number
-}): number {
+}: ComputeFinalMilesProps): number {
   if (totalMiles > payMiles) {
     return totalMiles
   } else {

@@ -12,13 +12,10 @@ export const usePaginateData = ({ pageSize }: { pageSize: number }) => {
   const maxPage = Math.ceil(snap.weeks.length / pageSize)
   const mapArray: number[] = Array.from(Array(pageCount).keys())
 
-  const handlePageClick = useCallback(
-    (e: React.MouseEventHandler<HTMLButtonElement> | undefined | any) => {
-      const selectedPage = e.selected
-      setCurrentPage(selectedPage + 1)
-    },
-    []
-  )
+  const handlePageClick = useCallback((e: { selected: number }) => {
+    const selectedPage = e?.selected
+    setCurrentPage(selectedPage + 1)
+  }, [])
 
   useEffect(() => {
     const startIndex = (currentPage - 1) * pageSize
