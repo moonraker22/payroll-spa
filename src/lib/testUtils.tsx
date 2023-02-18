@@ -6,6 +6,7 @@ afterEach(() => {
   cleanup()
 })
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const customRender = (ui: React.ReactElement, options = {}) =>
   render(ui, {
     // wrap provider(s) here if needed

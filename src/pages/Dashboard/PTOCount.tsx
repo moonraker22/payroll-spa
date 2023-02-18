@@ -1,4 +1,4 @@
-import { PTOSchema, PTOType } from '@/data/paySchema'
+import { PTOSchema, type PTOType } from '@/data/paySchema'
 import { usePTO } from '@/hooks/usePTO'
 import { useStore } from '@/stores/store'
 import {
@@ -19,14 +19,14 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
 import { useCallback } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import {
   MdOutlineArrowCircleDown,
   MdOutlineArrowCircleUp,
 } from 'react-icons/md'
 import { Form } from 'react-router-dom'
 
-export default function PTOCount() {
+export default function PTOCount(): JSX.Element {
   const { addPTO, subtractPTO, ptoError } = usePTO()
   const snap = useStore()
   const countColor = useColorModeValue('cyan.800', 'cyan.300')
@@ -36,33 +36,34 @@ export default function PTOCount() {
     handleSubmit,
     formState: { errors, isDirty, isSubmitting, isValid },
     reset,
-    setFocus,
   } = useForm<PTOType>({
     resolver: zodResolver(PTOSchema),
   })
 
   const onAdd: SubmitHandler<PTOType> = useCallback((data) => {
     try {
-      addPTO(data)
+      addPTO(data).catch((error: unknown) => {
+        console.error(error)
+        console.error(ptoError)
+      })
       reset()
-    } catch (error: any) {
-      console.error(error.message)
+    } catch (error: unknown) {
       console.error(error)
       console.error(ptoError)
     }
   }, [])
   const onSubtract: SubmitHandler<PTOType> = useCallback((data) => {
     try {
-      subtractPTO(data)
+      subtractPTO(data).catch((error: unknown) => {
+        console.error(error)
+        console.error(ptoError)
+      })
       reset()
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error)
+      console.error(ptoError)
     }
   }, [])
-
-  // useEffect(() => {
-  //   setFocus('days')
-  // }, [])
 
   return (
     <m.div
@@ -85,7 +86,6 @@ export default function PTOCount() {
         maxW="300px"
         minW="300px"
       >
-        {/* !Value is hardcoded */}
         <Heading
           as="h3"
           size="lg"
@@ -97,10 +97,10 @@ export default function PTOCount() {
         </Heading>
         <Divider variant={'dashed'} w="80%" />
         <Text color="gray.400" my="5px">
-          Keep track of days you've used this year
+          Keep track of days you&apos;ve used this year
         </Text>
         <Text textAlign={'center'} my="10px">
-          You've used
+          You&apos;ve used
         </Text>
         <Text color={countColor} fontSize="2xl" textAlign={'center'}>
           {snap.pto}
@@ -111,10 +111,7 @@ export default function PTOCount() {
         </Text>
         <Box>
           <Form>
-            <FormControl
-              variant="floating"
-              isInvalid={errors?.days ? true : false}
-            >
+            <FormControl variant="floating" isInvalid={errors?.days != null}>
               <FormLabel htmlFor="pto">Number of days</FormLabel>
               <Input
                 {...register('days')}

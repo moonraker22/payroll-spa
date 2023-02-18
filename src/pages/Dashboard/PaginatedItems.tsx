@@ -15,7 +15,7 @@ export default function PaginatedItems({
   itemsPerPage,
 }: {
   itemsPerPage: number
-}) {
+}): JSX.Element {
   const {
     currentPage,
     pageData,
@@ -50,7 +50,6 @@ export default function PaginatedItems({
     <>
       {pageData.map((week, index) => (
         <m.div
-          // as={m.div}
           key={uuidv4()}
           initial={{ opacity: 0, scale: 0 }}
           animate={{
@@ -129,7 +128,9 @@ export default function PaginatedItems({
                   scale: 1.1,
                 }}
                 boxShadow="lg"
-                onClick={() => handlePageClick({ selected: i })}
+                onClick={() => {
+                  handlePageClick({ selected: i })
+                }}
                 display={shouldDisplay(i + 1) ? 'block' : 'none'}
               >
                 {i + 1}

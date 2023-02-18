@@ -8,13 +8,20 @@ import {
   reauthenticateWithCredential,
   updateEmail,
 } from 'firebase/auth'
-import { doc, serverTimestamp, updateDoc } from 'firebase/firestore'
+import {
+  doc,
+  FirestoreError,
+  serverTimestamp,
+  updateDoc,
+} from 'firebase/firestore'
 import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export function useChangeEmail() {
   const [isLoading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<FirestoreError | Error | string | null>(
+    null
+  )
   const toast = useToast()
   const navigate = useNavigate()
 
@@ -94,19 +101,43 @@ export function useChangeEmail() {
           updatedAt: serverTimestamp(),
         })
         navigate(routes.DASHBOARD, { replace: true })
-      } catch (error: any) {
-        const errorMessage = firebaseErrorMap.get(`${error.code.toString()}`)
+      } catch (error: unknown) {
+        if (error instanceof FirestoreError) {
+          const errorMessage = firebaseErrorMap.get(`${error.code.toString()}`)
 
-        toast({
-          title: 'Email change failed',
-          description: errorMessage || error.message,
-          status: 'error',
-          isClosable: true,
-          position: 'top',
-          duration: 5000,
-          variant: 'solid',
-        })
-        setError(error)
+          toast({
+            title: 'Email change failed',
+            description: errorMessage || error.message,
+            status: 'error',
+            isClosable: true,
+            position: 'top',
+            duration: 5000,
+            variant: 'solid',
+          })
+          setError(error)
+        } else if (error instanceof Error) {
+          toast({
+            title: 'Email change failed',
+            description: error.message,
+            status: 'error',
+            isClosable: true,
+            position: 'top',
+            duration: 5000,
+            variant: 'solid',
+          })
+          setError(error)
+        } else {
+          toast({
+            title: 'Email change failed',
+            description: 'Something went wrong',
+            status: 'error',
+            isClosable: true,
+            position: 'top',
+            duration: 5000,
+            variant: 'solid',
+          })
+          setError(error as string)
+        }
       } finally {
         setLoading(false)
       }

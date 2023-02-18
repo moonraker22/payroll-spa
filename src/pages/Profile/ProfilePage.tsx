@@ -1,4 +1,3 @@
-// import { useCallback, useEffect } from 'react'
 import {
   Avatar,
   AvatarBadge,
@@ -21,10 +20,10 @@ import {
   VisuallyHidden,
   VStack,
 } from '@chakra-ui/react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { Form, Link as RouterLink } from 'react-router-dom'
 // import { DevTool } from '@hookform/devtools'
-import { AvatarSchema, AvatarType } from '@/data/paySchema'
+import { AvatarSchema, type AvatarType } from '@/data/paySchema'
 import { useSetAvatar } from '@/hooks/useSetAvatar'
 import { routes } from '@/layout/routes'
 import { useStore } from '@/stores/store'
@@ -35,7 +34,7 @@ import { RiLockPasswordLine } from 'react-icons/ri'
 import { RxUpdate } from 'react-icons/rx'
 import { TiLightbulb } from 'react-icons/ti'
 
-export default function Profile() {
+export default function Profile(): JSX.Element {
   const defaultValues = {}
 
   const snap = useStore()
@@ -49,9 +48,12 @@ export default function Profile() {
     defaultValues,
     resolver: zodResolver(AvatarSchema),
   })
-  const { setAvatar, isLoading, error } = useSetAvatar()
+  const { setAvatar, error: avatarError } = useSetAvatar()
   const onSubmit: SubmitHandler<AvatarType> = (data) => {
-    setAvatar(data.avatar)
+    setAvatar(data.avatar).catch((error: unknown) => {
+      console.error(error)
+      console.error(avatarError)
+    })
     reset()
   }
 
@@ -115,7 +117,7 @@ export default function Profile() {
               </VisuallyHidden>
               <Avatar
                 size="xl"
-                name={snap.displayName || snap.userEmail}
+                name={snap.displayName ?? snap.userEmail}
                 src={snap.avatar}
                 referrerPolicy="no-referrer"
               >
@@ -131,7 +133,7 @@ export default function Profile() {
                 // color={'black'}
                 color={color}
               >
-                {snap.displayName || snap.userEmail}
+                {snap.displayName ?? snap.userEmail}
               </Heading>
               <Box>
                 <Text textAlign={'center'} my="10px" color={placeholderColor}>
@@ -142,7 +144,7 @@ export default function Profile() {
             <Center mt="20px">
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormControl
-                  isInvalid={errors.avatar?.message ? true : false}
+                  isInvalid={errors.avatar?.message != null}
                   variant="floating"
                 >
                   <HStack spacing="10px" mt="5">
@@ -180,7 +182,7 @@ export default function Profile() {
                   </HStack>
                   <Center my="10px">
                     <FormErrorMessage>
-                      {errors.avatar && errors.avatar?.message}
+                      {errors.avatar?.message}
                     </FormErrorMessage>
                     <Text
                       fontSize="sm"

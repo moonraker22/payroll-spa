@@ -1,4 +1,5 @@
-import { PaysheetType, WeeksType } from '@/stores/store'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { type PaysheetType, type WeeksType } from '@/stores/store'
 import currency from 'currency.js'
 import { endOfWeek, isEqual, parseISO, startOfWeek, toDate } from 'date-fns'
 
@@ -19,19 +20,19 @@ function getWeeklyTotals(array: PaysheetType[]): WeeksType[] {
     const weekEnd = endOfWeek(toDate(object.date))
 
     const existingTotal = weeklyTotals.find(
-      (total: any) =>
+      (total: WeeksType) =>
         isEqual(parseISO(total.weekStart), weekStart) &&
         isEqual(parseISO(total.weekEnd), weekEnd)
     )
 
-    if (existingTotal) {
+    if (existingTotal != null) {
       existingTotal.backhaul += object?.backhaul
       existingTotal.endingMiles += object?.endingMiles
       existingTotal.payMiles += object?.payMiles
       existingTotal.startingMiles += object?.startingMiles
       existingTotal.totalMiles += object?.totalMiles
       existingTotal.delayHours += object?.delayHours
-      existingTotal.delayPay += computeDelayPay(object?.delayHours || 0)
+      existingTotal.delayPay += computeDelayPay(object?.delayHours ?? 0)
       existingTotal.finalMiles += computeFinalMiles({
         totalMiles: object?.totalMiles,
         payMiles: object?.payMiles,
@@ -47,16 +48,16 @@ function getWeeklyTotals(array: PaysheetType[]): WeeksType[] {
       weeklyTotals.push({
         weekStart: weekStart.toISOString(),
         weekEnd: weekEnd.toISOString(),
-        backhaul: object?.backhaul || 0,
-        endingMiles: object?.endingMiles || 0,
-        payMiles: object?.payMiles || 0,
-        startingMiles: object?.startingMiles || 0,
-        totalMiles: object?.totalMiles || 0,
-        delayHours: object?.delayHours || 0,
-        delayPay: computeDelayPay(object?.delayHours || 0),
+        backhaul: object?.backhaul ?? 0,
+        endingMiles: object?.endingMiles ?? 0,
+        payMiles: object?.payMiles ?? 0,
+        startingMiles: object?.startingMiles ?? 0,
+        totalMiles: object?.totalMiles ?? 0,
+        delayHours: object?.delayHours ?? 0,
+        delayPay: computeDelayPay(object?.delayHours ?? 0),
         finalMiles: computeFinalMiles({
-          totalMiles: object?.totalMiles || 0,
-          payMiles: object?.payMiles || 0,
+          totalMiles: object?.totalMiles ?? 0,
+          payMiles: object?.payMiles ?? 0,
         }),
         totalPay: Number(
           computePay({
@@ -72,7 +73,7 @@ function getWeeklyTotals(array: PaysheetType[]): WeeksType[] {
   return weeklyTotals
 }
 
-type ComputePayProps = {
+interface ComputePayProps {
   totalMiles: number
   payMiles: number
   backhaul?: number
@@ -97,7 +98,7 @@ export function computePay({
  * @returns The total miles or pay miles, whichever is greater.
  */
 
-type ComputeFinalMilesProps = {
+interface ComputeFinalMilesProps {
   totalMiles: number
   payMiles: number
 }
@@ -120,11 +121,13 @@ export function computeFinalMiles({
 // }
 
 const promiseWrapper = (fn: (...args: any) => any) => {
-  return (...args: any) =>
-    new Promise(async (resolve, reject) => {
+  return async (...args: any) =>
+    // eslint-disable-next-line no-async-promise-executor
+    await new Promise(async (resolve, reject) => {
       try {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const response = await fn(...args)
-        if (response) {
+        if (response != null) {
           resolve(response)
         } else {
           reject(new Error('No response'))

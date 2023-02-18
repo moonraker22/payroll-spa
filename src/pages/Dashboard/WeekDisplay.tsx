@@ -32,10 +32,10 @@ export function WeekDisplay({
   backhaul,
   weekStart,
   weekEnd,
-}: WeekDisplayProps) {
+}: WeekDisplayProps): JSX.Element {
   const bg = useColorModeValue('gray.200', 'gray.800')
 
-  //Date formatting
+  // Date formatting
   const startDate = new Date(Number(weekStart))
   const endDate = new Date(Number(weekEnd))
   const weekStartFormat = format(startDate, 'MM/dd/yyyy')

@@ -31,7 +31,7 @@ import PeoplenetLogin from './PeoplenetLogin'
 import PepsiLinks from './PepsiLinks'
 import PTOCount from './PTOCount'
 
-export default function Dashboard() {
+export default function Dashboard(): JSX.Element {
   // const { id } = useParams<{ id: string }>()
   const snap = useStore()
 
@@ -116,7 +116,7 @@ export default function Dashboard() {
                       size="2xl"
                       my="auto"
                       mx="200px"
-                      name={snap.displayName || snap.userEmail}
+                      name={snap.displayName ?? snap.userEmail}
                       src={snap.avatar}
                     >
                       <AvatarBadge boxSize="1.25em" bg="cyan.700" />
@@ -137,7 +137,7 @@ export default function Dashboard() {
                       fontWeight="extrabold"
                       color={color}
                     >
-                      {snap.displayName || snap.userEmail}
+                      {snap.displayName ?? snap.userEmail}
                     </Heading>
                   </Center>
                   <Center mt="20px">
@@ -173,133 +173,3 @@ export default function Dashboard() {
     </>
   )
 }
-
-// export async function loader({ request }) {
-//   let displayName, email, photoURL, emailVerified, uid
-//   const user = auth.currentUser
-//   if (user !== null) {
-//     // The user object has basic properties such as display name, email, etc.
-//     displayName = user.displayName
-//     email = user.email
-//     photoURL = user.photoURL
-//     emailVerified = user.emailVerified
-
-//     // The user's ID, unique to the Firebase project. Do NOT use
-//     // this value to authenticate with your backend server, if
-//     // you have one. Use User.getToken() instead.
-//     uid = user.uid
-//   }
-//   return {
-//     props: {
-//       user,
-//     },
-//   }
-// }
-
-// function PaginatedItems({ itemsPerPage }) {
-//   const [itemOffset, setItemOffset] = useState(0)
-//   const snap = useStore(store)
-
-//   const endOffset = itemOffset + itemsPerPage
-//   const currentItems = snap.weeks.slice(itemOffset, endOffset)
-
-//   const pageCount = Math.ceil(snap.weeks.length / itemsPerPage)
-//   const mapArray = Array.from(Array(pageCount).keys())
-
-//   // Invoke when user click to request another page.
-//   const handlePageClick = (event) => {
-//     const newOffset = (event.selected * itemsPerPage) % snap.weeks.length
-//     setItemOffset(newOffset)
-//   }
-
-//   const handlePrevClick = () => {
-//     const newOffset = (itemOffset - itemsPerPage) % snap.weeks.length
-//     setItemOffset(newOffset)
-//   }
-
-//   const handleNextClick = () => {
-//     const newOffset = (itemOffset + itemsPerPage) % snap.weeks.length
-//     setItemOffset(newOffset)
-//   }
-//   return (
-//     <>
-//       {currentItems.map((week, index) => (
-//         <m.div
-//           // as={m.div}
-//           key={week.weekStart}
-//           initial={{ x: -0, opacity: 0, scale: 0.8 }}
-//           animate={{
-//             x: 0,
-//             opacity: 0.9,
-//             scale: [0.8, 1, 1.2, 1.4, 1.2, 1],
-//           }}
-//           transition={{
-//             type: 'spring',
-//             stiffness: 90,
-//             delay: index * 0.2,
-//             damping: 15,
-//           }}
-//           exit={{ opacity: 0 }}
-//           whileHover={{ cursor: 'pointer', opacity: 1 }}
-//           whileTap={{ scale: 0.9 }}
-//         >
-//           <WeekDisplay
-//             totalMiles={week.totalMiles}
-//             totalPay={week.totalPay}
-//             totalBackHaulPay={week.backhaul}
-//             weekStartDate={Date.parse(week?.weekStart).toString()}
-//             weekEndDate={Date.parse(week?.weekEnd).toString()}
-//           />
-//         </m.div>
-//       ))}
-
-//       <Center>
-//         <HStack>
-//           {mapArray.length > 0 ? (
-//             <Button
-//               leftIcon={<TbArrowBigLeftLines />}
-//               variant="outline"
-//               colorScheme="cyan"
-//               onClick={handlePrevClick}
-//               _hover={{
-//                 bg: 'cyan.600',
-//                 color: 'white',
-//                 scale: 1.1,
-//               }}
-//             />
-//           ) : null}
-//           {/* <Icon as={TbArrowBigLeftLines} onClick={handlePrevClick} /> */}
-//           {mapArray.map((_, i) => (
-//             <Button
-//               key={i}
-//               colorScheme="cyan"
-//               variant="outline"
-//               _hover={{
-//                 bg: 'cyan.600',
-//                 color: 'white',
-//                 scale: 1.1,
-//               }}
-//               onClick={() => handlePageClick({ selected: i })}
-//             >
-//               {i + 1}
-//             </Button>
-//           ))}
-//           {/* <Icon as={TbArrowBigRightLines} /> */}
-//           {mapArray.length > 0 ? (
-//             <Button
-//               leftIcon={<TbArrowBigRightLines />}
-//               variant="outline"
-//               colorScheme="cyan"
-//               onClick={handleNextClick}
-//               _hover={{
-//                 bg: 'cyan.600',
-//                 color: 'white',
-//                 scale: 1.1,
-//               }}
-//             />
-//           ) : null}
-//         </HStack>
-//       </Center>
-//     </>
-//   )
-// }

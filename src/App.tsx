@@ -7,7 +7,7 @@ import './App.css'
 import theme from './layout/theme'
 import { AuthUserProvider } from './stores/auth'
 
-function App() {
+function App(): JSX.Element {
   return (
     <ChakraProvider theme={theme}>
       <AuthUserProvider>

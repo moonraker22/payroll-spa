@@ -5,25 +5,39 @@ import {
   Route,
 } from 'react-router-dom'
 
-//Pages
-const ProtectedRoutes = lazy(() => import('@/layout/protected/Protected'))
-const Layout = lazy(() => import('@/layout/Layout'))
-const Home = lazy(() => import('@/pages/Home/HomePage'))
-const Login = lazy(() => import('@/pages/Login/LoginPage'))
-const Registration = lazy(() => import('@/pages/Registration/RegistrationPage'))
-const DailyPage = lazy(() => import('@/pages/DailyPage/DailyPage'))
-const WeeklyPage = lazy(() => import('@/pages/WeeklyPage/WeeklyPage'))
-const Dashboard = lazy(() => import('@/pages/Dashboard/DashboardPage'))
-const ErrorPage = lazy(() => import('@/pages/Error/ErrorPage'))
-const NotFoundPage = lazy(() => import('@/pages/NotFoundPage/NotFoundPage'))
+// Pages
+const ProtectedRoutes = lazy(
+  async () => await import('@/layout/protected/Protected')
+)
+const Layout = lazy(async () => await import('@/layout/Layout'))
+const Home = lazy(async () => await import('@/pages/Home/HomePage'))
+const Login = lazy(async () => await import('@/pages/Login/LoginPage'))
+const Registration = lazy(
+  async () => await import('@/pages/Registration/RegistrationPage')
+)
+const DailyPage = lazy(async () => await import('@/pages/DailyPage/DailyPage'))
+const WeeklyPage = lazy(
+  async () => await import('@/pages/WeeklyPage/WeeklyPage')
+)
+const Dashboard = lazy(
+  async () => await import('@/pages/Dashboard/DashboardPage')
+)
+const ErrorPage = lazy(async () => await import('@/pages/Error/ErrorPage'))
+const NotFoundPage = lazy(
+  async () => await import('@/pages/NotFoundPage/NotFoundPage')
+)
 const PasswordReset = lazy(
-  () => import('@/pages/PasswordReset/PasswordResetPage')
+  async () => await import('@/pages/PasswordReset/PasswordResetPage')
 )
-const ProfilePage = lazy(() => import('@/pages/Profile/ProfilePage'))
+const ProfilePage = lazy(
+  async () => await import('@/pages/Profile/ProfilePage')
+)
 const ForgotPassword = lazy(
-  () => import('@/pages/ForgotPassword/ForgotPasswordPage')
+  async () => await import('@/pages/ForgotPassword/ForgotPasswordPage')
 )
-const ChangeEmail = lazy(() => import('@/pages/ChangeEmail/ChangeEmailPage'))
+const ChangeEmail = lazy(
+  async () => await import('@/pages/ChangeEmail/ChangeEmailPage')
+)
 
 // ROUTE CONSTANTS
 export const routes = {

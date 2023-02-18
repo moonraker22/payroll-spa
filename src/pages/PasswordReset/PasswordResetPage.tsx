@@ -1,4 +1,4 @@
-import { PasswordResetSchema, PasswordResetType } from '@/data/paySchema'
+import { PasswordResetSchema, type PasswordResetType } from '@/data/paySchema'
 import { auth } from '@/firebase'
 import { useStore } from '@/stores/store'
 import {
@@ -18,14 +18,14 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { Form, Link as RouterLink } from 'react-router-dom'
 
 import SlideIn from '@/components/isGoogleSlideIn'
 import { usePasswordReset } from '@/hooks/usePasswordReset'
 import { routes } from '@/layout/routes'
 
-export default function PasswordReset() {
+export default function PasswordReset(): JSX.Element {
   const [isGoogle, setIsGoogle] = useState(false)
   const user = useStore()
   const {
@@ -35,7 +35,7 @@ export default function PasswordReset() {
     setError,
     clearErrors,
     setFocus,
-    formState: { errors, isDirty, isSubmitting, isValid, touchedFields },
+    formState: { errors, isDirty, isSubmitting, isValid },
   } = useForm<PasswordResetType>({
     resolver: zodResolver(PasswordResetSchema),
   })
@@ -45,8 +45,7 @@ export default function PasswordReset() {
   const onSubmit: SubmitHandler<PasswordResetType> = async (data) => {
     try {
       await updatePass(data.password, data.currentPassword)
-    } catch (error: any) {
-      console.error(error.message)
+    } catch (error: unknown) {
       console.error(error)
       console.error(passwordError)
     }
@@ -60,7 +59,7 @@ export default function PasswordReset() {
   const password = watch('password')
   const passwordConfirmation = watch('passwordConfirmation')
 
-  const passwordMatch = (value: string) => {
+  const passwordMatch: (value: string) => void = (value: string) => {
     if (password !== value) {
       setError('passwordConfirmation', {
         type: 'manual',
@@ -74,7 +73,7 @@ export default function PasswordReset() {
     passwordMatch(passwordConfirmation)
   }, [password, passwordConfirmation])
 
-  const isAuthenticatedWithGoogle = () => {
+  const isAuthenticatedWithGoogle: () => boolean = () => {
     const user = auth?.currentUser
     if (user !== null) {
       if (user?.providerData[0]?.providerId === 'google.com') {
@@ -97,7 +96,7 @@ export default function PasswordReset() {
   // hidden email input for password managers
   const usernameRef = useRef<HTMLInputElement>(null)
   useEffect(() => {
-    if (usernameRef.current) {
+    if (usernameRef.current != null) {
       usernameRef.current.value = user.userEmail
     }
   }, [user.userEmail])
@@ -153,7 +152,7 @@ export default function PasswordReset() {
                   placeholder="username"
                 />
                 <FormControl
-                  isInvalid={errors.password ? true : false}
+                  isInvalid={errors.password != null}
                   isRequired
                   variant="floating"
                 >
@@ -167,13 +166,13 @@ export default function PasswordReset() {
                   />
                   <FormLabel htmlFor="password">Password:</FormLabel>
                   <FormErrorMessage>
-                    {errors.password && errors.password.message}
+                    {errors.password?.message}
                   </FormErrorMessage>
                 </FormControl>
               </Box>
               <Box my={2}>
                 <FormControl
-                  isInvalid={errors.passwordConfirmation ? true : false}
+                  isInvalid={errors.passwordConfirmation != null}
                   isRequired
                   variant="floating"
                 >
@@ -189,14 +188,13 @@ export default function PasswordReset() {
                     Password Confirmation:
                   </FormLabel>
                   <FormErrorMessage>
-                    {errors.passwordConfirmation &&
-                      errors.passwordConfirmation.message}
+                    {errors.passwordConfirmation?.message}
                   </FormErrorMessage>
                 </FormControl>
               </Box>
               <Box my={2}>
                 <FormControl
-                  isInvalid={errors.currentPassword ? true : false}
+                  isInvalid={errors.currentPassword != null}
                   isRequired
                   variant="floating"
                 >
@@ -212,7 +210,7 @@ export default function PasswordReset() {
                     Current Password:
                   </FormLabel>
                   <FormErrorMessage>
-                    {errors.currentPassword && errors.currentPassword.message}
+                    {errors.currentPassword?.message}
                   </FormErrorMessage>
                 </FormControl>
               </Box>

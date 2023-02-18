@@ -3,7 +3,7 @@ import { Container, Heading, Link, Text } from '@chakra-ui/react'
 import { motion as m } from 'framer-motion'
 import { Link as RouterLink } from 'react-router-dom'
 
-export default function NotFoundPage() {
+export default function NotFoundPage(): JSX.Element {
   return (
     <Container>
       <Heading
@@ -19,7 +19,7 @@ export default function NotFoundPage() {
       >
         404
       </Heading>
-      <Text>Whoops that page doesn't exist</Text>
+      <Text>Whoops that page doesn&apos;t exist</Text>
       <Link as={RouterLink} to={routes.DASHBOARD}>
         Go back to the homepage
       </Link>

@@ -8,6 +8,7 @@ import {
   DocumentData,
   DocumentReference,
   DocumentSnapshot,
+  FirestoreError,
   getDoc,
   updateDoc,
 } from 'firebase/firestore'
@@ -17,7 +18,7 @@ export const usePTO = () => {
   const toast = useToast()
   const snap = useStore()
   const [isPTOLoading, setLoading] = useState(false)
-  const [ptoError, setPtoError] = useState(null)
+  const [ptoError, setPtoError] = useState<FirestoreError | Error | null>(null)
 
   const addPTO = useCallback(
     async (numberOfDays: PTOType) => {
@@ -70,18 +71,44 @@ export const usePTO = () => {
             })
           }
           return true
-        } catch (error: any) {
-          setPtoError(error.message)
-          toast({
-            title: 'Error adding PTO',
-            status: 'error',
-            isClosable: true,
-            position: 'top',
-            duration: 5000,
-            colorScheme: 'red',
-            variant: 'solid',
-          })
-          return false
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            setPtoError(error)
+            toast({
+              title: 'Error adding PTO',
+              status: 'error',
+              isClosable: true,
+              position: 'top',
+              duration: 5000,
+              colorScheme: 'red',
+              variant: 'solid',
+            })
+            return false
+          } else if (error instanceof FirestoreError) {
+            setPtoError(error)
+            toast({
+              title: 'Error adding PTO',
+              status: 'error',
+              isClosable: true,
+              position: 'top',
+              duration: 5000,
+              colorScheme: 'red',
+              variant: 'solid',
+            })
+            return false
+          } else {
+            setPtoError(new Error('Unknown error adding PTO'))
+            toast({
+              title: 'Error adding PTO',
+              status: 'error',
+              isClosable: true,
+              position: 'top',
+              duration: 5000,
+              colorScheme: 'red',
+              variant: 'solid',
+            })
+            return false
+          }
         } finally {
           setLoading(false)
         }
@@ -144,18 +171,44 @@ export const usePTO = () => {
           })
         }
         return true
-      } catch (error: any) {
-        setPtoError(error.message)
-        toast({
-          title: 'Error subtracting PTO',
-          status: 'error',
-          isClosable: true,
-          position: 'top',
-          duration: 5000,
-          colorScheme: 'red',
-          variant: 'solid',
-        })
-        return false
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setPtoError(error)
+          toast({
+            title: 'Error subtracting PTO',
+            status: 'error',
+            isClosable: true,
+            position: 'top',
+            duration: 5000,
+            colorScheme: 'red',
+            variant: 'solid',
+          })
+          return false
+        } else if (error instanceof FirestoreError) {
+          setPtoError(error)
+          toast({
+            title: 'Error subtracting PTO',
+            status: 'error',
+            isClosable: true,
+            position: 'top',
+            duration: 5000,
+            colorScheme: 'red',
+            variant: 'solid',
+          })
+          return false
+        } else {
+          setPtoError(new Error('Unknown error subtracting PTO'))
+          toast({
+            title: 'Error subtracting PTO',
+            status: 'error',
+            isClosable: true,
+            position: 'top',
+            duration: 5000,
+            colorScheme: 'red',
+            variant: 'solid',
+          })
+          return false
+        }
       } finally {
         setLoading(false)
       }

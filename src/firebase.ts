@@ -2,17 +2,26 @@ import { initializeApp } from 'firebase/app'
 import { connectAuthEmulator, getAuth, GoogleAuthProvider } from 'firebase/auth'
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore'
 
-//payroll-spa
-const config = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || '',
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || '',
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || '',
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || '',
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
-  appId: import.meta.env.VITE_FIREBASE_APP_ID || '',
+interface FirebaseConfig<T> {
+  apiKey: T
+  authDomain: T
+  projectId: T
+  storageBucket: T
+  messagingSenderId: T
+  appId: T
 }
 
-//pay-tracker
+// payroll-spa
+const config: FirebaseConfig<string> = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY ?? '',
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN ?? '',
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID ?? '',
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET ?? '',
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID ?? '',
+  appId: import.meta.env.VITE_FIREBASE_APP_ID ?? '',
+}
+
+// pay-tracker
 // const devConfig = {
 //   apiKey: import.meta.env.VITE_PROD_FIREBASE_API_KEY || '',
 //   authDomain: import.meta.env.VITE_PROD_FIREBASE_AUTH_DOMAIN || '',

@@ -1,3 +1,7 @@
 node_modules
 build
-.eslintrc.js
+.eslintrc.cjs
+package.json  
+tsconfig.json
+tsconfig.node.json
+  

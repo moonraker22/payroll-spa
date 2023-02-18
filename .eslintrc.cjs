@@ -1,14 +1,13 @@
 module.exports = {
   env: {
-    env: {
-      browser: true,
-      amd: true,
-      node: true,
-    },
+    browser: true,
+    es2021: true,
+    amd: true,
   },
   extends: [
-    'eslint:recommended',
     'plugin:react/recommended',
+    'standard-with-typescript',
+    'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:valtio/recommended',
     'prettier',
@@ -21,12 +20,13 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
+    project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
   },
   plugins: ['react', '@typescript-eslint'],
   rules: {
     indent: ['error', 2],
-    'linebreak-style': ['error', 'windows'],
-    quotes: ['error', 'single'],
+    'linebreak-style': 'off',
     semi: ['error', 'never'],
     eqeqeq: 'error',
     'no-trailing-spaces': 'error',
@@ -35,6 +35,14 @@ module.exports = {
     'no-console': 0,
     'react/prop-types': 0,
     'react/react-in-jsx-scope': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'warn',
+    '@typescript-eslint/strict-boolean-expressions': 'warn',
+    '@typescript-eslint/no-floating-promises': 'warn',
+    '@typescript-eslint/no-unsafe-assignment': 'warn',
+    '@typescript-eslint/no-unsafe-call': 'warn',
+    '@typescript-eslint/no-unsafe-member-access': 'warn',
+    '@typescript-eslint/no-unsafe-return': 'warn',
+    '@typescript-eslint/no-misused-promises': 'off',
   },
   settings: {
     react: {
@@ -42,3 +50,10 @@ module.exports = {
     },
   },
 }
+
+// module.exports = {
+//   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+//   parser: '@typescript-eslint/parser',
+//   plugins: ['@typescript-eslint'],
+//   root: true,
+// }

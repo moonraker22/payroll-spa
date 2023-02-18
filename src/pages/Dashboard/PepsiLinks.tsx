@@ -16,7 +16,7 @@ import {
   AiOutlineLogin,
 } from 'react-icons/ai'
 import { Link as RouterLink } from 'react-router-dom'
-export default function PepsiLinks() {
+export default function PepsiLinks(): JSX.Element {
   const color = useColorModeValue('gray.800', 'cyan.600')
   return (
     <Center p="10px">

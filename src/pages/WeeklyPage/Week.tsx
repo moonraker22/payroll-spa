@@ -5,29 +5,26 @@ import { useStore } from '@/stores/store'
 import { Icon, Td, useDisclosure, useToast } from '@chakra-ui/react'
 import currency from 'currency.js'
 import { isSameDay } from 'date-fns'
-import { DocumentData } from 'firebase/firestore'
 import { motion as m } from 'framer-motion'
 import { useCallback, useMemo } from 'react'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { RiDeleteBin3Line } from 'react-icons/ri'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
-import { PaysheetType } from '../../data/paySchema'
+import { type PaysheetType } from '../../data/paySchema'
 import DeleteAlert from './DeleteAlert'
-
-type DayType<T> = T extends PaysheetType ? PaysheetType : DocumentData
 
 export default function Week({
   day,
   index,
 }: {
-  day: DayType<PaysheetType>
+  day: PaysheetType
   index: number
-}) {
+}): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const snap = useStore()
   const navigate = useNavigate()
 
-  const [docId] = useMemo(
+  const [docToDelete] = useMemo(
     () =>
       snap?.paysheets.filter((item) =>
         isSameDay(new Date(item.date), new Date(day.date))
@@ -38,9 +35,11 @@ export default function Week({
   const { deletePay } = useDeletePay()
   const toast = useToast()
 
-  const handleDelete = useCallback(() => {
+  const handleDelete: () => void = useCallback(() => {
     try {
-      deletePay(docId?.uid)
+      deletePay(docToDelete?.uid).catch((error) => {
+        throw new Error(error)
+      })
       toast({
         title: 'Pay deleted',
         description: 'Pay has been deleted',
@@ -61,13 +60,13 @@ export default function Week({
         position: 'top',
       })
     }
-  }, [deletePay, docId?.uid, onClose, toast])
+  }, [deletePay, docToDelete?.uid, onClose, toast])
 
-  const handleOpen = () => {
+  const handleOpen: () => void = () => {
     onOpen()
   }
 
-  const dayFormat = useMemo(
+  const dayFormat: string = useMemo(
     () =>
       `${new Date(day?.date).toDateString().slice(0, 3)} ${new Date(day?.date)
         .toISOString()
@@ -77,7 +76,7 @@ export default function Week({
     [day?.date]
   )
 
-  const miles = useCallback(() => {
+  const miles: () => number = useCallback(() => {
     if (day?.payMiles > day?.totalMiles) {
       return day?.payMiles
     } else {
@@ -85,7 +84,7 @@ export default function Week({
     }
   }, [day?.payMiles, day?.totalMiles])
 
-  const totalPay = useMemo(
+  const totalPay: string = useMemo(
     () =>
       currency(miles(), { precision: 2 })
         .multiply(0.515)
@@ -94,11 +93,10 @@ export default function Week({
     [day?.backhaul, miles]
   )
 
-  const delayPay = useMemo(
+  const delayPay: currency = useMemo(
     () => currency(computeDelayPay(day.delayHours)),
     [day.delayHours]
   )
-
   return (
     // <AnimatePresence>
     <m.tr

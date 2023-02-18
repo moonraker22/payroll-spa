@@ -14,6 +14,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "alwaysStrict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "Node",
@@ -26,6 +27,12 @@
       "@/*": ["*"]
     }
   },
-  "include": ["src", "src/**/*.json", "cypress.d.ts", "./setupTest.ts"],
+  "include": [
+    "src",
+    "src/**/*.json",
+    "cypress.d.ts",
+    "./setupTest.ts",
+    ".eslintrc.cjs"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

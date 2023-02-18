@@ -8,6 +8,7 @@ import {
   addDoc,
   collection,
   doc,
+  FirestoreError,
   getDocs,
   query,
   updateDoc,
@@ -18,7 +19,7 @@ import { useNavigate } from 'react-router-dom'
 
 export function useAddPay() {
   const [isPayLoading, setLoading] = useState(false)
-  const [payError, setPayError] = useState(null)
+  const [payError, setPayError] = useState<FirestoreError | Error | null>(null)
   const toast = useToast()
   const navigate = useNavigate()
   const snap = useStore()
@@ -89,18 +90,44 @@ export function useAddPay() {
             variant: 'solid',
           })
           navigate(routes.DASHBOARD)
-        } catch (error: any) {
-          toast({
-            title: 'Updating pay failed',
-            description: error.message,
-            status: 'error',
-            isClosable: true,
-            position: 'top',
-            duration: 5000,
-            colorScheme: 'pink.500',
-            variant: 'solid',
-          })
-          setPayError(error)
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            toast({
+              title: 'Updating pay failed',
+              description: error.message,
+              status: 'error',
+              isClosable: true,
+              position: 'top',
+              duration: 5000,
+              colorScheme: 'pink.500',
+              variant: 'solid',
+            })
+            setPayError(error)
+          } else if (error instanceof FirestoreError) {
+            toast({
+              title: 'Updating pay failed',
+              description: error.message,
+              status: 'error',
+              isClosable: true,
+              position: 'top',
+              duration: 5000,
+              colorScheme: 'pink.500',
+              variant: 'solid',
+            })
+            setPayError(error)
+          } else {
+            toast({
+              title: 'Updating pay failed',
+              description: 'Unknown error',
+              status: 'error',
+              isClosable: true,
+              position: 'top',
+              duration: 5000,
+              colorScheme: 'pink.500',
+              variant: 'solid',
+            })
+            setPayError(new Error('Unknown error'))
+          }
         }
         return true
       } else {
@@ -133,18 +160,44 @@ export function useAddPay() {
             variant: 'solid',
           })
           navigate(routes.DASHBOARD)
-        } catch (error: any) {
-          toast({
-            title: 'Adding pay failed',
-            description: error.message,
-            status: 'error',
-            isClosable: true,
-            position: 'top',
-            duration: 5000,
-            colorScheme: 'pink.500',
-            variant: 'solid',
-          })
-          setPayError(error)
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            toast({
+              title: 'Adding pay failed',
+              description: error.message,
+              status: 'error',
+              isClosable: true,
+              position: 'top',
+              duration: 5000,
+              colorScheme: 'pink.500',
+              variant: 'solid',
+            })
+            setPayError(error)
+          } else if (error instanceof FirestoreError) {
+            toast({
+              title: 'Adding pay failed',
+              description: error.message,
+              status: 'error',
+              isClosable: true,
+              position: 'top',
+              duration: 5000,
+              colorScheme: 'pink.500',
+              variant: 'solid',
+            })
+            setPayError(error)
+          } else {
+            toast({
+              title: 'Adding pay failed',
+              description: 'Unknown error',
+              status: 'error',
+              isClosable: true,
+              position: 'top',
+              duration: 5000,
+              colorScheme: 'pink.500',
+              variant: 'solid',
+            })
+            setPayError(new Error('Unknown error'))
+          }
         } finally {
           setLoading(false)
         }

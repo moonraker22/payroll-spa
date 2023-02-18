@@ -21,6 +21,7 @@ const store = proxy(state)
 
 if (import.meta.env.DEV) devtools(store, { name: 'Payroll Tracker' })
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 const useStore = () => useSnapshot(store)
 
 const storeActions: StoreActionsType = {

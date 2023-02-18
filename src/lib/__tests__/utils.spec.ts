@@ -1,9 +1,9 @@
-import { PaysheetType } from '@/stores/store'
+import { type PaysheetType } from '@/stores/store'
 import currency from 'currency.js'
 import { describe, expect, it } from 'vitest'
 import { computeFinalMiles, computePay, getWeeklyTotals } from '../utils'
 
-beforeEach(() => {})
+// beforeEach(() => {})
 
 describe('getWeeklyTotals', () => {
   const weekData: PaysheetType[] = [
