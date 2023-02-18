@@ -15,12 +15,12 @@ import { motion as m } from 'framer-motion'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { Link as RouterLink } from 'react-router-dom'
 
-export default function Home() {
+export default function Home(): JSX.Element {
   const color = useColorModeValue('gray.700', 'gray.300')
-  const innerGradientColor = useColorModeValue(
-    'blackAlpha.200',
-    'blackAlpha.500'
-  )
+  // const innerGradientColor = useColorModeValue(
+  //   'blackAlpha.200',
+  //   'blackAlpha.500'
+  // )
   const buttonBackground = useColorModeValue('cyan.700', '')
   const buttonColor = useColorModeValue('white', 'cyan.300')
   const headingColor = useColorModeValue(
@@ -28,10 +28,10 @@ export default function Home() {
     'linear(to-b, #42047e, #07f49e)'
   )
 
-  const linear = useColorModeValue(
-    'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(14,149,203,0.8954175420168067) 40%, rgba(14,149,203,0.8898153011204482) 60%, rgba(255,255,255,1) 100%)',
-    'linear-gradient(180deg, rgba(26,32,44,0.9542410714285714) 20%, rgba(14,149,203,0.8169861694677871) 46%, rgba(14,149,203,0.8674063375350141) 54%, rgba(26,32,44,0.9430365896358543) 80%)'
-  )
+  // const linear = useColorModeValue(
+  //   'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(14,149,203,0.8954175420168067) 40%, rgba(14,149,203,0.8898153011204482) 60%, rgba(255,255,255,1) 100%)',
+  //   'linear-gradient(180deg, rgba(26,32,44,0.9542410714285714) 20%, rgba(14,149,203,0.8169861694677871) 46%, rgba(14,149,203,0.8674063375350141) 54%, rgba(26,32,44,0.9430365896358543) 80%)'
+  // )
 
   const bgImage = useColorModeValue('/poly-white.svg', '/poly.svg')
 
@@ -46,11 +46,8 @@ export default function Home() {
       bgImg={bgImage}
       bgRepeat="no-repeat"
       bgSize="cover"
-      // bgGradient={'linear(to-b, gray.800, cyan.900, gray.800)'}
-      // bgGradient={'radial( cyan.900, gray.800, gray.900)'}
       h="100vh"
       w="100vw"
-      // bg={gradientColor}
       p="10px"
     >
       <m.div

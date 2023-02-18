@@ -1,5 +1,5 @@
-import { DateFilterSchema, DateFilterType } from '@/data/paySchema'
-import { useStore, WeeksType } from '@/stores/store'
+import { DateFilterSchema, type DateFilterType } from '@/data/paySchema'
+import { useStore, type WeeksType } from '@/stores/store'
 import {
   Button,
   Center,
@@ -7,19 +7,22 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Hide,
+  IconButton,
   Input,
+  Show,
   useColorModeValue,
   useDisclosure,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { isWithinInterval } from 'date-fns'
 import { useCallback, useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { IoFilterSharp } from 'react-icons/io5'
 import { Form } from 'react-router-dom'
 import WeekModal from './WeekModal'
 
-export default function FilterField() {
+export default function FilterField(): JSX.Element {
   const snap = useStore()
   const textColor = useColorModeValue('gray.800', 'gray')
   const [filterDate, setFilterDate] = useState<[] | WeeksType[]>([])
@@ -29,7 +32,7 @@ export default function FilterField() {
     register,
     handleSubmit,
 
-    formState: { isSubmitting, isDirty, errors, isValid, touchedFields },
+    formState: { isSubmitting, isDirty, errors, isValid },
   } = useForm<DateFilterType>({
     resolver: zodResolver(DateFilterSchema),
   })
@@ -50,6 +53,7 @@ export default function FilterField() {
         ) {
           return week
         }
+        return null
       })
       setFilterDate(found)
     },
@@ -62,7 +66,7 @@ export default function FilterField() {
         <Center>
           <Flex px="5" w="90%">
             <FormControl
-              isInvalid={errors.date ? true : false}
+              isInvalid={errors.date != null}
               isRequired
               variant="floating"
             >
@@ -75,31 +79,53 @@ export default function FilterField() {
                 boxShadow="lg"
               />
               <FormLabel>Search Date</FormLabel>
-              <FormErrorMessage>
-                {errors.date && errors.date?.message}
-              </FormErrorMessage>
+              <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
             </FormControl>
-            <Button
-              ml="5"
-              colorScheme="cyan"
-              isLoading={isSubmitting}
-              type="submit"
-              disabled={!isDirty || !isValid}
-              loadingText={'Submitting'}
-              variant="outline"
-              _hover={{
-                bg: 'cyan.600',
-                color: 'white',
-                scale: 1.1,
-              }}
-              _disabled={{
-                color: 'cyan.300',
-              }}
-              boxShadow="lg"
-              rightIcon={<IoFilterSharp />}
-            >
-              Filter
-            </Button>
+            <Hide below="md">
+              <Button
+                ml="5"
+                colorScheme="cyan"
+                isLoading={isSubmitting}
+                type="submit"
+                disabled={!isDirty || !isValid}
+                loadingText={'Submitting'}
+                variant="outline"
+                _hover={{
+                  bg: 'cyan.600',
+                  color: 'white',
+                  scale: 1.1,
+                }}
+                _disabled={{
+                  color: 'cyan.300',
+                }}
+                boxShadow="lg"
+                rightIcon={<IoFilterSharp />}
+              >
+                Filter
+              </Button>
+            </Hide>
+            <Show below="md">
+              <IconButton
+                ml="5"
+                colorScheme="cyan"
+                isLoading={isSubmitting}
+                type="submit"
+                disabled={!isDirty || !isValid}
+                aria-label="Filter"
+                // loadingText={'Submitting'}
+                variant="outline"
+                _hover={{
+                  bg: 'cyan.600',
+                  color: 'white',
+                  scale: 1.1,
+                }}
+                _disabled={{
+                  color: 'cyan.300',
+                }}
+                boxShadow="lg"
+                icon={<IoFilterSharp fontSize="1.25rem" />}
+              ></IconButton>
+            </Show>
           </Flex>
         </Center>
       </Form>

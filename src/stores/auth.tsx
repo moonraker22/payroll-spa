@@ -2,10 +2,10 @@ import { auth, db } from '@/firebase'
 import { COLLECTIONS } from '@/lib/constants'
 import { getWeeklyTotals } from '@/lib/utils'
 import {
-  NextOrObserver,
   onAuthStateChanged,
   signOut as authSignOut,
-  User,
+  type NextOrObserver,
+  type User,
 } from 'firebase/auth'
 import {
   collection,
@@ -15,10 +15,26 @@ import {
   orderBy,
   query,
 } from 'firebase/firestore'
-import { createContext, useContext, useEffect, useState } from 'react'
-import { PaysheetType, storeActions } from './store'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import { storeActions, type PaysheetType, type WeeksType } from './store'
 
-export default function useFirebaseAuth() {
+interface UseFirebaseAuthReturnType {
+  authUser: {
+    uid: string
+    email: string
+  } | null
+  isLoading: boolean
+  isSignedIn: boolean
+  signOut: () => Promise<void>
+}
+
+function useFirebaseAuth(): UseFirebaseAuthReturnType {
   const [authUser, setAuthUser] = useState<{
     uid: string
     email: string
@@ -26,50 +42,54 @@ export default function useFirebaseAuth() {
   const [isLoading, setIsLoading] = useState(true)
   const [isSignedIn, setIsSignedIn] = useState(false) // Local signed-in state.
 
-  const clear = () => {
+  const clear: () => void = () => {
     setAuthUser(null)
     setIsLoading(false)
     setIsSignedIn(false)
     storeActions.clear()
   }
 
-  const authStateChanged: NextOrObserver<User> | null = async (user) => {
-    setIsLoading(true)
-    if (!user) {
-      clear()
-      return
-    }
+  const authStateChanged: NextOrObserver<User> | null = useCallback(
+    async (user: User | null) => {
+      setIsLoading(true)
+      if (user == null) {
+        clear()
+        return
+      }
 
-    if (user.isAnonymous) {
-      clear()
-      return
-    }
+      if (user.isAnonymous) {
+        clear()
+        return
+      }
 
-    if (user.email) {
-      setAuthUser({
-        uid: user.uid,
-        email: user.email,
-      })
-      storeActions.setUserEmail(user.email)
-    }
-    if (user.displayName) storeActions.setDisplayName(user.displayName)
+      if (user.email != null) {
+        setAuthUser({
+          uid: user.uid,
+          email: user.email,
+        })
+        storeActions.setUserEmail(user.email)
+      }
+      if (user.displayName != null)
+        storeActions.setDisplayName(user.displayName)
 
-    const ref = doc(db, 'users', `${user.uid}`)
-    const docSnap = await getDoc(ref)
-    storeActions.setAvatar(docSnap.data()?.avatar || user.photoURL)
-    storeActions.setIsSignedIn(true)
-    storeActions.setUserId(user.uid)
-    storeActions.setPto(docSnap.data()?.pto || 0)
-    if (user?.email) setIsSignedIn(user !== null)
-    setIsLoading(false)
-  }
+      const ref = doc(db, 'users', `${user.uid}`)
+      const docSnap = await getDoc(ref)
+      storeActions.setAvatar(docSnap.data()?.avatar ?? user.photoURL)
+      storeActions.setIsSignedIn(true)
+      storeActions.setUserId(user.uid)
+      storeActions.setPto(docSnap.data()?.pto ?? 0)
+      if (user?.email != null) setIsSignedIn(user !== null)
+      setIsLoading(false)
+    },
+    []
+  )
 
   /**
    * Get paysheets from firestore and put into global store
    */
   useEffect(() => {
     if (!isSignedIn) return
-    if (authUser === null) return
+    if (authUser === null || authUser === undefined) return
     if (authUser.uid !== null) {
       const q = query(
         collection(
@@ -83,31 +103,37 @@ export default function useFirebaseAuth() {
 
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const data: PaysheetType[] = querySnapshot.docs.map((doc) => ({
-          uid: doc.id,
-          startingMiles: doc.data().startingMiles,
-          endingMiles: doc.data().endingMiles,
-          date: doc.data().date,
-          totalMiles: doc.data().totalMiles,
-          payMiles: doc.data().payMiles,
-          backhaul: doc.data().backhaul,
-          delayHours: doc.data().delayHours,
-          delayPay: doc.data().delayPay,
+          uid: doc?.id,
+          startingMiles: doc.data()?.startingMiles as number,
+          endingMiles: doc.data()?.endingMiles as number,
+          date: doc.data()?.date as number,
+          totalMiles: doc.data()?.totalMiles as number,
+          payMiles: doc.data()?.payMiles as number,
+          backhaul: doc.data()?.backhaul as number,
+          delayHours: doc.data()?.delayHours as number,
+          delayPay: doc.data()?.delayPay as number,
         }))
         storeActions.setPaysheets(data)
-        const weeks = getWeeklyTotals(data)
+        const weeks: WeeksType[] = getWeeklyTotals(data)
         storeActions.setWeeks(weeks)
       })
-      return () => unsubscribe()
+      return () => {
+        unsubscribe()
+      }
     }
   }, [isSignedIn, authUser])
 
   // Sign out
-  const signOut = () => authSignOut(auth).then(clear)
+  const signOut = useCallback(async () => {
+    await authSignOut(auth).then(clear)
+  }, [])
 
   // Listen for Firebase Auth state change
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, authStateChanged)
-    return () => unsubscribe()
+    return () => {
+      unsubscribe()
+    }
   }, [])
 
   return {
@@ -118,18 +144,34 @@ export default function useFirebaseAuth() {
   }
 }
 
-const AuthUserContext = createContext({
-  authUser: null as any,
+const AuthUserContext = createContext<UseFirebaseAuthReturnType>({
+  authUser: {
+    uid: '',
+    email: '',
+  },
   isLoading: true,
   isSignedIn: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   signOut: async () => {},
 })
 
-export function AuthUserProvider({ children }: { children: React.ReactNode }) {
+export function AuthUserProvider({
+  children,
+}: {
+  children: React.ReactNode
+}): JSX.Element {
   const auth = useFirebaseAuth()
   return (
     <AuthUserContext.Provider value={auth}>{children}</AuthUserContext.Provider>
   )
 }
 
-export const useFireAuth = () => useContext(AuthUserContext)
+type UseFireAuthReturnType = () => {
+  authUser: { uid: string; email: string } | null | undefined
+  isLoading: boolean
+  isSignedIn: boolean
+  signOut: () => Promise<void>
+}
+
+export const useFireAuth: UseFireAuthReturnType = () =>
+  useContext(AuthUserContext)

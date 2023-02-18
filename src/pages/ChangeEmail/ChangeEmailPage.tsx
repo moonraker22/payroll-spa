@@ -1,4 +1,4 @@
-import { ChangeEmailSchema, ChangeEmailType } from '@/data/paySchema'
+import { ChangeEmailSchema, type ChangeEmailType } from '@/data/paySchema'
 import { auth } from '@/firebase'
 import { useChangeEmail } from '@/hooks/useChangeEmail'
 import {
@@ -18,7 +18,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
 import { useEffect, useState } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { Form, Link as RouterLink } from 'react-router-dom'
 
 import SlideIn from '@/components/isGoogleSlideIn'
@@ -26,31 +26,30 @@ import { routes } from '@/layout/routes'
 
 export default function PasswordReset() {
   const [isGoogle, setIsGoogle] = useState(false)
-  // const user = useStore()
-  const { changeEmail, error } = useChangeEmail()
+  const { changeEmail, error: changeEmailError } = useChangeEmail()
 
   const {
     register,
     handleSubmit,
-    watch,
-    setError,
-    clearErrors,
     setFocus,
-    formState: { errors, isDirty, isSubmitting, isValid, touchedFields },
+    formState: { errors, isDirty, isSubmitting, isValid },
   } = useForm<ChangeEmailType>({
     resolver: zodResolver(ChangeEmailSchema),
   })
 
   const onSubmit: SubmitHandler<ChangeEmailType> = async (data) => {
     try {
-      console.log(data)
       await changeEmail({
         email: data.email,
         password: data.password,
         newEmail: data.newEmail,
       })
-    } catch (error: any) {
-      console.log(error)
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message)
+        console.error(error)
+        console.error(changeEmailError)
+      }
     }
   }
   useEffect(() => {
@@ -59,7 +58,7 @@ export default function PasswordReset() {
 
   const bg = useColorModeValue('white', ' gray.800')
 
-  const isAuthenticatedWithGoogle = () => {
+  const isAuthenticatedWithGoogle: () => boolean = () => {
     const user = auth?.currentUser
     if (user !== null) {
       if (user?.providerData[0]?.providerId === 'google.com') {
@@ -121,7 +120,7 @@ export default function PasswordReset() {
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Box my={2}>
                 <FormControl
-                  isInvalid={errors.password ? true : false}
+                  isInvalid={errors.password != null}
                   isRequired
                   variant="floating"
                 >
@@ -134,14 +133,12 @@ export default function PasswordReset() {
                     mb="4"
                   />
                   <FormLabel htmlFor="email">Current Email</FormLabel>
-                  <FormErrorMessage>
-                    {errors.email && errors.email.message}
-                  </FormErrorMessage>
+                  <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
                 </FormControl>
               </Box>
               <Box my={2}>
                 <FormControl
-                  isInvalid={errors.password ? true : false}
+                  isInvalid={errors.password != null}
                   isRequired
                   variant="floating"
                 >
@@ -155,13 +152,13 @@ export default function PasswordReset() {
                   />
                   <FormLabel htmlFor="password">Password</FormLabel>
                   <FormErrorMessage>
-                    {errors.password && errors.password.message}
+                    {errors.password?.message}
                   </FormErrorMessage>
                 </FormControl>
               </Box>
               <Box my={2}>
                 <FormControl
-                  isInvalid={errors.newEmail ? true : false}
+                  isInvalid={errors.newEmail != null}
                   isRequired
                   variant="floating"
                 >
@@ -175,7 +172,7 @@ export default function PasswordReset() {
                   />
                   <FormLabel htmlFor="newEmail">New Email</FormLabel>
                   <FormErrorMessage>
-                    {errors.newEmail && errors.newEmail.message}
+                    {errors.newEmail?.message}
                   </FormErrorMessage>
                 </FormControl>
               </Box>

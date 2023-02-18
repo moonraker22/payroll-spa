@@ -6,16 +6,17 @@ import {
   useRouteError,
 } from 'react-router-dom'
 
-export default function RootBoundary() {
+export default function RootBoundary(): JSX.Element {
   const error = useRouteError()
 
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   console.trace(`error: ${error}`)
 
   if (isRouteErrorResponse(error)) {
     if (error.status === 404) {
       return (
         <Heading as={'h1'} size={'2xl'}>
-          This page doesn't exist!
+          This page doesn&apos;t exist!
         </Heading>
       )
     }
@@ -23,7 +24,7 @@ export default function RootBoundary() {
     if (error.status === 401) {
       return (
         <Heading as={'h1'} size={'2xl'}>
-          You aren't authorized to see this
+          You aren&apos;t authorized to see this
         </Heading>
       )
     }

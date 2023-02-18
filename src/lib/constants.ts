@@ -5,7 +5,7 @@ export const COLLECTIONS = {
 }
 
 // Firebase collection string function
-export function returnPaysheetString(id: string) {
+export function returnPaysheetString(id: string): string {
   return `users/${id}/paysheets`
 }
 

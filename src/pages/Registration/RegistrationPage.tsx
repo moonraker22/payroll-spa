@@ -1,4 +1,4 @@
-import { Register } from '@/data/paySchema'
+import { Register, type RegisterType } from '@/data/paySchema'
 import { useRegister } from '@/hooks/useAuth'
 import { useGoogleAuth } from '@/hooks/useGoogleAuth'
 import { routes } from '@/layout/routes'
@@ -19,23 +19,23 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
 import { useEffect } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { HiOutlinePencilAlt } from 'react-icons/hi'
 import { Form, Link as RouterLink, useNavigate } from 'react-router-dom'
 import { GoogleIcon } from '../Login/GoogleIcon'
 
-type RegistrationInputs = {
-  email: string
-  password: string
-  passwordConfirmation: string
-}
+// type RegistrationInputs = {
+//   email: string
+//   password: string
+//   passwordConfirmation: string
+// }
 
-export default function Registration() {
+export default function Registration(): JSX.Element {
   const snap = useStore()
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (snap.userId) {
+    if (snap.userId.length > 0) {
       navigate(routes.DASHBOARD)
     }
   }, [snap.userId])
@@ -47,19 +47,24 @@ export default function Registration() {
     setError,
     clearErrors,
     setFocus,
-    formState: { errors, isDirty, isSubmitting, isValid, touchedFields },
-  } = useForm<RegistrationInputs>({
+    formState: { errors, isDirty, isSubmitting, isValid },
+  } = useForm<RegisterType>({
     resolver: zodResolver(Register),
   })
 
-  const { register: registerUser, isLoading } = useRegister()
+  const { register: registerUser, error: registerError } = useRegister()
 
-  const onSubmit: SubmitHandler<RegistrationInputs> = async (data) => {
+  const onSubmit: SubmitHandler<RegisterType> = async (data) => {
     try {
-      registerUser({ email: data.email, password: data.password })
+      registerUser({ email: data.email, password: data.password }).catch(
+        (error: unknown) => {
+          console.error(error)
+        }
+      )
       // navigate('/')
-    } catch (error) {
-      console.log(error)
+    } catch (error: unknown) {
+      console.error(error)
+      console.error(registerError)
     }
   }
   useEffect(() => {
@@ -73,7 +78,7 @@ export default function Registration() {
   const password = watch('password')
   const passwordConfirmation = watch('passwordConfirmation')
 
-  const passwordMatch = (value: string) => {
+  const passwordMatch: (value: string) => void = (value: string) => {
     if (password !== value) {
       setError('passwordConfirmation', {
         type: 'manual',
@@ -95,11 +100,14 @@ export default function Registration() {
     error: googleError,
   } = useGoogleAuth()
 
-  const googleSubmit = async () => {
+  const googleSubmit: () => Promise<void> = async () => {
     try {
-      googleLogin()
-    } catch (error) {
-      console.log(error)
+      googleLogin().catch((error: unknown) => {
+        console.error(error)
+      })
+    } catch (error: unknown) {
+      console.error(error)
+      console.error(googleError)
     }
   }
 
@@ -153,7 +161,7 @@ export default function Registration() {
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Box my={2}>
                   <FormControl
-                    isInvalid={errors.email ? true : false}
+                    isInvalid={errors.email != null}
                     isRequired
                     variant="floating"
                   >
@@ -167,14 +175,12 @@ export default function Registration() {
                       _placeholder={{ color: placeholderColor }}
                     />
                     <FormLabel htmlFor="email">Email:</FormLabel>
-                    <FormErrorMessage>
-                      {errors.email && errors.email.message}
-                    </FormErrorMessage>
+                    <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
                   </FormControl>
                 </Box>
                 <Box my={2}>
                   <FormControl
-                    isInvalid={errors.password ? true : false}
+                    isInvalid={errors.password != null}
                     isRequired
                     variant="floating"
                   >
@@ -189,13 +195,13 @@ export default function Registration() {
                     />
                     <FormLabel htmlFor="password">Password:</FormLabel>
                     <FormErrorMessage>
-                      {errors.password && errors.password.message}
+                      {errors.password?.message}
                     </FormErrorMessage>
                   </FormControl>
                 </Box>
                 <Box my={2}>
                   <FormControl
-                    isInvalid={errors.passwordConfirmation ? true : false}
+                    isInvalid={errors.passwordConfirmation != null}
                     isRequired
                     variant="floating"
                   >
@@ -212,8 +218,7 @@ export default function Registration() {
                       Password Confirmation:
                     </FormLabel>
                     <FormErrorMessage>
-                      {errors.passwordConfirmation &&
-                        errors.passwordConfirmation.message}
+                      {errors.passwordConfirmation?.message}
                     </FormErrorMessage>
                   </FormControl>
                 </Box>

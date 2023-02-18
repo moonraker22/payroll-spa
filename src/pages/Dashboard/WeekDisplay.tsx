@@ -32,16 +32,18 @@ export function WeekDisplay({
   backhaul,
   weekStart,
   weekEnd,
-}: WeekDisplayProps) {
+}: WeekDisplayProps): JSX.Element {
   const bg = useColorModeValue('gray.200', 'gray.800')
 
-  //Date formatting
+  // Date formatting
   const startDate = new Date(Number(weekStart))
   const endDate = new Date(Number(weekEnd))
   const weekStartFormat = format(startDate, 'MM/dd/yyyy')
   const weekEndFormat = format(endDate, 'MM/dd/yyyy')
 
   const colorScheme = useColorModeValue('gray', 'cyan.600')
+  const headingColor = useColorModeValue('gray', 'cyan.400')
+  const badgeColor = useColorModeValue('gray', 'cyan')
   const tableColorScheme = useColorModeValue('blackAlpha', 'cyan')
   return (
     <LinkBox>
@@ -64,19 +66,19 @@ export function WeekDisplay({
         >
           <CardBody>
             <Center>
-              <Heading size={['xs', 'sm', 'sm']}>
+              <Heading size={['xs', 'sm', 'sm']} color={headingColor}>
                 <Badge
                   variant={'outline'}
                   fontSize={['md', 'lg', 'xl']}
-                  colorScheme="cyan"
+                  colorScheme={badgeColor}
                 >
                   {weekStartFormat}
                 </Badge>{' '}
-                to{' '}
+                -{' '}
                 <Badge
                   variant={'outline'}
                   fontSize={['md', 'lg', 'xl']}
-                  colorScheme="cyan"
+                  colorScheme={badgeColor}
                 >
                   {weekEndFormat}
                 </Badge>

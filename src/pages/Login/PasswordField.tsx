@@ -4,10 +4,10 @@ import {
   IconButton,
   Input,
   InputGroup,
-  InputProps,
   InputRightElement,
   useDisclosure,
   useMergeRefs,
+  type InputProps,
 } from '@chakra-ui/react'
 import * as React from 'react'
 import { HiEye, HiEyeOff } from 'react-icons/hi'
@@ -18,9 +18,9 @@ export const PasswordField = React.forwardRef<HTMLInputElement, InputProps>(
     const inputRef = React.useRef<HTMLInputElement>(null)
 
     const mergeRef = useMergeRefs(inputRef, ref)
-    const onClickReveal = () => {
+    const onClickReveal: () => void = () => {
       onToggle()
-      if (inputRef.current) {
+      if (inputRef.current != null) {
         inputRef.current.focus({ preventScroll: true })
       }
     }

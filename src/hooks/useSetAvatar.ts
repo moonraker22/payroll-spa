@@ -1,16 +1,21 @@
 import { db } from '@/firebase'
 import { storeActions, useStore } from '@/stores/store'
 import { useToast } from '@chakra-ui/react'
-import { doc, serverTimestamp, updateDoc } from 'firebase/firestore'
-import { useState } from 'react'
+import {
+  doc,
+  FirestoreError,
+  serverTimestamp,
+  updateDoc,
+} from 'firebase/firestore'
+import { useCallback, useState } from 'react'
 
 export function useSetAvatar() {
   const [isLoading, setLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
+  const [error, setError] = useState<FirestoreError | Error | null>(null)
   const snap = useStore()
   const toast = useToast()
 
-  async function setAvatar({ avatarUrl }: { avatarUrl: string }) {
+  const setAvatar = useCallback(async (avatarUrl: string) => {
     setLoading(true)
 
     if (!snap?.isSignedIn) {
@@ -20,7 +25,7 @@ export function useSetAvatar() {
         isClosable: true,
         position: 'top',
         duration: 5000,
-        colorScheme: 'teal',
+        colorScheme: 'red',
         variant: 'solid',
       })
       return false
@@ -39,14 +44,39 @@ export function useSetAvatar() {
         isClosable: true,
         position: 'top',
         duration: 5000,
-        colorScheme: 'cyan',
+        colorScheme: 'teal',
         variant: 'solid',
       })
       setLoading(false)
-    } catch (error: any) {
-      setError(error)
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error)
+        toast({
+          title: 'Error updating avatar',
+          description: error.message,
+          status: 'error',
+          isClosable: true,
+          position: 'top',
+          duration: 5000,
+          colorScheme: 'red',
+          variant: 'solid',
+        })
+      } else if (error instanceof FirestoreError) {
+        setError(error)
+        toast({
+          title: 'Error updating avatar',
+          description: error.message,
+          status: 'error',
+          isClosable: true,
+          position: 'top',
+          duration: 5000,
+          colorScheme: 'red',
+          variant: 'solid',
+        })
+      }
       setLoading(false)
     }
-  }
+  }, [])
+
   return { setAvatar, isLoading, error }
 }

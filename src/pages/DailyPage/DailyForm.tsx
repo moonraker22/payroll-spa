@@ -1,4 +1,4 @@
-import { Paysheet, PaysheetType } from '@/data/paySchema'
+import { Paysheet, type PaysheetType } from '@/data/paySchema'
 import { useAddPay } from '@/hooks/usePay'
 import { ArrowForwardIcon } from '@chakra-ui/icons'
 import {
@@ -18,84 +18,51 @@ import {
 // import { DevTool } from '@hookform/devtools'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
-import { DocumentData } from 'firebase/firestore'
 import { motion as m } from 'framer-motion'
 import { useEffect } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { GiCancel } from 'react-icons/gi'
 import { TiLightbulb } from 'react-icons/ti'
 import { Form, useLocation } from 'react-router-dom'
 
-const DailyForm = () => {
+const DailyForm: () => JSX.Element = () => {
   const location = useLocation()
-  const day = location?.state
+  const day = location?.state as PaysheetType
   const bg = useColorModeValue('white', ' gray.800')
   // const placeholderColor = useColorModeValue('gray.400', 'gray.500')
 
   const date = useConst(new Date().toISOString().slice(0, 10))
 
-  const defaultValuesFunc = (day: DocumentData) => {
-    if (day) {
-      return {
-        date: format(day.date, 'yyyy-MM-dd'),
-        startingMiles: day.startingMiles,
-        endingMiles: day.endingMiles,
-        totalMiles: day.totalMiles,
-        payMiles: day.payMiles,
-        backhaul: day.backhaul,
-        delayHours: day.delayHours,
-      }
-    } else {
-      return {
-        date: date,
-      }
-    }
-  }
-  // const defaultValuesFunc = (day: DocumentData) => {
-  //   if (day) {
-  //     return {
-  //       date: format(day.date, 'yyyy-MM-dd'),
-  //       startingMiles: `${day.startingMiles}`,
-  //       endingMiles: `${day.endingMiles}`,
-  //       totalMiles: day.totalMiles,
-  //       payMiles: `${day.payMiles}`,
-  //       backhaul: `${day.backhaul}`,
-  //       delayHours: `${day.delayHours}`,
-  //     }
-  //   } else {
-  //     return {
-  //       date: date,
-  //     }
-  //   }
-  // }
-
-  // const defaultValues = defaultValuesFunc(day)
-
-  const { addPay } = useAddPay()
+  const { addPay, payError } = useAddPay()
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isDirty, isSubmitting, isValid },
+    formState: { errors, isSubmitting },
     reset,
     getValues,
     setValue,
-    setFocus,
   } = useForm<PaysheetType>({
-    // defaultValues,
     resolver: zodResolver(Paysheet),
   })
   const onSubmit: SubmitHandler<PaysheetType> = (data) => {
     try {
-      addPay({ ...data })
+      addPay({ ...data }).catch((error) => {
+        console.error(error)
+        console.error(payError)
+      })
       reset()
-    } catch (error) {
-      console.log(error)
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message)
+        console.error(error)
+        console.error(payError)
+      }
     }
   }
 
-  const totalMilesFunc = () => {
+  const totalMilesFunc: () => void = () => {
     const startingMiles = Number(getValues('startingMiles'))
     const endingMiles = Number(getValues('endingMiles'))
     const totalMiles =
@@ -107,11 +74,7 @@ const DailyForm = () => {
     totalMilesFunc()
   }, [watch('startingMiles'), watch('endingMiles')])
 
-  // useEffect(() => {
-  //   setFocus('startingMiles')
-  // }, [])
-
-  const canSubmit = !Object.keys(errors).length && !isSubmitting
+  const canSubmit = Object.keys(errors).length === 0 && !isSubmitting
 
   return (
     <m.div
@@ -133,7 +96,6 @@ const DailyForm = () => {
         rounded="md"
         mt={10}
         mb={10}
-        // bgGradient="linear(to-l, #111621, #1A202C)"
         w="60vw"
         maxW="500px"
         minW="350px"
@@ -142,7 +104,7 @@ const DailyForm = () => {
         <Box p="4">
           <Form onSubmit={handleSubmit(onSubmit)}>
             <FormControl
-              isInvalid={errors.date ? true : false}
+              isInvalid={errors.date != null}
               isRequired
               variant="floating"
             >
@@ -154,19 +116,16 @@ const DailyForm = () => {
                 mb="3"
                 mt="3"
                 defaultValue={
-                  day?.date ? format(day?.date, 'yyyy-MM-dd') : date
+                  day?.date > 0 ? format(day?.date, 'yyyy-MM-dd') : date
                 }
-                // _placeholder={{ color: placeholderColor }}
               />
               <FormLabel htmlFor="date">Date</FormLabel>
-              <FormErrorMessage>
-                {errors.date && errors.date.message}
-              </FormErrorMessage>
+              <FormErrorMessage>{errors.date?.message}</FormErrorMessage>
             </FormControl>
 
             <Box my="3">
               <FormControl
-                isInvalid={errors.startingMiles ? true : false}
+                isInvalid={errors.startingMiles != null}
                 isRequired
                 variant="floating"
               >
@@ -177,19 +136,18 @@ const DailyForm = () => {
                   placeholder="Starting Miles"
                   mb="3"
                   defaultValue={
-                    day?.startingMiles ? day?.startingMiles : undefined
+                    day?.startingMiles >= 0 ? day?.startingMiles : undefined
                   }
-                  // _placeholder={{ color: placeholderColor }}
                 />
                 <FormLabel htmlFor="startingMiles">Starting Miles:</FormLabel>
                 <FormErrorMessage>
-                  {errors.startingMiles && errors.startingMiles.message}
+                  {errors.startingMiles?.message}
                 </FormErrorMessage>
               </FormControl>
             </Box>
             <Box my="3">
               <FormControl
-                isInvalid={errors.endingMiles ? true : false}
+                isInvalid={errors.endingMiles != null}
                 isRequired
                 variant="floating"
               >
@@ -200,19 +158,18 @@ const DailyForm = () => {
                   placeholder="Ending Miles"
                   mb="3"
                   defaultValue={
-                    day?.endingMiles ? Number(day?.endingMiles) : undefined
+                    day?.endingMiles >= 0 ? Number(day?.endingMiles) : undefined
                   }
-                  // _placeholder={{ color: placeholderColor }}
                 />
                 <FormLabel htmlFor="endingMiles">Ending Miles:</FormLabel>
                 <FormErrorMessage>
-                  {errors.endingMiles && errors.endingMiles.message}
+                  {errors.endingMiles?.message}
                 </FormErrorMessage>
               </FormControl>
             </Box>
             <Box my="3">
               <FormControl
-                isInvalid={errors.totalMiles ? true : false}
+                isInvalid={errors.totalMiles != null}
                 isRequired
                 variant="floating"
               >
@@ -227,13 +184,12 @@ const DailyForm = () => {
                   disabled
                   // mb="3"
                   defaultValue={
-                    day?.totalMiles ? Number(day?.totalMiles) : undefined
+                    day?.totalMiles >= 0 ? Number(day?.totalMiles) : undefined
                   }
-                  // _placeholder={{ color: placeholderColor }}
                 />
                 <FormLabel htmlFor="totalMiles">Total Miles:</FormLabel>
                 <FormErrorMessage>
-                  {errors.totalMiles && errors.totalMiles.message}
+                  {errors.totalMiles?.message}
                 </FormErrorMessage>
                 <FormHelperText ml="10">
                   <Icon as={TiLightbulb} w={3} h={3} /> Total miles are
@@ -243,7 +199,7 @@ const DailyForm = () => {
             </Box>
             <Box my="3">
               <FormControl
-                isInvalid={errors.payMiles ? true : false}
+                isInvalid={errors.payMiles != null}
                 isRequired
                 variant="floating"
               >
@@ -254,20 +210,16 @@ const DailyForm = () => {
                   placeholder="Pay Miles"
                   mb="3"
                   defaultValue={
-                    day?.payMiles ? Number(day?.payMiles) : undefined
+                    day?.payMiles >= 0 ? Number(day?.payMiles) : undefined
                   }
-                  // _placeholder={{ color: placeholderColor }}
                 />
                 <FormLabel htmlFor="payMiles">Pay Miles:</FormLabel>
-                <FormErrorMessage>
-                  {errors.payMiles && errors.payMiles.message}
-                </FormErrorMessage>
+                <FormErrorMessage>{errors.payMiles?.message}</FormErrorMessage>
               </FormControl>
             </Box>
             <Box my="3">
               <FormControl
-                isInvalid={errors.backhaul ? true : false}
-                // isRequired
+                isInvalid={errors.backhaul != null}
                 variant="floating"
               >
                 <Input
@@ -276,22 +228,20 @@ const DailyForm = () => {
                   placeholder="BackHaul"
                   mb="3"
                   type={'number'}
+                  step=".01"
                   defaultValue={
-                    day?.backhaul ? Number(day?.backhaul) : undefined
+                    day?.backhaul >= 0 ? Number(day?.backhaul) : undefined
                   }
-                  // _placeholder={{ color: placeholderColor }}
                 />
                 <FormLabel htmlFor="backhaul" optionalIndicator>
                   Backhaul:
                 </FormLabel>
-                <FormErrorMessage>
-                  {errors.backhaul && errors.backhaul.message}
-                </FormErrorMessage>
+                <FormErrorMessage>{errors.backhaul?.message}</FormErrorMessage>
               </FormControl>
             </Box>
             <Box my="3">
               <FormControl
-                isInvalid={errors.delayHours ? true : false}
+                isInvalid={errors.delayHours != null}
                 variant="floating"
               >
                 <Input
@@ -302,15 +252,14 @@ const DailyForm = () => {
                   type={'number'}
                   step=".01"
                   defaultValue={
-                    day?.delayHours ? Number(day?.delayHours) : undefined
+                    day?.delayHours >= 0 ? Number(day?.delayHours) : undefined
                   }
-                  // _placeholder={{ color: placeholderColor }}
                 />
                 <FormLabel htmlFor="delayHours" optionalIndicator>
                   Delay Hours:
                 </FormLabel>
                 <FormErrorMessage>
-                  {errors.delayHours && errors.delayHours.message}
+                  {errors.delayHours?.message}
                 </FormErrorMessage>
                 <FormHelperText ml="10">
                   <Icon as={TiLightbulb} w={3} h={3} /> Delay is decimal 45min =
@@ -326,7 +275,9 @@ const DailyForm = () => {
                 isLoading={isSubmitting}
                 type="submit"
                 disabled={!canSubmit}
-                loadingText={day ? 'Updating' : 'Submitting'}
+                loadingText={
+                  day?.totalMiles !== null ? 'Updating' : 'Submitting'
+                }
                 variant="outline"
                 _hover={{
                   bg: 'cyan.600',
@@ -341,7 +292,9 @@ const DailyForm = () => {
               <Button
                 mt={4}
                 colorScheme="red"
-                onClick={() => reset()}
+                onClick={() => {
+                  reset()
+                }}
                 disabled={isSubmitting}
                 variant="outline"
                 _hover={{
@@ -364,21 +317,12 @@ const DailyForm = () => {
 
 export default DailyForm
 
-// export type PaysheetInputs = {
+// export interface PaysheetInputs {
 //   date: string
-//   startingMiles: number
-//   endingMiles: number
+//   startingMiles: string
+//   endingMiles: string
 //   totalMiles: number
-//   payMiles: number
-//   backhaul: number
-//   delayHours: number
+//   payMiles: string
+//   backhaul: string
+//   delayHours: string
 // }
-export type PaysheetInputs = {
-  date: string
-  startingMiles: string
-  endingMiles: string
-  totalMiles: number
-  payMiles: string
-  backhaul: string
-  delayHours: string
-}

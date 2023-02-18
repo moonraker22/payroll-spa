@@ -1,4 +1,4 @@
-import { Login as LoginResolver, LoginType } from '@/data/paySchema'
+import { Login as LoginResolver, type LoginType } from '@/data/paySchema'
 import { useLogin } from '@/hooks/useAuth'
 import { useGoogleAuth } from '@/hooks/useGoogleAuth'
 import { routes } from '@/layout/routes'
@@ -23,28 +23,28 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
 import { useEffect, useRef } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { AiOutlineLogin } from 'react-icons/ai'
 import { HiEye, HiEyeOff } from 'react-icons/hi'
-import {
-  Form,
-  Link as RouterLink,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom'
+import { Form, Link as RouterLink, useNavigate } from 'react-router-dom'
 import { GoogleIcon } from './GoogleIcon'
 
-export default function Login() {
+export default function Login(): JSX.Element {
   const snap = useStore()
-  const location = useLocation()
 
   const navigate = useNavigate()
-  const textColor = useColorModeValue('gray.800', 'gray.200')
-  const placeholderColor = useColorModeValue('gray.400', 'gray.500')
-  const bg = useColorModeValue('white', ' gray.800')
+  const textColor: 'gray.200' | 'gray.800' = useColorModeValue(
+    'gray.800',
+    'gray.200'
+  )
+  const placeholderColor: 'gray.400' | 'gray.500' = useColorModeValue(
+    'gray.400',
+    'gray.500'
+  )
+  const bg: 'white' | ' gray.800' = useColorModeValue('white', ' gray.800')
 
   useEffect(() => {
-    if (snap.userId) {
+    if (snap.userId.length > 0) {
       navigate(routes.DASHBOARD)
     }
   }, [snap.userId])
@@ -54,21 +54,30 @@ export default function Login() {
     handleSubmit,
     watch,
     setFocus,
-    formState: { errors, isDirty, isSubmitting, isValid, touchedFields },
+    formState: { errors, isDirty, isSubmitting, isValid },
   } = useForm<LoginType>({
     resolver: zodResolver(LoginResolver),
   })
 
-  const password = watch('password')
-  const email = watch('email')
-  const canSubmit = isDirty && isValid && password && email
-  const { login, isLoading, error } = useLogin()
+  const password: string = watch('password')
+  const email: string = watch('email')
+  const canSubmit: boolean =
+    isDirty && isValid && password.length > 0 && email.length > 0
+  const { login, error: loginError } = useLogin()
 
   const onSubmit: SubmitHandler<LoginType> = async (data) => {
     try {
-      login({ email: data.email, password: data.password })
-    } catch (error) {
-      console.log(error)
+      login({ email: data.email, password: data.password }).catch((err) => {
+        console.error(err)
+      })
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message)
+        console.error(error)
+        console.error(loginError)
+      }
+      console.error(error)
+      console.error(loginError)
     }
   }
   useEffect(() => {
@@ -77,9 +86,9 @@ export default function Login() {
   const { isOpen, onToggle } = useDisclosure()
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const onClickReveal = () => {
+  const onClickReveal: () => void = () => {
     onToggle()
-    if (inputRef.current) {
+    if (inputRef.current != null) {
       inputRef.current.focus({ preventScroll: true })
     }
   }
@@ -90,11 +99,19 @@ export default function Login() {
     error: googleError,
   } = useGoogleAuth()
 
-  const googleSubmit = async () => {
+  const googleSubmit: () => Promise<void> = async () => {
     try {
-      googleLogin()
-    } catch (error) {
-      console.log(error)
+      googleLogin().catch((err) => {
+        console.error(err)
+      })
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message)
+        console.error(error)
+        console.error(googleError)
+      }
+      console.error(googleError)
+      console.error(error)
     }
   }
 
@@ -148,7 +165,7 @@ export default function Login() {
               <Form onSubmit={handleSubmit(onSubmit)}>
                 <Box mb={2}>
                   <FormControl
-                    isInvalid={errors.email ? true : false}
+                    isInvalid={Boolean(errors.email)}
                     isRequired
                     variant="floating"
                   >
@@ -162,14 +179,12 @@ export default function Login() {
                       _placeholder={{ color: placeholderColor }}
                     />
                     <FormLabel htmlFor="email">Email</FormLabel>
-                    <FormErrorMessage>
-                      {errors.email && errors.email.message}
-                    </FormErrorMessage>
+                    <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
                   </FormControl>
                 </Box>
                 <Box my={2}>
                   <FormControl
-                    isInvalid={errors.password ? true : false}
+                    isInvalid={Boolean(errors.password)}
                     isRequired
                     variant="floating"
                   >
@@ -198,7 +213,7 @@ export default function Login() {
                       <FormLabel htmlFor="password">Password</FormLabel>
                     </InputGroup>
                     <FormErrorMessage>
-                      {errors.password && errors.password.message}
+                      {errors.password?.message}
                     </FormErrorMessage>
                   </FormControl>
                 </Box>
@@ -211,7 +226,7 @@ export default function Login() {
                     isLoading={isSubmitting}
                     type="submit"
                     size="lg"
-                    disabled={!canSubmit}
+                    disabled={!canSubmit || isSubmitting}
                     loadingText="Logging In"
                     variant={'outline'}
                     _hover={{
@@ -247,7 +262,7 @@ export default function Login() {
                   <Box>
                     <Center my="6px">
                       <Text mt="3px" mr="5px" color={textColor}>
-                        Don't have an account?
+                        Don&apos;t have an account?
                       </Text>
                       <Button
                         as={RouterLink}

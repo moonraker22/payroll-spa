@@ -1,9 +1,10 @@
-import { PTOSchema, PTOType } from '@/data/paySchema'
+import { PTOSchema, type PTOType } from '@/data/paySchema'
 import { usePTO } from '@/hooks/usePTO'
 import { useStore } from '@/stores/store'
 import {
   Box,
   Button,
+  Divider,
   FormControl,
   FormErrorMessage,
   FormHelperText,
@@ -12,51 +13,57 @@ import {
   HStack,
   Input,
   Text,
+  useColorModeValue,
   VStack,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useCallback } from 'react'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import {
   MdOutlineArrowCircleDown,
   MdOutlineArrowCircleUp,
 } from 'react-icons/md'
 import { Form } from 'react-router-dom'
 
-export default function PTOCount() {
-  const { addPTO, subtractPTO } = usePTO()
+export default function PTOCount(): JSX.Element {
+  const { addPTO, subtractPTO, ptoError } = usePTO()
   const snap = useStore()
+  const countColor = useColorModeValue('cyan.800', 'cyan.300')
 
   const {
     register,
     handleSubmit,
     formState: { errors, isDirty, isSubmitting, isValid },
     reset,
-    setFocus,
   } = useForm<PTOType>({
     resolver: zodResolver(PTOSchema),
   })
 
-  const onAdd: SubmitHandler<PTOType> = (data) => {
+  const onAdd: SubmitHandler<PTOType> = useCallback((data) => {
     try {
-      addPTO(data)
+      addPTO(data).catch((error: unknown) => {
+        console.error(error)
+        console.error(ptoError)
+      })
       reset()
-    } catch (error: any) {
-      console.log(error)
+    } catch (error: unknown) {
+      console.error(error)
+      console.error(ptoError)
     }
-  }
-  const onSubtract: SubmitHandler<PTOType> = (data) => {
+  }, [])
+  const onSubtract: SubmitHandler<PTOType> = useCallback((data) => {
     try {
-      subtractPTO(data)
+      subtractPTO(data).catch((error: unknown) => {
+        console.error(error)
+        console.error(ptoError)
+      })
       reset()
-    } catch (error: any) {
-      console.log(error)
+    } catch (error: unknown) {
+      console.error(error)
+      console.error(ptoError)
     }
-  }
-
-  // useEffect(() => {
-  //   setFocus('days')
-  // }, [])
+  }, [])
 
   return (
     <m.div
@@ -70,33 +77,42 @@ export default function PTOCount() {
       }}
       exit={{ opacity: 0 }}
     >
-      <VStack border="1px" borderColor={'gray.500'} p="15px" rounded={'lg'}>
-        <Box>
-          {/* !Value is hardcoded */}
-          <Heading
-            as="h3"
-            size="lg"
-            textAlign={'center'}
-            bgGradient="linear(to-b, #42047e, #07f49e)"
-            bgClip="text"
-          >
-            Paid Time Off
-          </Heading>
-          <Text color="gray.400" my="5px">
-            Keep track of how many days you've used
-          </Text>
-
-          <Text textAlign={'center'} my="10px">
-            Days used this year: {snap.pto}
-          </Text>
-        </Box>
+      <VStack
+        border="1px"
+        borderColor={'cyan.600'}
+        p="15px"
+        rounded={'lg'}
+        spacing="5px"
+        maxW="300px"
+        minW="300px"
+      >
+        <Heading
+          as="h3"
+          size="lg"
+          textAlign={'center'}
+          bgGradient="linear(to-b, #42047e, #07f49e)"
+          bgClip="text"
+        >
+          Paid Time Off
+        </Heading>
+        <Divider variant={'dashed'} w="80%" />
+        <Text color="gray.400" my="5px">
+          Keep track of days you&apos;ve used this year
+        </Text>
+        <Text textAlign={'center'} my="10px">
+          You&apos;ve used
+        </Text>
+        <Text color={countColor} fontSize="2xl" textAlign={'center'}>
+          {snap.pto}
+        </Text>{' '}
+        <Text textAlign={'center'} my="10px">
+          day
+          {snap.pto === 1 ? '' : 's'} this year
+        </Text>
         <Box>
           <Form>
-            <FormControl
-              variant="floating"
-              isInvalid={errors?.days ? true : false}
-            >
-              <FormLabel htmlFor="pto">Enter days used</FormLabel>
+            <FormControl variant="floating" isInvalid={errors?.days != null}>
+              <FormLabel htmlFor="pto">Number of days</FormLabel>
               <Input
                 {...register('days')}
                 placeholder="Number of Days"

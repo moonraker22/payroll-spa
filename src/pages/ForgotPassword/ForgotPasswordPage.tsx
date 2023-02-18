@@ -1,4 +1,4 @@
-import { EmailSchema, EmailType } from '@/data/paySchema'
+import { EmailSchema, type EmailType } from '@/data/paySchema'
 import { usePasswordReset } from '@/hooks/usePasswordReset'
 import { routes } from '@/layout/routes'
 import { useStore } from '@/stores/store'
@@ -16,17 +16,17 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod'
 import { motion as m } from 'framer-motion'
 import { useEffect } from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { Form, useNavigate } from 'react-router-dom'
 
-export default function Login() {
+export default function Login(): JSX.Element {
   const snap = useStore()
-  const { passwordResetEmail } = usePasswordReset()
+  const { passwordResetEmail, error: passwordResetError } = usePasswordReset()
 
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (snap.userId) {
+    if (snap?.userId !== '') {
       navigate(routes.DASHBOARD)
     }
   }, [snap.userId])
@@ -34,9 +34,8 @@ export default function Login() {
   const {
     register,
     handleSubmit,
-    watch,
     setFocus,
-    formState: { errors, isDirty, isSubmitting, isValid, touchedFields },
+    formState: { errors, isDirty, isSubmitting, isValid },
   } = useForm<EmailType>({
     resolver: zodResolver(EmailSchema),
   })
@@ -45,9 +44,12 @@ export default function Login() {
 
   const onSubmit: SubmitHandler<EmailType> = async (data) => {
     try {
-      passwordResetEmail(data.email)
-    } catch (error) {
-      console.log(error)
+      passwordResetEmail(data.email).catch((error: unknown) => {
+        console.error(error)
+      })
+    } catch (error: unknown) {
+      console.error(error)
+      console.error(passwordResetError)
     }
   }
   useEffect(() => {
@@ -93,7 +95,7 @@ export default function Login() {
             <Form onSubmit={handleSubmit(onSubmit)}>
               <Box mb={2}>
                 <FormControl
-                  isInvalid={errors.email ? true : false}
+                  isInvalid={errors.email != null}
                   isRequired
                   variant="floating"
                 >
@@ -105,9 +107,7 @@ export default function Login() {
                     autoComplete="email"
                   />
                   <FormLabel htmlFor="email">Email</FormLabel>
-                  <FormErrorMessage>
-                    {errors.email && errors.email.message}
-                  </FormErrorMessage>
+                  <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
                 </FormControl>
               </Box>
 
@@ -119,7 +119,6 @@ export default function Login() {
                   isLoading={isSubmitting}
                   type="submit"
                   size="lg"
-                  //   disabled={!canSubmit}
                   disabled={!isDirty || !isValid || isSubmitting}
                   loadingText="Logging In"
                   variant={'outline'}

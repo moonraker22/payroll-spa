@@ -1,4 +1,4 @@
-import { PasswordPromptSchema, PasswordPromptType } from '@/data/paySchema'
+import { PasswordPromptSchema, type PasswordPromptType } from '@/data/paySchema'
 import {
   Button,
   FormControl,
@@ -14,10 +14,10 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { Form } from 'react-router-dom'
 
-type PasswordPromptProps = {
+interface PasswordPromptProps {
   setPass: (pass: string) => void
   isOpen: boolean
   onOpen: () => void
@@ -29,7 +29,7 @@ export default function PasswordPrompt({
   isOpen,
   onOpen,
   onClose,
-}: PasswordPromptProps) {
+}: PasswordPromptProps): JSX.Element {
   const {
     register,
     handleSubmit,
@@ -40,8 +40,7 @@ export default function PasswordPrompt({
   })
 
   const onSubmit: SubmitHandler<PasswordPromptType> = (data) => {
-    console.log(data)
-    setPass(data.currentPassword)
+    setPass(data?.currentPassword)
   }
 
   return (
@@ -66,7 +65,7 @@ export default function PasswordPrompt({
                   }}
                 />
                 <FormErrorMessage>
-                  {errors.currentPassword && errors.currentPassword.message}
+                  {errors.currentPassword?.message}
                 </FormErrorMessage>
               </FormControl>
             </Form>

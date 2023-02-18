@@ -1,7 +1,7 @@
 import { extendTheme, type ThemeConfig } from '@chakra-ui/react'
 // import { mode } from '@chakra-ui/theme-tools'
 
-const config: ThemeConfig = {
+export const config: ThemeConfig = {
   initialColorMode: 'dark',
   useSystemColorMode: false,
 }
@@ -11,7 +11,7 @@ const activeLabelStyles = {
 }
 
 export const theme = extendTheme({
-  global: (props: any) => ({}),
+  global: (props: unknown) => ({}),
 
   config,
   brand: {
@@ -27,7 +27,7 @@ export const theme = extendTheme({
 
   components: {
     Modal: {
-      variants: ({ colorMode }: { colorMode: any }) => ({
+      variants: ({ colorMode }: { colorMode: 'light' | 'dark' }) => ({
         floating: {
           dialog: {
             bg: colorMode === 'dark' ? 'gray.900' : 'gray.50',
@@ -38,7 +38,7 @@ export const theme = extendTheme({
     },
     Form: {
       variants: {
-        floating: ({ colorMode }: { colorMode: any }) => ({
+        floating: ({ colorMode }: { colorMode: 'light' | 'dark' }) => ({
           container: {
             _focusWithin: {
               label: {

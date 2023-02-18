@@ -2,7 +2,7 @@ import { ColorModeSwitcher } from '@/components/ColorModeSwitcher'
 import SpinnerComp from '@/components/SpinnerComp'
 import { useLogout } from '@/hooks/useAuth'
 import { routes } from '@/layout/routes'
-import theme from '@/layout/theme'
+// import theme from '@/layout/theme'
 import { useStore } from '@/stores/store'
 import {
   Avatar,
@@ -21,6 +21,7 @@ import {
   Text,
   useColorModeValue,
   useDisclosure,
+  useTheme,
   VisuallyHidden,
   VStack,
 } from '@chakra-ui/react'
@@ -28,10 +29,15 @@ import { AnimatePresence } from 'framer-motion'
 import { Suspense } from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
 import { ImCoinDollar } from 'react-icons/im'
-import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import {
+  NavLink,
+  Outlet,
+  ScrollRestoration,
+  useNavigate,
+} from 'react-router-dom'
 import Footer from './Footer'
 
-export default function Layout() {
+export default function Layout(): JSX.Element {
   const bg = useColorModeValue('white', ' gray.800')
   const mobileNav = useDisclosure()
   // const ref = useRef()
@@ -40,34 +46,37 @@ export default function Layout() {
   //   handler: () => mobileNav.onClose(),
   // })
 
-  let activeStyle = {
+  const activeStyle = {
     textDecoration: 'underline',
     textDecorationColor: '#017991',
     textDecorationThickness: '2px',
     color: '#017991',
   }
 
-  let color = {
+  const color = {
     color: '#06adce',
   }
 
   const { logout, isLoading: logoutLoading } = useLogout()
   const navigate = useNavigate()
 
-  const handleLogout = () => {
-    logout()
+  const handleLogout: () => void = () => {
+    logout().catch((error: unknown) => {
+      console.error(error)
+    })
     navigate(routes.LOGIN)
   }
 
   const snap = useStore()
-  const location = useLocation()
+  const theme = useTheme()
 
-  if (!snap) {
-    return <SpinnerComp />
-  }
+  // if (!snap) {
+  //   return <SpinnerComp />
+  // }
   return (
     <>
       <Suspense fallback={<SpinnerComp />}>
+        <ScrollRestoration />
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <chakra.header
           bg={bg}
@@ -100,7 +109,9 @@ export default function Layout() {
                   />
                 }
                 variant="ghost"
-                onClick={() => navigate(routes.HOME)}
+                onClick={() => {
+                  navigate(routes.HOME)
+                }}
               >
                 <NavLink
                   to={routes.HOME}
@@ -150,11 +161,13 @@ export default function Layout() {
                   md: 'inline-flex',
                 }}
               >
-                {snap && snap.isSignedIn ? (
+                {snap?.isSignedIn ? (
                   <>
                     <Button
                       variant="ghost"
-                      onClick={() => navigate(routes.DAILY)}
+                      onClick={() => {
+                        navigate(routes.DAILY)
+                      }}
                     >
                       <NavLink
                         to={routes.DAILY}
@@ -167,7 +180,9 @@ export default function Layout() {
                     </Button>
                     <Button
                       variant="ghost"
-                      onClick={() => navigate(routes.DASHBOARD)}
+                      onClick={() => {
+                        navigate(routes.DASHBOARD)
+                      }}
                     >
                       <NavLink
                         to={routes.DASHBOARD}
@@ -191,7 +206,9 @@ export default function Layout() {
                   <>
                     <Button
                       variant="ghost"
-                      onClick={() => navigate(routes.REGISTER)}
+                      onClick={() => {
+                        navigate(routes.REGISTER)
+                      }}
                     >
                       <NavLink
                         to={routes.REGISTER}
@@ -204,7 +221,9 @@ export default function Layout() {
                     </Button>
                     <Button
                       variant="ghost"
-                      onClick={() => navigate(routes.LOGIN)}
+                      onClick={() => {
+                        navigate(routes.LOGIN)
+                      }}
                     >
                       <NavLink
                         to="/login"
@@ -224,7 +243,7 @@ export default function Layout() {
                         as={NavLink}
                         to={routes.PROFILE}
                         size="sm"
-                        name={snap.userEmail}
+                        name={snap.displayName ?? snap.userEmail}
                         src={snap.avatar}
                       >
                         <AvatarBadge boxSize="1em" bg="cyan.600" />
@@ -277,11 +296,13 @@ export default function Layout() {
                     aria-label="Close menu"
                     onClick={mobileNav.onClose}
                   />
-                  {snap && snap.isSignedIn ? (
+                  {snap?.isSignedIn ? (
                     <>
                       <Button
                         variant="ghost"
-                        onClick={() => navigate(routes.DAILY)}
+                        onClick={() => {
+                          navigate(routes.DAILY)
+                        }}
                         color="cyan.500"
                       >
                         <NavLink
@@ -295,7 +316,9 @@ export default function Layout() {
                       </Button>
                       <Button
                         variant="ghost"
-                        onClick={() => navigate(routes.DASHBOARD)}
+                        onClick={() => {
+                          navigate(routes.DASHBOARD)
+                        }}
                         color="cyan.500"
                       >
                         <NavLink
@@ -320,7 +343,9 @@ export default function Layout() {
                     <>
                       <Button
                         variant="ghost"
-                        onClick={() => navigate(routes.HOME)}
+                        onClick={() => {
+                          navigate(routes.HOME)
+                        }}
                         color="cyan.500"
                       >
                         <NavLink
@@ -334,7 +359,9 @@ export default function Layout() {
                       </Button>
                       <Button
                         variant="ghost"
-                        onClick={() => navigate(routes.REGISTER)}
+                        onClick={() => {
+                          navigate(routes.REGISTER)
+                        }}
                         color="cyan.500"
                       >
                         <NavLink
@@ -348,7 +375,9 @@ export default function Layout() {
                       </Button>
                       <Button
                         variant="ghost"
-                        onClick={() => navigate(routes.LOGIN)}
+                        onClick={() => {
+                          navigate(routes.LOGIN)
+                        }}
                         color="cyan.500"
                       >
                         <NavLink
@@ -378,18 +407,3 @@ export default function Layout() {
     </>
   )
 }
-
-// const AnimatedOutlet: React.FC = () => {
-//   const o = useOutlet()
-//   const [outlet] = useState(o)
-
-//   return <>{outlet}</>
-// }
-
-// export async function loader({ request, params }) {
-//   // async function getInitialAuthState() {
-//   let user = store.userId
-//   if (user) {
-//     return { user }
-//   }
-// }
