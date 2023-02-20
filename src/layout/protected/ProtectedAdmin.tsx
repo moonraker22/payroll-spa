@@ -4,19 +4,19 @@ import { useFireAuth } from '@/stores/auth'
 import { Suspense } from 'react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
-// Protected route
+// Admin Protected route
 
 const ProtectedRoutes: () => JSX.Element = () => {
   const location = useLocation()
 
-  const { isSignedIn } = useFireAuth()
+  const { isAdmin } = useFireAuth()
   const { isLoading } = useFireAuth()
 
   if (isLoading) {
     return <SpinnerComp />
   }
 
-  return isSignedIn ? (
+  return isAdmin ? (
     <Suspense fallback={<SpinnerComp />}>
       <Outlet />
     </Suspense>

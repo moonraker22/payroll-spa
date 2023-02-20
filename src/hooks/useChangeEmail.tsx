@@ -17,19 +17,28 @@ import {
 import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export function useChangeEmail() {
+interface UseChangeEmail {
+  isLoading: boolean
+  error: FirestoreError | Error | string | null
+  changeEmail: ({
+    email,
+    password,
+    newEmail,
+  }: ChangeEmailProps) => Promise<void>
+}
+
+interface ChangeEmailProps {
+  email: string
+  password: string
+  newEmail: string
+}
+export function useChangeEmail(): UseChangeEmail {
   const [isLoading, setLoading] = useState(false)
   const [error, setError] = useState<FirestoreError | Error | string | null>(
     null
   )
   const toast = useToast()
   const navigate = useNavigate()
-
-  type ChangeEmailProps = {
-    email: string
-    password: string
-    newEmail: string
-  }
 
   const changeEmail = useCallback(async function ({
     email,
@@ -52,7 +61,7 @@ export function useChangeEmail() {
       })
       return
     }
-    if (!password) {
+    if (password.length === 0) {
       setError('Password must be at least 6 characters')
       toast({
         title: 'Password reset failed',
@@ -65,7 +74,7 @@ export function useChangeEmail() {
       })
       return
     }
-    if (!email) {
+    if (email.length === 0) {
       setError('Email must be at least 6 characters')
       toast({
         title: 'Password reset failed',
@@ -78,7 +87,7 @@ export function useChangeEmail() {
       })
       return
     }
-    if (user && user.email) {
+    if (user?.email != null) {
       const credential = EmailAuthProvider.credential(user.email, password)
       try {
         await reauthenticateWithCredential(user, credential)
@@ -107,7 +116,7 @@ export function useChangeEmail() {
 
           toast({
             title: 'Email change failed',
-            description: errorMessage || error.message,
+            description: errorMessage ?? error.message,
             status: 'error',
             isClosable: true,
             position: 'top',

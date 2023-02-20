@@ -12,7 +12,15 @@ import {
 import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export const usePasswordReset = () => {
+type UsePasswordReset = () => {
+  error: string
+  loading: boolean
+  passwordResetEmail: (email: string) => Promise<void>
+  confirmPassReset: (code: string, newPassword: string) => Promise<void>
+  updatePass: (newPassword: string, currentPassword: string) => Promise<void>
+}
+
+export const usePasswordReset: UsePasswordReset = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -21,7 +29,7 @@ export const usePasswordReset = () => {
 
   const passwordResetEmail = useCallback(async (email: string) => {
     setLoading(true)
-    if (!email) {
+    if (email.length === 0) {
       setError('Please enter your email')
       toast({
         title: 'Password reset failed',
@@ -48,11 +56,11 @@ export const usePasswordReset = () => {
       })
       navigate(routes.LOGIN)
     } catch (error: any) {
-      const errorMessage = firebaseErrorMap.get(error.code)
-      setError(errorMessage || error.message)
+      const errorMessage = firebaseErrorMap.get(error?.code)
+      setError(errorMessage ?? error.message)
       toast({
         title: 'Password reset failed',
-        description: errorMessage || error.message,
+        description: errorMessage ?? error.message ?? 'An error occurred',
         status: 'error',
         isClosable: true,
         position: 'top',
@@ -67,7 +75,7 @@ export const usePasswordReset = () => {
   const confirmPassReset = useCallback(
     async (code: string, newPassword: string) => {
       setLoading(true)
-      if (!code) {
+      if (code.length === 0) {
         setError('Please enter your code')
         toast({
           title: 'Password reset failed',
@@ -80,7 +88,7 @@ export const usePasswordReset = () => {
         })
         return
       }
-      if (!newPassword) {
+      if (newPassword.length === 0) {
         setError('Please enter your new password')
         toast({
           title: 'Password reset failed',
@@ -107,7 +115,6 @@ export const usePasswordReset = () => {
         return
       }
       try {
-        // const auth = getAuth()
         await confirmPasswordReset(auth, code, newPassword)
         toast({
           title: 'Password reset successful',
@@ -121,10 +128,10 @@ export const usePasswordReset = () => {
         navigate(routes.LOGIN)
       } catch (error: any) {
         const errorMessage = firebaseErrorMap.get(error.code)
-        setError(errorMessage || error.message)
+        setError(errorMessage ?? error.message)
         toast({
           title: 'Password reset failed',
-          description: errorMessage || error.message,
+          description: errorMessage ?? error.message ?? 'An error occurred',
           status: 'error',
           isClosable: true,
           position: 'top',
@@ -143,7 +150,7 @@ export const usePasswordReset = () => {
       setLoading(true)
       const user = auth.currentUser
 
-      if (!newPassword) {
+      if (newPassword.length === 0) {
         setError('Please enter your new password')
         toast({
           title: 'Password reset failed',
@@ -156,7 +163,7 @@ export const usePasswordReset = () => {
         })
         return
       }
-      if (!currentPassword) {
+      if (currentPassword.length === 0) {
         setError('Password must be at least 6 characters')
         toast({
           title: 'Password reset failed',
@@ -169,7 +176,7 @@ export const usePasswordReset = () => {
         })
         return
       }
-      if (user?.email) {
+      if (user?.email != null) {
         const credential = EmailAuthProvider.credential(
           user.email,
           currentPassword
@@ -189,10 +196,10 @@ export const usePasswordReset = () => {
           navigate(routes.LOGIN)
         } catch (error: any) {
           const errorMessage = firebaseErrorMap.get(error.code)
-          setError(errorMessage || error.message)
+          setError(errorMessage ?? error.message)
           toast({
             title: 'Password reset failed',
-            description: errorMessage || error.message,
+            description: errorMessage ?? error.message ?? 'An error occurred',
             status: 'error',
             isClosable: true,
             position: 'top',

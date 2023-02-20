@@ -1,7 +1,7 @@
 import { parseISO } from 'date-fns'
 import { z } from 'zod'
 
-//DailyPaySheet Schema
+// DailyPaySheet Schema
 export const Paysheet = z.object({
   date: z.string().transform((value) => parseISO(value).getTime()),
   startingMiles: z
@@ -35,7 +35,7 @@ export type PaysheetType = z.infer<typeof Paysheet>
 // regex for string to number to remove - and leading 0
 // .transform((value) => Number(value.replace(/-|0/g, '')))
 
-//regex to remove leading 0
+// regex to remove leading 0
 // .transform((value) => Number(value.replace(/^0+/, '')))
 
 // export const Paysheet = z.object({

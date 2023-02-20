@@ -4,7 +4,11 @@ import { useStore } from '@/stores/store'
 import { deleteDoc, doc } from 'firebase/firestore'
 import { useCallback } from 'react'
 
-export const useDeletePay = () => {
+type UseDeletePay = () => {
+  deletePay: (docId: string) => Promise<void>
+}
+
+export const useDeletePay: UseDeletePay = () => {
   const snap = useStore()
 
   const deletePay = useCallback(

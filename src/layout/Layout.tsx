@@ -3,6 +3,7 @@ import SpinnerComp from '@/components/SpinnerComp'
 import { useLogout } from '@/hooks/useAuth'
 import { routes } from '@/layout/routes'
 // import theme from '@/layout/theme'
+import { useFireAuth } from '@/stores/auth'
 import { useStore } from '@/stores/store'
 import {
   Avatar,
@@ -45,6 +46,9 @@ export default function Layout(): JSX.Element {
   //   ref: ref,
   //   handler: () => mobileNav.onClose(),
   // })
+
+  const { isSignedIn } = useFireAuth()
+  const { isAdmin } = useFireAuth()
 
   const activeStyle = {
     textDecoration: 'underline',
@@ -161,7 +165,7 @@ export default function Layout(): JSX.Element {
                   md: 'inline-flex',
                 }}
               >
-                {snap?.isSignedIn ? (
+                {isSignedIn ? (
                   <>
                     <Button
                       variant="ghost"
@@ -193,6 +197,23 @@ export default function Layout(): JSX.Element {
                         Dashboard
                       </NavLink>
                     </Button>
+                    {isAdmin && (
+                      <Button
+                        variant="ghost"
+                        onClick={() => {
+                          navigate(routes.ADMIN_DASHBOARD)
+                        }}
+                      >
+                        <NavLink
+                          to={routes.ADMIN_DASHBOARD}
+                          style={({ isActive }) =>
+                            isActive ? activeStyle : color
+                          }
+                        >
+                          Admin
+                        </NavLink>
+                      </Button>
+                    )}
                     <Button
                       variant="ghost"
                       onClick={handleLogout}
@@ -237,7 +258,7 @@ export default function Layout(): JSX.Element {
                   </>
                 )}
                 <Show above="md">
-                  {snap.isSignedIn && (
+                  {isSignedIn && (
                     <>
                       <Avatar
                         as={NavLink}
@@ -296,7 +317,7 @@ export default function Layout(): JSX.Element {
                     aria-label="Close menu"
                     onClick={mobileNav.onClose}
                   />
-                  {snap?.isSignedIn ? (
+                  {isSignedIn ? (
                     <>
                       <Button
                         variant="ghost"
@@ -330,6 +351,24 @@ export default function Layout(): JSX.Element {
                           Dashboard
                         </NavLink>
                       </Button>
+                      {isAdmin && (
+                        <Button
+                          variant="ghost"
+                          onClick={() => {
+                            navigate(routes.DASHBOARD)
+                          }}
+                          color="cyan.500"
+                        >
+                          <NavLink
+                            to={routes.ADMIN_DASHBOARD}
+                            style={({ isActive }) =>
+                              isActive ? activeStyle : undefined
+                            }
+                          >
+                            Admin
+                          </NavLink>
+                        </Button>
+                      )}
                       <Button
                         variant="ghost"
                         onClick={handleLogout}

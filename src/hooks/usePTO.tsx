@@ -1,20 +1,26 @@
-import { PTOType } from '@/data/paySchema'
+import { type PTOType } from '@/data/paySchema'
 import { db } from '@/firebase'
 import { COLLECTIONS } from '@/lib/constants'
 import { storeActions, useStore } from '@/stores/store'
 import { useToast } from '@chakra-ui/react'
 import {
   doc,
-  DocumentData,
-  DocumentReference,
-  DocumentSnapshot,
   FirestoreError,
   getDoc,
   updateDoc,
+  type DocumentData,
+  type DocumentReference,
+  type DocumentSnapshot,
 } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
 
-export const usePTO = () => {
+type UsePTO = () => {
+  isPTOLoading: boolean
+  ptoError: FirestoreError | Error | null
+  addPTO: (numberOfDays: PTOType) => Promise<boolean | undefined>
+}
+
+export const usePTO: UsePTO = () => {
   const toast = useToast()
   const snap = useStore()
   const [isPTOLoading, setLoading] = useState(false)
@@ -24,7 +30,7 @@ export const usePTO = () => {
     async (numberOfDays: PTOType) => {
       const { days } = numberOfDays
       setLoading(true)
-      if (!snap?.userId) {
+      if (snap?.userId === null) {
         toast({
           title: 'You must be logged in to add PTO',
           status: 'error',
@@ -48,11 +54,11 @@ export const usePTO = () => {
         })
         return false
       }
-      if (days) {
+      if (days >= 0) {
         try {
           const docRef = doc(db, COLLECTIONS.USERS, `${snap?.userId}`)
           const docSnap = await getDoc(docRef)
-          const pto = docSnap.data()?.pto
+          const pto = docSnap.get('pto') as number
           const newPto = pto + days
 
           if (pto !== undefined) {
@@ -120,7 +126,7 @@ export const usePTO = () => {
   const subtractPTO = useCallback(async (numberOfDays: PTOType) => {
     const { days } = numberOfDays
     setLoading(true)
-    if (!snap?.userId) {
+    if (snap?.userId === null) {
       toast({
         title: 'You must be logged in to subtract PTO',
         status: 'error',
@@ -144,7 +150,7 @@ export const usePTO = () => {
       })
       return false
     }
-    if (days) {
+    if (days >= 0) {
       try {
         const docRef: DocumentReference<DocumentData> = doc(
           db,
@@ -152,8 +158,8 @@ export const usePTO = () => {
           `${snap?.userId}`
         )
         const docSnap: DocumentSnapshot<DocumentData> = await getDoc(docRef)
-        const pto: number = docSnap.data()?.pto
-        const newPto: number = pto - days < 0 ? 0 : pto - days
+        const pto = docSnap.get('pto') as number
+        const newPto = pto - days < 0 ? 0 : pto - days
 
         if (pto !== undefined) {
           await updateDoc(doc(db, COLLECTIONS.USERS, `${snap?.userId}`), {

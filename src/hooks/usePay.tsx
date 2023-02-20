@@ -1,4 +1,4 @@
-import { PaysheetType } from '@/data/paySchema'
+import { type PaysheetType } from '@/data/paySchema'
 import { db } from '@/firebase'
 import { routes } from '@/layout/routes'
 import { COLLECTIONS } from '@/lib/constants'
@@ -17,7 +17,21 @@ import {
 import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export function useAddPay() {
+interface UseAddPay {
+  isPayLoading: boolean
+  payError: FirestoreError | Error | null
+  addPay: ({
+    date,
+    startingMiles,
+    endingMiles,
+    totalMiles,
+    payMiles,
+    backhaul,
+    delayHours,
+  }: PaysheetType) => Promise<boolean | undefined>
+}
+
+export function useAddPay(): UseAddPay {
   const [isPayLoading, setLoading] = useState(false)
   const [payError, setPayError] = useState<FirestoreError | Error | null>(null)
   const toast = useToast()
@@ -36,7 +50,7 @@ export function useAddPay() {
     }: PaysheetType) {
       setLoading(true)
 
-      if (!snap?.userId) {
+      if (snap?.userId === null) {
         toast({
           title: 'You must be logged in to add pay',
           status: 'error',

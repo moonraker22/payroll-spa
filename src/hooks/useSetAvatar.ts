@@ -9,7 +9,13 @@ import {
 } from 'firebase/firestore'
 import { useCallback, useState } from 'react'
 
-export function useSetAvatar() {
+interface UseSetAvatarType {
+  setAvatar: (avatarUrl: string) => Promise<false | undefined>
+  isLoading: boolean
+  error: FirestoreError | Error | null
+}
+
+export function useSetAvatar(): UseSetAvatarType {
   const [isLoading, setLoading] = useState(true)
   const [error, setError] = useState<FirestoreError | Error | null>(null)
   const snap = useStore()
@@ -30,7 +36,7 @@ export function useSetAvatar() {
       })
       return false
     }
-    const docRef = doc(db, `users`, `${snap?.userId || 'empty'}`)
+    const docRef = doc(db, `users`, `${snap?.userId ?? 'empty'}`)
 
     try {
       await updateDoc(docRef, {

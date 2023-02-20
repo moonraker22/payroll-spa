@@ -9,6 +9,9 @@ import {
 const ProtectedRoutes = lazy(
   async () => await import('@/layout/protected/Protected')
 )
+const ProtectedAdmin = lazy(
+  async () => await import('@/layout/protected/ProtectedAdmin')
+)
 const Layout = lazy(async () => await import('@/layout/Layout'))
 const Home = lazy(async () => await import('@/pages/Home/HomePage'))
 const Login = lazy(async () => await import('@/pages/Login/LoginPage'))
@@ -21,6 +24,9 @@ const WeeklyPage = lazy(
 )
 const Dashboard = lazy(
   async () => await import('@/pages/Dashboard/DashboardPage')
+)
+const AdminDashboardPage = lazy(
+  async () => await import('@/pages/AdminDashboard/AdminDashboardPage')
 )
 const ErrorPage = lazy(async () => await import('@/pages/Error/ErrorPage'))
 const NotFoundPage = lazy(
@@ -45,6 +51,7 @@ export const routes = {
   LOGIN: '/login',
   REGISTER: '/register',
   DASHBOARD: '/dashboard',
+  ADMIN_DASHBOARD: '/admin-dashboard',
   PROFILE: '/profile',
   WEEKLY: '/weekly',
   DAILY: '/daily',
@@ -79,6 +86,14 @@ const router = createBrowserRouter(
           <Route path={routes.PROFILE} element={<ProfilePage />} />
           <Route path={routes.PASSWORD_RESET} element={<PasswordReset />} />
           <Route path={routes.CHANGE_EMAIL} element={<ChangeEmail />} />
+          {/* Protected Admin Routes */}
+        </Route>
+        <Route element={<ProtectedAdmin />}>
+          <Route
+            index
+            path={routes.ADMIN_DASHBOARD}
+            element={<AdminDashboardPage />}
+          />
         </Route>
       </Route>
     </>

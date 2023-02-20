@@ -1,7 +1,23 @@
-import { useStore, WeeksType } from '@/stores/store'
+import { useStore, type WeeksType } from '@/stores/store'
 import { useCallback, useEffect, useState } from 'react'
 
-export const usePaginateData = ({ pageSize }: { pageSize: number }) => {
+type UsePaginateType = ({ pageSize }: { pageSize: number }) => {
+  currentPage: number
+  pageData: WeeksType[]
+  getPreviousPage: () => void
+  getNextPage: () => void
+  mapArray: number[]
+  handlePageClick: (e: { selected: number }) => void
+  pageCount: number
+  getFirstPage: () => void
+  getLastPage: () => void
+}
+
+export const usePaginateData: UsePaginateType = ({
+  pageSize,
+}: {
+  pageSize: number
+}) => {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [pageData, setPageData] = useState<WeeksType[]>([])
 

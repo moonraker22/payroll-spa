@@ -9,7 +9,11 @@ import {
 } from '@chakra-ui/react'
 import { useEffect } from 'react'
 
-export default function SlideEx({ isGoogle }: { isGoogle: boolean }) {
+export default function SlideEx({
+  isGoogle,
+}: {
+  isGoogle: boolean
+}): JSX.Element {
   const { isOpen, onToggle } = useDisclosure()
 
   useEffect(() => {

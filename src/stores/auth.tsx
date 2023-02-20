@@ -31,6 +31,7 @@ interface UseFirebaseAuthReturnType {
   } | null
   isLoading: boolean
   isSignedIn: boolean
+  isAdmin: boolean
   signOut: () => Promise<void>
 }
 
@@ -41,9 +42,11 @@ function useFirebaseAuth(): UseFirebaseAuthReturnType {
   } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isSignedIn, setIsSignedIn] = useState(false) // Local signed-in state.
+  const [isAdmin, setIsAdmin] = useState(false)
 
   const clear: () => void = () => {
     setAuthUser(null)
+    setIsAdmin(false)
     setIsLoading(false)
     setIsSignedIn(false)
     storeActions.clear()
@@ -69,15 +72,27 @@ function useFirebaseAuth(): UseFirebaseAuthReturnType {
         })
         storeActions.setUserEmail(user.email)
       }
+
       if (user.displayName != null)
         storeActions.setDisplayName(user.displayName)
 
       const ref = doc(db, 'users', `${user.uid}`)
       const docSnap = await getDoc(ref)
-      storeActions.setAvatar(docSnap.data()?.avatar ?? user.photoURL)
+
+      if (!docSnap.exists()) {
+        clear()
+        return
+      }
+
+      if (docSnap.get('isAdmin') === true) {
+        setIsAdmin(true)
+        storeActions.setIsAdmin(true)
+      }
+
+      storeActions.setAvatar(docSnap.get('avatar') ?? user.photoURL)
       storeActions.setIsSignedIn(true)
       storeActions.setUserId(user.uid)
-      storeActions.setPto(docSnap.data()?.pto ?? 0)
+      storeActions.setPto(docSnap.get('pto') ?? 0)
       if (user?.email != null) setIsSignedIn(user !== null)
       setIsLoading(false)
     },
@@ -104,14 +119,14 @@ function useFirebaseAuth(): UseFirebaseAuthReturnType {
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const data: PaysheetType[] = querySnapshot.docs.map((doc) => ({
           uid: doc?.id,
-          startingMiles: doc.data()?.startingMiles as number,
-          endingMiles: doc.data()?.endingMiles as number,
-          date: doc.data()?.date as number,
-          totalMiles: doc.data()?.totalMiles as number,
-          payMiles: doc.data()?.payMiles as number,
-          backhaul: doc.data()?.backhaul as number,
-          delayHours: doc.data()?.delayHours as number,
-          delayPay: doc.data()?.delayPay as number,
+          startingMiles: doc.get('startingMiles') as number,
+          endingMiles: doc.get('endingMiles') as number,
+          date: doc.get('date') as number,
+          totalMiles: doc.get('totalMiles') as number,
+          payMiles: doc.get('payMiles') as number,
+          backhaul: doc.get('backhaul') as number,
+          delayHours: doc.get('delayHours') as number,
+          delayPay: doc.get('delayPay') as number,
         }))
         storeActions.setPaysheets(data)
         const weeks: WeeksType[] = getWeeklyTotals(data)
@@ -140,6 +155,7 @@ function useFirebaseAuth(): UseFirebaseAuthReturnType {
     authUser,
     isLoading,
     isSignedIn,
+    isAdmin,
     signOut,
   }
 }
@@ -151,6 +167,7 @@ const AuthUserContext = createContext<UseFirebaseAuthReturnType>({
   },
   isLoading: true,
   isSignedIn: false,
+  isAdmin: false,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   signOut: async () => {},
 })
@@ -170,6 +187,7 @@ type UseFireAuthReturnType = () => {
   authUser: { uid: string; email: string } | null | undefined
   isLoading: boolean
   isSignedIn: boolean
+  isAdmin: boolean
   signOut: () => Promise<void>
 }
 

@@ -1,7 +1,7 @@
 import { Center, Spinner } from '@chakra-ui/react'
 import { motion as m } from 'framer-motion'
 
-export default function SpinnerComp() {
+export default function SpinnerComp(): JSX.Element {
   return (
     <m.div
       initial={{ y: window.innerHeight / 2, opacity: 0, scale: 0.5 }}

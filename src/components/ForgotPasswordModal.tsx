@@ -1,41 +1,33 @@
+import { EmailSchema, type EmailType } from '@/data/paySchema'
 import {
-  useDisclosure,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
-  Box,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
 } from '@chakra-ui/react'
-import { usePasswordReset } from '../hooks/usePasswordReset'
-import { EmailSchema, EmailType } from '@/data/paySchema'
-import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { Form } from 'react-router-dom'
+import { usePasswordReset } from '../hooks/usePasswordReset'
 
-function ForgotPasswordModal() {
+function ForgotPasswordModal(): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { passwordResetEmail } = usePasswordReset()
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors, isDirty, isSubmitting, isValid, touchedFields },
-    control,
-    reset,
-    getValues,
-    setValue,
-    setFocus,
-  } = useForm<EmailType>({
+  const { register, handleSubmit } = useForm<EmailType>({
     resolver: zodResolver(EmailSchema),
   })
 
   const onSubmit: SubmitHandler<EmailType> = (data: EmailType) => {
-    passwordResetEmail(data.email)
+    passwordResetEmail(data.email).catch((error) => {
+      console.error(error)
+    }
+    )
   }
   return (
     <>

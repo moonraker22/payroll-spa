@@ -6,6 +6,7 @@ const state: State = {
   userEmail: '',
   displayName: '',
   isSignedIn: false,
+  isAdmin: false,
   avatar: '',
   paysheets: [],
   weeks: [],
@@ -37,6 +38,9 @@ const storeActions: StoreActionsType = {
   setIsSignedIn: (isSignedIn: boolean) => {
     store.isSignedIn = isSignedIn
   },
+  setIsAdmin: (isAdmin: boolean) => {
+    store.isAdmin = isAdmin
+  },
   setAvatar: (avatar: string) => {
     store.avatar = avatar
   },
@@ -56,6 +60,7 @@ const storeActions: StoreActionsType = {
     store.userId = ''
     store.userEmail = ''
     store.isSignedIn = false
+    store.isAdmin = false
     store.avatar = ''
     store.paysheets = []
     store.weeks = []
@@ -76,6 +81,7 @@ export interface State {
   userEmail: string
   displayName: string
   isSignedIn: boolean
+  isAdmin: boolean
   avatar: string
   paysheets: PaysheetType[]
   weeks: WeeksType[]
@@ -115,6 +121,7 @@ export interface StoreActionsType {
   setUserEmail: (email: string) => void
   setDisplayName: (displayName: string) => void
   setIsSignedIn: (isSignedIn: boolean) => void
+  setIsAdmin: (isAdmin: boolean) => void
   setAvatar: (avatar: string) => void
   setPaysheets: (paysheets: PaysheetType[]) => void
   setWeeks: (weeks: WeeksType[]) => void

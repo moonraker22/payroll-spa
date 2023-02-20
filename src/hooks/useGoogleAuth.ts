@@ -8,7 +8,13 @@ import { useNavigate } from 'react-router-dom'
 
 import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
 
-export function useGoogleAuth() {
+interface UseGoogleAuthType {
+  googleLogin: () => Promise<void>
+  isLoading: boolean
+  error: Error | null
+}
+
+export function useGoogleAuth(): UseGoogleAuthType {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
   const toast = useToast()
@@ -20,12 +26,13 @@ export function useGoogleAuth() {
 
       try {
         const res = await signInWithPopup(auth, googleProvider)
-        const result = await getRedirectResult(auth)
+        await getRedirectResult(auth)
+        // const result = await getRedirectResult(auth)
         // const credential = GoogleAuthProvider.credentialFromResult(result)
         // const token = credential.accessToken
         const user = res?.user
 
-        if (user) {
+        if (user !== null) {
           const snapshot = await getDoc(doc(db, 'users', user?.uid))
 
           if (!snapshot.exists()) {
@@ -43,9 +50,9 @@ export function useGoogleAuth() {
             const userRef = doc(db, 'users', user?.uid)
             await setDoc(userRef, data)
 
-            if (user?.photoURL) storeActions.setAvatar(user?.photoURL)
+            if (user?.photoURL != null) storeActions.setAvatar(user?.photoURL)
             storeActions.setIsSignedIn(true)
-            if (user?.email) storeActions.setUserEmail(user?.email)
+            if (user?.email != null) storeActions.setUserEmail(user?.email)
           } else {
             storeActions.setAvatar(snapshot.data()?.avatar)
             storeActions.setIsSignedIn(true)
@@ -67,7 +74,7 @@ export function useGoogleAuth() {
       } catch (error: any) {
         toast({
           title: 'Sign In failed',
-          description: error.message,
+          description: error?.message,
           status: 'error',
           isClosable: true,
           position: 'top',
