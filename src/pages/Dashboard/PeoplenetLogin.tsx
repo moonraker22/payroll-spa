@@ -8,7 +8,6 @@ import {
   VStack,
 } from '@chakra-ui/react'
 import { AiOutlineLogin } from 'react-icons/ai'
-import { Link as RouterLink } from 'react-router-dom'
 
 export default function PeoplenetLogin() {
   const color = useColorModeValue('gray.800', 'cyan.600')
@@ -44,8 +43,10 @@ export default function PeoplenetLogin() {
         <Button
           colorScheme="cyan"
           variant="outline"
-          as={RouterLink}
-          to={'https://compliance.fleethealth.io/efleetsuite/Login.aspx'}
+          as="a"
+          target={'_blank'}
+          rel="noreferrer noopener"
+          href="https://compliance.fleethealth.io/efleetsuite/Login.aspx"
           _hover={{
             bg: 'cyan.600',
             color: 'white',
