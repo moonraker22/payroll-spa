@@ -18,6 +18,7 @@ type UsePTO = () => {
   isPTOLoading: boolean
   ptoError: FirestoreError | Error | null
   addPTO: (numberOfDays: PTOType) => Promise<boolean | undefined>
+  subtractPTO: (numberOfDays: PTOType) => Promise<boolean | undefined>
 }
 
 export const usePTO: UsePTO = () => {
