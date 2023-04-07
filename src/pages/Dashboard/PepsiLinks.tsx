@@ -15,7 +15,6 @@ import {
   AiOutlineApple,
   AiOutlineLogin,
 } from 'react-icons/ai'
-import { Link as RouterLink } from 'react-router-dom'
 export default function PepsiLinks(): JSX.Element {
   const color = useColorModeValue('gray.800', 'cyan.600')
   return (
@@ -43,8 +42,10 @@ export default function PepsiLinks(): JSX.Element {
         <Button
           colorScheme="cyan"
           variant="outline"
-          as={RouterLink}
-          to={'https://www.mypepsico.com/'}
+          as="a"
+          href={'https://www.mypepsico.com/'}
+          target={'_blank'}
+          rel="noreferrer noopener"
           _hover={{
             bg: 'cyan.600',
             color: 'white',
@@ -69,6 +70,8 @@ export default function PepsiLinks(): JSX.Element {
               as="a"
               aria-label="MyPesico"
               variant={'ghost'}
+              target={'_blank'}
+              rel="noreferrer noopener"
               href="https://apps.apple.com/us/app/mypepsico/id1532412267"
               icon={<AiOutlineApple fontSize="1.5rem" />}
             />
@@ -76,6 +79,8 @@ export default function PepsiLinks(): JSX.Element {
               as="a"
               aria-label="MyPesico"
               variant={'ghost'}
+              target={'_blank'}
+              rel="noreferrer noopener"
               href="https://play.google.com/store/apps/details?id=com.pepsico.mypepsico&gl=US"
               icon={<AiOutlineAndroid fontSize="1.5rem" />}
             />
@@ -96,6 +101,8 @@ export default function PepsiLinks(): JSX.Element {
               as="a"
               aria-label="MyPesico"
               variant={'ghost'}
+              target={'_blank'}
+              rel="noreferrer noopener"
               href="https://apps.apple.com/us/app/castlight-mobile/id503468685"
               icon={<AiOutlineApple fontSize="1.5rem" />}
             />
@@ -103,6 +110,8 @@ export default function PepsiLinks(): JSX.Element {
               as="a"
               aria-label="MyPesico"
               variant={'ghost'}
+              target={'_blank'}
+              rel="noreferrer noopener"
               href="https://play.google.com/store/apps/details?id=com.castlight.clh.view&gl=US"
               icon={<AiOutlineAndroid fontSize="1.5rem" />}
             />
